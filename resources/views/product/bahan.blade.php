@@ -4,6 +4,25 @@
 <head>
     <title>FrojenFuud | Daftar Bahan Baku</title>
     @include('layouts/header')
+    <style>
+        th {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        td img {
+            width: 120px;
+        }
+
+        .btn-warning,
+        .btn-danger {
+            margin: 0 5px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -21,8 +40,8 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Produk</li>
-                                <li class="breadcrumb-item"><a href="#">Bahan Baku</a>
+                                <li class="breadcrumb-item">bahan</li>
+                                <li class="breadcrumb-item"><a href="/bahan-baku">Bahan Baku</a>
                                 </li>
                             </ol>
                         </div>
@@ -39,46 +58,98 @@
                             <div class="card">
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <a href="#" class="btn btn-app"
-                                        style="left: -10px; top: -10px">
-                                        <i class="fas fa-plus"></i> Tambah Data
-                                    </a>
-                                    {{-- @if (count($data) > 0)
-                                        <a href="/Admin/Abdimas-Fisik-NonFisik/Export-Data/{{ $data[0]->id }}"
-                                            class="btn btn-app" style="left: -10px; top: -10px">
-                                            <i class="fa fa-file-pdf"></i> Export Data PDF
-                                        </a>
-                                    @endif --}}
-                                    <a href="#"
-                                        class="btn btn-app" style="left: -10px; top: -10px">
-                                        <i class="fa fa-file-pdf"></i> Export Data PDF
-                                    </a>
-                                    <table id="table4" class="table table-bordered table-striped">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-6">
+                                            <a href="/bahan-baku/input" class="btn btn-app" style="left: -10px;">
+                                                <i class="fas fa-plus"></i> Tambah Data
+                                            </a>
+                                            {{-- @if (count($data) > 0)
+                                                <a href="/bahan/export/{id}/{{ $data[0]->id }}"
+                                                    class="btn btn-app" style="left: -10px;">
+                                                    <i class="fa fa-file-pdf"></i> Export Data PDF
+                                                </a>
+                                            @endif --}}
+                                            <a href="#" class="btn btn-app" style="left: -10px;">
+                                                <i class="fa fa-file-pdf"></i> Export Data PDF
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6" style="text-align: right">
+                                            <a href="#" class="btn btn-app">
+                                                <i class="fas fa-list "></i>List / Tabel
+                                            </a>
+                                            <a href="#" class="btn btn-app">
+                                                <i class="fa fa-columns"></i> Kanban
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {{-- Untuk bagian list atau tabel --}}
+                                    {{-- <table id="table4" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nama Bahan</th>
-                                                <th>Harga</th>
-                                                <th>Jumlah Stok</th>
-                                                <th>Satuan</th>
-                                                <th>Jenis Bahan</th>
-                                                <th>Kode Bahan</th>
-                                                <th>Gambar</th>
-                                                <th>Aksi</th>
+                                                <th style="vertical-align: middle;">Nama Bahan</th>
+                                                <th style="vertical-align: middle;">Harga Bahan</th>
+                                                <th style="vertical-align: middle;">Stok</th>
+                                                <th style="vertical-align: middle;">Satuan</th>
+                                                <th style="vertical-align: middle;">Jenis Bahan</th>
+                                                <th style="vertical-align: middle;">Kode Bahan (Barcode)</th>
+                                                <th style="vertical-align: middle;">Gambar</th>
+                                                <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Nama Bahan</td>
-                                                <td>Harga</td>
-                                                <td>Jumlah Stok</td>
-                                                <td>Satuan</td>
-                                                <td>Jenis Bahan</td>
-                                                <td>Kode Bahan</td>
-                                                <td>Gambar</td>
-                                                <td>Aksi</td>
-                                            </tr>
+                                            @foreach ($data as $row)
+                                                <tr>
+                                                    <td>{{ $row->nama_bahan }}</td>
+                                                    <td>{{ $row->harga_bahan }}</td>
+                                                    <td>{{ $row->stok }}</td>
+                                                    <td>{{ $row->satuan }}</td>
+                                                    <td>{{ $row->jenis_bahan }}</td>
+                                                    <td>{{ $row->kode_bahan }}</td>
+                                                    <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"></td>
+                                                    <td style="text-align: center">
+                                                        <a href="/bahan-baku/edit/{{ $row->id }}"
+                                                            class="btn btn-warning">Edit</a>
+                                                        <a href="#" class="btn btn-danger delete"
+                                                            data-id="{{ $row->id }}"
+                                                            data-nama_bahan="{{ $row->nama_bahan }}">Hapus</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
-                                    </table>
+                                    </table> --}}
+
+                                    {{-- untuk bagian kanbannya --}}
+                                    <div class="row">
+                                        @foreach ($data as $row)
+                                            <div class="col-lg-4 col-6">
+                                                <div class="small-box">
+                                                    <div class="inner">
+                                                        <h3>{{ $row->nama_bahan }}</h3>
+                                                        <p>Stok: {{ $row->stok }}</p>
+                                                        <p>Rp. {{ $row->harga_bahan }}</p>
+                                                        <div style="text-align: right;">
+                                                            <a class="btn btn-danger delete"
+                                                                data-id="{{ $row->id }}"
+                                                                data-nama_bahan="{{ $row->nama_bahan }}">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="ion"><img style="width: 120px;"
+                                                                src="{{ asset('foto-bahan/' . $row->gambar) }}"></i>
+
+                                                    </div>
+                                                    <a href="/bahan-baku/edit/{{ $row->id }}"
+                                                        class="small-box-footer" style="color: black;">More info <i
+                                                            class="fas fa-arrow-circle-right"
+                                                            style="color: black;"></i></a>
+
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,14 +161,14 @@
     </div>
 
     @include('layouts/script')
-    {{-- <script>
+    <script>
         $('.delete').click(function() {
             var id = $(this).attr('data-id');
-            var asal_rw = $(this).attr('data-asal_rw');
-            var detail_kegiatan = $(this).attr('data-detail_kegiatan');
+            var nama_bahan = $(this).attr('data-nama_bahan');
+            var kode_bahan = $(this).attr('data-kode_bahan');
             Swal.fire({
                 title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                text: "Data Abdimas " + asal_rw + " - " + detail_kegiatan + " Akan Dihapus",
+                text: "Data bahan " + nama_bahan + " Akan Dihapus",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -109,12 +180,12 @@
                         'Terhapus!',
                         'Data Telah Terhapus!',
                         'success',
-                        window.location = "/Admin/Abdimas-Fisik-NonFisik/Hapus-Data/" + id + "",
+                        window.location = "/bahan/hapus/" + id + "",
                     )
                 }
             });
         });
-    </script> --}}
+    </script>
 </body>
 
 </html>

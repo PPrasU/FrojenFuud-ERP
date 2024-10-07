@@ -44,7 +44,7 @@ Route::post('/bahan-baku/update/{id}', [BahanController::class, 'updateBahan'])-
 Route::get('/bahan-baku/hapus/{id}', [BahanController::class, 'hapusBahan'])->name('hapusBahan');
 Route::get('/bahan-baku/export/{id}', [BahanController::class, 'exportBahan'])->name('exportBahan');
 
-Route::get('/bahan-baku', function () {
-    return view('product.bahan');
-});
+// Route::get('/bahan-baku', function () {
+//     return view('product.bahan');
+// });
 

@@ -20,7 +20,12 @@ class ProdukController extends Controller
 
     public function postProduk(Request $request){
         //dd($request->all());
-        Produk::create($request->all());
+        $data = Produk::create($request->all());
+        if($request->hasFile('gambar')){
+            $request->file('gambar')->move('foto-produk/', $request->file('gambar')->getClientOriginalName());
+            $data->gambar = $request->file('gambar')->getClientOriginalName();
+            $data->save();
+        }
         return redirect()->route('Produk')->with('Success', 'Data Produk Berhasil Ditambahkan');
     }
 
