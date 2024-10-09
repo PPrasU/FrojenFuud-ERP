@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama_bahan');
             $table->bigInteger('harga_bahan');
-            $table->bigInteger('stok');
             $table->string('satuan');
             $table->string('jenis_bahan');
             $table->string('kode_bahan');

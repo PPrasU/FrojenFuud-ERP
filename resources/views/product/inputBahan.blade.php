@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Produk</li>
+                                <li class="breadcrumb-item">Manufacturing</li>
                                 <li class="breadcrumb-item"><a href="/bahan-baku">Bahan Baku</a>
                                 <li class="breadcrumb-item"><a href="/bahan-baku/input">Input Data</a>
                                 </li>
@@ -54,47 +54,9 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="harga_bahan">Harga Bahan</label>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">Rp.</span>
-                                                        </div>
-                                                        <!-- Input untuk tampilan pengguna -->
-                                                        <input type="text" class="form-control"
-                                                            id="harga_bahan_display" onkeyup="formatRupiah(this)"
-                                                            placeholder="0">
-                                                        <!-- Input hidden untuk menyimpan nilai sebenarnya (tanpa titik) ke database -->
-                                                        <input type="hidden" name="harga_bahan" id="harga_bahan">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="stok">Stok</label>
-                                                    <input type="text" name="stok" class="form-control"
-                                                        placeholder="0" id="stok">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
                                                     <label for="kode_bahan">Kode Bahan</label>
                                                     <input type="text" name="kode_bahan" class="form-control"
                                                         id="kode_bahan">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Satuan</label>
-                                                    <select class="form-control" name="satuan" id="satuan">
-                                                        <option selected disabled>-- Pilih Satuan --</option>
-                                                        <option>gram</option>
-                                                        <option>ml</option>
-                                                        <option>butir</option>
-                                                        <option>siung</option>
-                                                        <option>lembar</option>
-                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -110,7 +72,37 @@
                                                     </select>
                                                 </div>
                                             </div>
-
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Satuan</label>
+                                                    <select class="form-control" name="satuan" id="satuan">
+                                                        <option selected disabled>-- Pilih Satuan --</option>
+                                                        <option>gram</option>
+                                                        <option>ml</option>
+                                                        <option>butir</option>
+                                                        <option>siung</option>
+                                                        <option>lembar</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="harga_bahan">Harga Bahan</label>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Rp.</span>
+                                                        </div>
+                                                        <!-- Input untuk tampilan pengguna -->
+                                                        <input type="text" class="form-control"
+                                                            id="harga_bahan_display" onkeyup="formatRupiah(this)"
+                                                            placeholder="0">
+                                                        <!-- Input hidden untuk menyimpan nilai sebenarnya (tanpa titik) ke database -->
+                                                        <input type="hidden" name="harga_bahan" id="harga_bahan">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="gambar">Gambar Produk</label>

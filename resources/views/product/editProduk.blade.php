@@ -23,7 +23,7 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Produk</li>
                                 <li class="breadcrumb-item"><a href="/produk">Produk Jadi</a>
-                                <li class="breadcrumb-item"><a href="/produk/input">Input Data</a>
+                                <li class="breadcrumb-item"><a href="/produk/input">Edit Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -67,8 +67,8 @@
                                                             <span class="input-group-text">Rp.</span>
                                                         </div>
                                                         <input type="number" class="form-control"
-                                                            id="harga_produk_display"
-                                                            placeholder="0" value="{{ $data->harga_produk }}">
+                                                            id="harga_produk_display" placeholder="0"
+                                                            value="{{ $data->harga_produk }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,8 +80,8 @@
                                                             <span class="input-group-text">Rp.</span>
                                                         </div>
                                                         <input type="number" class="form-control"
-                                                            id="harga_produksi_display" 
-                                                            placeholder="0" value="{{ $data->harga_produksi }}">
+                                                            id="harga_produksi_display" placeholder="0"
+                                                            value="{{ $data->harga_produksi }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,13 +106,6 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="jumlah_produk">Jumlah Produk</label>
-                                                    <input type="text" name="jumlah_produk" class="form-control"
-                                                        id="jumlah_produk" value="{{ $data->jumlah_produk }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
                                                     <label for="gambar">Gambar Produk</label>
                                                     <input type="file" name="gambar" class="form-control"
                                                         id="gambar">
@@ -127,16 +120,16 @@
                                                 <button type="submit" class="btn btn-primary">Perbarui</button>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
-                                </form>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </section>
         </div>
-        @include('layouts/footer')
+        </section>
+    </div>
+    @include('layouts/footer')
     </div>
 
     @include('layouts/script')

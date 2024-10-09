@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Input Produk Jadi</title>
+    <title>FrojenFuud | Input Produk</title>
     @include('layouts/header')
 </head>
 
@@ -17,12 +17,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h5 class="m-0">Input Produk Jadi</h5>
+                            <h5 class="m-0">Input Produk</h5>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Produk</li>
-                                <li class="breadcrumb-item"><a href="/produk">Produk Jadi</a>
+                                <li class="breadcrumb-item">Manufacturing</li>
+                                <li class="breadcrumb-item"><a href="/produk">Produk</a>
                                 <li class="breadcrumb-item"><a href="/produk/input">Input Data</a>
                                 </li>
                             </ol>
@@ -61,7 +61,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="harga_produk">Harga Produk Satuan</label>
+                                                    <label for="harga_produk">Harga Produk (Sales Price)</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">Rp.</span>
@@ -77,7 +77,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="harga_produksi">Harga Produksi Satuan</label>
+                                                    <label for="harga_produksi">Harga Produksi (Cost)</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">Rp.</span>
@@ -106,13 +106,6 @@
                                                     <label for="tanggal_kadaluarsa">Tanggal Kadaluarsa</label>
                                                     <input type="date" name="tanggal_kadaluarsa" class="form-control"
                                                         id="tanggal_kadaluarsa" placeholder="dd/mm/yyyy" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="jumlah_produk">Jumlah Produk</label>
-                                                    <input type="text" name="jumlah_produk" class="form-control"
-                                                        id="jumlah_produk">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">

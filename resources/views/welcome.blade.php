@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SI BKM | Welcome</title>
+    <title>FrojenFuud-ERP | Welcome</title>
     <link rel="icon" href="{{ asset('img/Logo FrojenFuud.png') }}" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

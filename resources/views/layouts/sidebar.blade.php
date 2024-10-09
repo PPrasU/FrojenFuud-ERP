@@ -1,8 +1,8 @@
 <aside class="main-sidebar main-sidebar-custom sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="{{ asset('img/Logo FrojenFuud.png') }}" alt="Logo FrojenFuud"
-            class="brand-image img-circle elevation-2" style="opacity: .8">
+        <img src="{{ asset('img/Logo FrojenFuud.png') }}" alt="Logo FrojenFuud" class="brand-image img-circle elevation-2"
+            style="opacity: .8">
         <span class="brand-text font-weight-light">FrojenFuud</span>
     </a>
     <!-- Sidebar -->
@@ -30,6 +30,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="/produk" class="nav-link">
+                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
+                                <p style="font-size: 14px">Produk</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/bahan-baku" class="nav-link">
+                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
+                                <p style="font-size: 14px">Bahan Baku</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Daftar Material (BoM)</p>
@@ -41,30 +53,7 @@
                                 <p style="font-size: 14px">Pesanan Produksi (MO)</p>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                {{-- Sidebar Produk --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-shopping-basket"></i>
-                        <p style="font-size: 14px">
-                            Produk
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/produk" class="nav-link">
-                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
-                                <p style="font-size: 14px">Produk Jadi</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/bahan-baku" class="nav-link">
-                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
-                                <p style="font-size: 14px">Bahan Baku</p>
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
             </ul>
