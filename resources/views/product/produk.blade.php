@@ -10,16 +10,20 @@
             font-size: 16px;
             text-align: center;
         }
+
         td {
             font-size: 16px;
         }
+
         td img {
             width: 120px;
         }
+
         .btn-warning,
         .btn-danger {
             margin: 0 5px;
         }
+
         .hidden {
             display: none;
         }
