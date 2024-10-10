@@ -63,9 +63,12 @@
                                             <a href="/produk/input" class="btn btn-app" style="left: -10px;">
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
-                                            <a href="#" class="btn btn-app" style="left: -10px;">
-                                                <i class="fa fa-file-pdf"></i> Export Data PDF
-                                            </a>
+                                            @if (count($data) > 0)
+                                                <a href="/produk/export/{{ $data[0]->id }}"
+                                                    class="btn btn-app" style="left: -10px;">
+                                                    <i class="fa fa-file-pdf"></i> Export PDF
+                                                </a>
+                                            @endif
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">

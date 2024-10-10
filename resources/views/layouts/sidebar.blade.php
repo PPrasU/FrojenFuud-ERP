@@ -36,9 +36,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/bom" class="nav-link {{ request()->is('bom*') ? 'active' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('bom*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Daftar Material (BoM)</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ request()->is('mo*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
+                                <p style="font-size: 14px">Produksi (MO)</p>
                             </a>
                         </li>
                     </ul>

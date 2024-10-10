@@ -9,16 +9,20 @@
             font-size: 16px;
             text-align: center;
         }
+
         td {
             font-size: 16px;
         }
+
         td img {
             width: 120px;
         }
+
         .btn-warning,
         .btn-danger {
             margin: 0 5px;
         }
+
         .hidden {
             display: none;
         }
@@ -58,9 +62,12 @@
                                             <a href="/bahan-baku/input" class="btn btn-app" style="left: -10px;">
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
-                                            <a href="#" class="btn btn-app" style="left: -10px;">
-                                                <i class="fa fa-file-pdf"></i> Export Data PDF
-                                            </a>
+                                            @if (count($data) > 0)
+                                                <a href="/bahan-baku/export/{{ $data[0]->id }}" class="btn btn-app"
+                                                    style="left: -10px;">
+                                                    <i class="fa fa-file-pdf"></i> Export PDF
+                                                </a>
+                                            @endif
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">
