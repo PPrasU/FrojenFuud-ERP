@@ -28,7 +28,7 @@ Route::post('/produk/post', [ProdukController::class, 'postProduk'])->name('post
 Route::get('/produk/edit/{id}', [ProdukController::class, 'editProduk'])->name('editProduk');
 Route::post('/produk/update/{id}', [ProdukController::class, 'updateProduk'])->name('updateProduk');
 Route::get('/produk/hapus/{id}', [ProdukController::class, 'hapusProduk'])->name('hapusProduk');
-Route::get('/produk/export/{id}', [ProdukController::class, 'exportProduk'])->name('exportProduk');
+Route::post('/produk/export', [ProdukController::class, 'exportProduk'])->name('exportProduk');
 
 // Route::get('/produk', function () {
 //     return view('product.produk');
@@ -42,7 +42,7 @@ Route::post('/bahan-baku/post', [BahanController::class, 'postBahan'])->name('po
 Route::get('/bahan-baku/edit/{id}', [BahanController::class, 'editBahan'])->name('editBahan');
 Route::post('/bahan-baku/update/{id}', [BahanController::class, 'updateBahan'])->name('updateBahan');
 Route::get('/bahan-baku/hapus/{id}', [BahanController::class, 'hapusBahan'])->name('hapusBahan');
-Route::get('/bahan-baku/export/{id}', [BahanController::class, 'exportBahan'])->name('exportBahan');
+Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name('bahan.export');
 
 // Route::get('/bahan-baku', function () {
 //     return view('product.bahan');

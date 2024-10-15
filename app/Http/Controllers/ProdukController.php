@@ -36,7 +36,23 @@ class ProdukController extends Controller
 
     public function updateProduk(Request $request, $id ){
         $data = Produk::find($id);
-        $data->update($request->all());
+        if($request->hasFile('gambar')){
+            // Hapus gambar lama jika ada
+            if ($data->gambar) {
+                $oldImagePath = public_path('foto-Bahan/' . $data->gambar);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); // Hapus file lama
+                }
+            }
+
+            // Pindahkan file gambar baru
+            $newImageName = $request->file('gambar')->getClientOriginalName();
+            $request->file('gambar')->move('foto-Bahan/', $newImageName);
+            // Perbarui kolom gambar dengan nama file baru
+            $data->gambar = $newImageName;
+        }
+        // Perbarui kolom lain (kecuali gambar)
+        $data->update($request->except('gambar'));
         return redirect()->route('Produk')->with('Success', 'Data Produk Berhasil Diperbarui');
     }
 
@@ -46,15 +62,32 @@ class ProdukController extends Controller
         return redirect()->route('Produk')->with('Success', 'Data Produk Berhasil Dihapus');
     }
 
-    public function exportProduk(){
-        $data = Produk::all();
-        $pdf = pdf::loadView('export.exportProduk', compact('data'));
-        $dateTime = date('d-m-Y_H:i:s');
-    
-        // Menyusun nama file PDF dengan format yang diinginkan
-        $fileName = "{$dateTime}_Laporan Produk.pdf";
-    
-        // Mengunduh file PDF dengan nama yang telah disusun
+    public function exportProduk(Request $request){
+        // Ambil ID item yang dipilih dari form
+        $selectedItems = $request->input('items');
+
+        // Jika tidak ada data yang dipilih
+        if (empty($selectedItems)) {
+            return redirect()->back()->with('error', 'Tidak ada produk yang dipilih');
+        }
+
+        // Ambil data produk berdasarkan ID yang dipilih
+        $data = Produk::whereIn('id', $selectedItems)->get();
+
+        // Jika data kosong
+        if ($data->isEmpty()) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Generate PDF dengan view 'exportProduk'
+        $pdf = Pdf::loadView('export.exportProduk', compact('data'))
+                    ->setPaper('a4', 'landscape');
+
+        // Format nama file PDF dengan waktu saat ini
+        $dateTime = date('d-m-Y');
+        $fileName = "{$dateTime}_Laporan_Produk.pdf";
+
+        // Unduh file PDF
         return $pdf->download($fileName);
     }
 }

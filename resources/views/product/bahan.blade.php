@@ -63,11 +63,180 @@
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
-                                                <a href="/bahan-baku/export/{{ $data[0]->id }}" class="btn btn-app"
-                                                    style="left: -10px;">
+                                                <!-- Tombol untuk membuka modal -->
+                                                <button type="button" class="btn btn-app" style="left: -10px;"
+                                                    onclick="openModal()">
                                                     <i class="fa fa-file-pdf"></i> Export PDF
-                                                </a>
+                                                </button>
                                             @endif
+
+                                            <!-- Modal Custom -->
+                                            <div id="exportModal" class="modal">
+                                                <div class="modal-content">
+                                                    <div style="margin-left: 0;">
+                                                        {{-- <span class="close" onclick="closeModal()">&times;</span> --}}
+                                                        <h2>Export PDF</h2>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('bahan.export') }}" method="POST"
+                                                            id="exportForm">
+                                                            @csrf
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><input type="checkbox" id="selectAll"></th>
+                                                                        <th>Nama Bahan</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($data as $item)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="checkbox" name="items[]"
+                                                                                    class="itemCheckbox"
+                                                                                    value="{{ $item->id }}">
+                                                                            </td>
+                                                                            <td>{{ $item->nama_bahan }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </form>
+
+                                                        <script>
+                                                            // Script untuk Pilih Semua
+                                                            document.getElementById('selectAll').addEventListener('change', function() {
+                                                                let checkboxes = document.querySelectorAll('.itemCheckbox');
+                                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- Tombol Print -->
+                                                        <button type="button" class="btn btn-primary"
+                                                            onclick="submitForm()">Print</button>
+                                                        <!-- Tombol Cancel -->
+                                                        <button type="button" class="btn btn-secondary"
+                                                            onclick="closeModal()">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- CSS untuk Modal -->
+                                            <style>
+                                                /* Modal container */
+                                                .modal {
+                                                    display: none;
+                                                    position: fixed;
+                                                    z-index: 1;
+                                                    left: 0;
+                                                    top: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background-color: rgba(0, 0, 0, 0.4);
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
+
+                                                /* Modal content */
+                                                .modal-content {
+                                                    background-color: #fff;
+                                                    padding: 20px;
+                                                    border-radius: 8px;
+                                                    width: 400px;
+                                                    margin: auto;
+                                                }
+
+                                                /* Header */
+                                                .modal-header {
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    align-items: center;
+                                                    border-bottom: 1px solid #ddd;
+                                                    padding-bottom: 10px;
+                                                }
+
+                                                /* Close button */
+                                                .close {
+                                                    cursor: pointer;
+                                                    font-size: 24px;
+                                                }
+
+                                                /* Footer */
+                                                .modal-footer {
+                                                    margin-top: 20px;
+                                                    display: flex;
+                                                    justify-content: flex-end;
+                                                }
+
+                                                /* Button styles */
+                                                .btn-primary {
+                                                    background-color: #007bff;
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 10px 20px;
+                                                    cursor: pointer;
+                                                }
+
+                                                .btn-secondary {
+                                                    background-color: #6c757d;
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 10px 20px;
+                                                    cursor: pointer;
+                                                    margin-left: 10px;
+                                                }
+
+                                                .btn-primary:hover,
+                                                .btn-secondary:hover {
+                                                    opacity: 0.9;
+                                                }
+
+                                                /* Form styling */
+                                                .form-group {
+                                                    margin-bottom: 10px;
+                                                }
+
+                                                .checkbox {
+                                                    margin: 5px 0;
+                                                }
+                                            </style>
+
+                                            <!-- JavaScript untuk Modal dan Pilih Semua -->
+                                            <script>
+                                                // Fungsi untuk membuka modal
+                                                function openModal() {
+                                                    document.getElementById("exportModal").style.display = "flex";
+                                                }
+
+                                                // Fungsi untuk menutup modal
+                                                function closeModal() {
+                                                    document.getElementById("exportModal").style.display = "none";
+                                                }
+
+                                                // Fungsi untuk submit form
+                                                function submitForm() {
+                                                    document.getElementById("exportForm").submit();
+                                                }
+
+                                                // Fungsi untuk "Pilih Semua"
+                                                function toggleSelectAll() {
+                                                    var selectAllCheckbox = document.getElementById("selectAll");
+                                                    var itemCheckboxes = document.getElementsByClassName("itemCheckbox");
+
+                                                    for (var i = 0; i < itemCheckboxes.length; i++) {
+                                                        itemCheckboxes[i].checked = selectAllCheckbox.checked;
+                                                    }
+                                                }
+
+                                                // Menutup modal ketika user klik di luar modal
+                                                window.onclick = function(event) {
+                                                    if (event.target == document.getElementById("exportModal")) {
+                                                        closeModal();
+                                                    }
+                                                }
+                                            </script>
+                                            {{-- ------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">
@@ -99,7 +268,8 @@
                                                     <td>{{ $row->satuan }}</td>
                                                     <td>{{ $row->jenis_bahan }}</td>
                                                     <td>{{ $row->kode_bahan }}</td>
-                                                    <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"></td>
+                                                    <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"
+                                                            style="width: 100px; height: 100px; "></td>
                                                     <td style="text-align: center">
                                                         <a href="/bahan-baku/edit/{{ $row->id }}"
                                                             class="btn btn-warning">Edit</a>
@@ -131,7 +301,8 @@
                                                     </div>
                                                     <div class="icon">
                                                         <i class="ion"><img style="width: 120px;"
-                                                                src="{{ asset('foto-bahan/' . $row->gambar) }}"></i>
+                                                                src="{{ asset('foto-bahan/' . $row->gambar) }}"
+                                                                style="width: 50px; height: 50px;"></i>
 
                                                     </div>
                                                     <a href="/bahan-baku/edit/{{ $row->id }}"

@@ -6,7 +6,8 @@
     </a>
     <div class="sidebar">
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <li class="nav-item">
                     <a href="/home" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-home"></i>
@@ -14,8 +15,10 @@
                     </a>
                 </li>
                 {{-- Manufacturing --}}
-                <li class="nav-item {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'active' : '' }}">
+                <li
+                    class="nav-item {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p style="font-size: 14px">
                             Manufacturing
@@ -108,13 +111,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/accounting/pembelian" class="nav-link {{ request()->is('accounting/pembelian*') ? 'active' : '' }}">
+                            <a href="/accounting/pembelian"
+                                class="nav-link {{ request()->is('accounting/pembelian*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Pembelian</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/accounting/penjualan" class="nav-link {{ request()->is('accounting/penjualan*') ? 'active' : '' }}">
+                            <a href="/accounting/penjualan"
+                                class="nav-link {{ request()->is('accounting/penjualan*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Penjualan</p>
                             </a>
@@ -132,19 +137,22 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/employees/departemen" class="nav-link {{ request()->is('employees/departemen*') ? 'active' : '' }}">
+                            <a href="/employees/departemen"
+                                class="nav-link {{ request()->is('employees/departemen*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Departemen</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/employees/posisi-jabatan" class="nav-link {{ request()->is('employees/posisi-jabatan*') ? 'active' : '' }}">
+                            <a href="/employees/posisi-jabatan"
+                                class="nav-link {{ request()->is('employees/posisi-jabatan*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Posisi Jabatan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/employees/karyawan" class="nav-link {{ request()->is('employees/karyawan*') ? 'active' : '' }}">
+                            <a href="/employees/karyawan"
+                                class="nav-link {{ request()->is('employees/karyawan*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Karyawan</p>
                             </a>
@@ -162,31 +170,36 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/inventory/overview" class="nav-link {{ request()->is('inventory/overview*') ? 'active' : '' }}">
+                            <a href="/inventory/overview"
+                                class="nav-link {{ request()->is('inventory/overview*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Overview</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/inventory/transfer" class="nav-link {{ request()->is('inventory/transfer*') ? 'active' : '' }}">
+                            <a href="/inventory/transfer"
+                                class="nav-link {{ request()->is('inventory/transfer*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p style="font-size: 14px">Transfer<i class="right fas fa-angle-left"></i></p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/inventory/kuitansi" class="nav-link {{ request()->is('inventory/kuitansi*') ? 'active' : '' }}">
+                                    <a href="/inventory/kuitansi"
+                                        class="nav-link {{ request()->is('inventory/kuitansi*') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-circle"></i>
                                         <p style="font-size: 14px">Kuitansi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/inventory/pengiriman" class="nav-link {{ request()->is('inventory/pengiriman*') ? 'active' : '' }}">
+                                    <a href="/inventory/pengiriman"
+                                        class="nav-link {{ request()->is('inventory/pengiriman*') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-circle"></i>
                                         <p style="font-size: 14px">Pengiriman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/inventory/manufaktur" class="nav-link {{ request()->is('inventory/manufaktur*') ? 'active' : '' }}">
+                                    <a href="/inventory/manufaktur"
+                                        class="nav-link {{ request()->is('inventory/manufaktur*') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-circle"></i>
                                         <p style="font-size: 14px">Manufaktur</p>
                                     </a>

@@ -30,9 +30,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -179,11 +176,6 @@
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
-            // $.validator.setDefaults({
-            //     submitHandler: function() {
-            //         alert("Data Produktifitas Berhasil Di Input");
-            //     }
-            // });
             $('#inputBahanBaku').validate({
                 rules: {
                     nama_bahan: {
@@ -222,31 +214,6 @@
             });
         });
     </script>
-    {{-- <script>
-        $('.delete').click(function() {
-            var id = $(this).attr('data-id');
-            var asal_rw = $(this).attr('data-asal_rw');
-            var detail_kegiatan = $(this).attr('data-detail_kegiatan');
-            Swal.fire({
-                title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                text: "Data Abdimas " + asal_rw + " - " + detail_kegiatan + " Akan Dihapus",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Iya!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Terhapus!',
-                        'Data Telah Terhapus!',
-                        'success',
-                        window.location = "/Admin/Abdimas-Fisik-NonFisik/Hapus-Data/" + id + "",
-                    )
-                }
-            });
-        });
-    </script> --}}
 </body>
 
 </html>

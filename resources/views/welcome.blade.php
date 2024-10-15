@@ -24,7 +24,6 @@
     <p class="login-box-msg"></p>
     <p class="login-box-msg">Selamat Datang Di FrojenFuud ERP</p>
     <div class="login-box">
-        <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-body">
                 <p class="login-box-msg">Masuk Ke Dashboard</p>
@@ -51,18 +50,11 @@
                             </nav>
                         @endif
                     </div>
-                    <!-- /.col -->
                 </div>
                 </form>
-                {{-- <p class="mb-0">
-        <a href="#" class="text-center">Register a new membership</a>
-      </p> --}}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
-    <!-- /.login-box -->
 
     <!-- jQuery -->
     <script src="{{ asset('source/plugins/jquery/jquery.min.js') }}"></script>
