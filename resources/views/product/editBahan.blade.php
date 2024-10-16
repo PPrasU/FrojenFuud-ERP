@@ -56,7 +56,7 @@
                                                 <div class="form-group">
                                                     <label for="kode_bahan">Kode Bahan</label>
                                                     <input type="text" name="kode_bahan" class="form-control"
-                                                        id="kode_bahan" value="{{ $data->nama_bahan }}">
+                                                        id="kode_bahan" value="{{ $data->nama_bahan }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -132,11 +132,6 @@
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
-            // $.validator.setDefaults({
-            //     submitHandler: function() {
-            //         alert("Data Produktifitas Berhasil Di Input");
-            //     }
-            // });
             $('#inputBahanBaku').validate({
                 rules: {
                     nama_bahan: {
@@ -157,9 +152,6 @@
                     kode_bahan: {
                         required: true,
                     },
-                    gambar: {
-                        required: true,
-                    },
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
@@ -175,31 +167,34 @@
             });
         });
     </script>
-    {{-- <script>
-        $('.delete').click(function() {
-            var id = $(this).attr('data-id');
-            var asal_rw = $(this).attr('data-asal_rw');
-            var detail_kegiatan = $(this).attr('data-detail_kegiatan');
-            Swal.fire({
-                title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                text: "Data Abdimas " + asal_rw + " - " + detail_kegiatan + " Akan Dihapus",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Iya!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Terhapus!',
-                        'Data Telah Terhapus!',
-                        'success',
-                        window.location = "/Admin/Abdimas-Fisik-NonFisik/Hapus-Data/" + id + "",
-                    )
+
+    {{-- script buat otomatisin kode produk --}}
+    <script>
+        document.getElementById('nama_bahan').addEventListener('input', function() {
+            const namaBahan = this.value.trim();
+            let kodeBahan = '';
+
+            if (namaBahan) {
+                const words = namaBahan.split(' ');
+
+                if (words.length === 2) {
+                    // Ambil huruf pertama dari dua kata
+                    kodeBahan = words[0][0].toUpperCase() + words[1][0].toUpperCase();
+                } else if (words.length === 1) {
+                    // Ambil huruf pertama dan ketiga dari satu kata
+                    const word = words[0];
+                    if (word.length >= 3) {
+                        kodeBahan = word[0].toUpperCase() + word[2].toUpperCase();
+                    } else {
+                        kodeBahan = word[0]
+                            .toUpperCase(); // Jika panjang kurang dari 3 huruf, ambil hanya huruf pertama
+                    }
                 }
-            });
+            }
+
+            document.getElementById('kode_bahan').value = kodeBahan;
         });
-    </script> --}}
+    </script>
 </body>
 
 </html>

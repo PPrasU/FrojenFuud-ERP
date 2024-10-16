@@ -55,6 +55,8 @@
 <link rel="stylesheet" href="{{ asset('source/plugins/dropzone/min/dropzone.min.css') }}">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="{{ asset('source/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+{{-- Barcode --}}
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
 @include('sweetalert::alert')
 {{-- Toaster CDN CSS --}}

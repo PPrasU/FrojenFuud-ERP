@@ -5,6 +5,7 @@
     <title>FrojenFuud | Daftar Produk</title>
     @include('layouts/header')
 
+    {{-- CSS untuk tabel --}}
     <style>
         th {
             font-size: 16px;
@@ -64,11 +65,145 @@
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
-                                                <a href="/produk/export/{{ $data[0]->id }}"
-                                                    class="btn btn-app" style="left: -10px;">
+                                                <!-- Tombol untuk membuka modal -->
+                                                <button type="button" class="btn btn-app" style="left: -10px;"
+                                                    onclick="openModal()">
                                                     <i class="fa fa-file-pdf"></i> Export PDF
-                                                </a>
+                                                </button>
                                             @endif
+
+                                            <!-- Modal Custom -->
+                                            <div id="exportModal" class="modal">
+                                                <div class="modal-content">
+                                                    <div style="margin-left: 0;">
+                                                        <h2>Export Produk PDF</h2>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form untuk memilih produk yang akan diekspor -->
+                                                        <form action="{{ route('exportProduk') }}" method="POST"
+                                                            id="exportForm">
+                                                            @csrf
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><input type="checkbox" id="selectAll"></th>
+                                                                        <th>Pilih Semua Produk</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($data as $item)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="checkbox" name="items[]"
+                                                                                    class="itemCheckbox"
+                                                                                    value="{{ $item->id }}">
+                                                                            </td>
+                                                                            <td>{{ $item->nama_produk }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </form>
+
+                                                        <script>
+                                                            // Script untuk Pilih Semua
+                                                            document.getElementById('selectAll').addEventListener('change', function() {
+                                                                let checkboxes = document.querySelectorAll('.itemCheckbox');
+                                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- Tombol Print -->
+                                                        <button type="button" class="btn btn-primary"
+                                                            onclick="submitForm()">Cetak</button>
+                                                        <!-- Tombol Cancel -->
+                                                        <button type="button" class="btn btn-secondary"
+                                                            onclick="closeModal()">Batal</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- CSS untuk Modal -->
+                                            <style>
+                                                /* Modal container */
+                                                .modal {
+                                                    display: none;
+                                                    position: fixed;
+                                                    z-index: 1;
+                                                    left: 0;
+                                                    top: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background-color: rgba(0, 0, 0, 0.4);
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
+
+                                                /* Modal content */
+                                                .modal-content {
+                                                    background-color: #fff;
+                                                    padding: 20px;
+                                                    border-radius: 8px;
+                                                    width: 400px;
+                                                    margin: auto;
+                                                }
+
+                                                /* Footer */
+                                                .modal-footer {
+                                                    margin-top: 20px;
+                                                    display: flex;
+                                                    justify-content: flex-end;
+                                                }
+
+                                                /* Button styles */
+                                                .btn-primary {
+                                                    background-color: #007bff;
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 10px 20px;
+                                                    cursor: pointer;
+                                                }
+
+                                                .btn-secondary {
+                                                    background-color: #6c757d;
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 10px 20px;
+                                                    cursor: pointer;
+                                                    margin-left: 10px;
+                                                }
+
+                                                .btn-primary:hover,
+                                                .btn-secondary:hover {
+                                                    opacity: 0.9;
+                                                }
+                                            </style>
+
+                                            <!-- JavaScript untuk Modal -->
+                                            <script>
+                                                // Fungsi untuk membuka modal
+                                                function openModal() {
+                                                    document.getElementById("exportModal").style.display = "flex";
+                                                }
+
+                                                // Fungsi untuk menutup modal
+                                                function closeModal() {
+                                                    document.getElementById("exportModal").style.display = "none";
+                                                }
+
+                                                // Fungsi untuk submit form
+                                                function submitForm() {
+                                                    document.getElementById("exportForm").submit();
+                                                }
+
+                                                // Menutup modal ketika user klik di luar modal
+                                                window.onclick = function(event) {
+                                                    if (event.target == document.getElementById("exportModal")) {
+                                                        closeModal();
+                                                    }
+                                                }
+                                            </script>
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">
@@ -84,11 +219,9 @@
                                         <thead>
                                             <tr>
                                                 <th style="vertical-align: middle;">Nama Produk</th>
-                                                <th style="vertical-align: middle;">Kode Produk</th>
+                                                <th style="vertical-align: middle;">Kode Produk (Barcode)</th>
                                                 <th style="vertical-align: middle;">Harga Produk (Sales Price)</th>
                                                 <th style="vertical-align: middle;">Harga Produksi (Cost)</th>
-                                                <th style="vertical-align: middle;">Tanggal Produksi</th>
-                                                <th style="vertical-align: middle;">Tanggal Kadaluarsa</th>
                                                 <th style="vertical-align: middle;">Gambar</th>
                                                 <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
@@ -97,11 +230,18 @@
                                             @foreach ($data as $row)
                                                 <tr>
                                                     <td>{{ $row->nama_produk }}</td>
-                                                    <td>{{ $row->kode_produk }}</td>
+                                                    <td>
+                                                        <svg id="barcode-{{ $row->id }}"></svg>
+                                                        <script>
+                                                            JsBarcode("#barcode-{{ $row->id }}", "{{ $row->kode_produk }}", {
+                                                                format: "CODE128",
+                                                                displayValue: true,
+                                                                fontSize: 16
+                                                            });
+                                                        </script>
+                                                    </td>
                                                     <td>{{ $row->harga_produk }}</td>
                                                     <td>{{ $row->harga_produksi }}</td>
-                                                    <td>{{ $row->tanggal_produksi }}</td>
-                                                    <td>{{ $row->tanggal_kadaluarsa }}</td>
                                                     <td><img src="{{ asset('foto-produk/' . $row->gambar) }}"></td>
                                                     <td style="text-align: center">
                                                         <a href="/produk/edit/{{ $row->id }}"
@@ -204,7 +344,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

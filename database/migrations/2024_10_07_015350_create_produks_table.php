@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('kode_produk');
             $table->bigInteger('harga_produk');
             $table->bigInteger('harga_produksi');
-            $table->date('tanggal_produksi');
-            $table->date('tanggal_kadaluarsa');
             $table->string('gambar');
             $table->timestamps();
         });

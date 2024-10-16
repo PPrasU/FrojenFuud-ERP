@@ -56,7 +56,7 @@
                                                 <div class="form-group">
                                                     <label for="kode_produk">Kode Produk</label>
                                                     <input type="text" name="kode_produk" class="form-control"
-                                                        id="kode_produk">
+                                                        id="kode_produk" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -95,21 +95,6 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="tanggal_produksi">Tanggal Produksi</label>
-                                                    <input type="date" name="tanggal_produksi" class="form-control"
-                                                        id="tanggal_produksi" placeholder="dd/mm/yyyy"
-                                                        onchange="updateKadaluarsa()">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="tanggal_kadaluarsa">Tanggal Kadaluarsa</label>
-                                                    <input type="date" name="tanggal_kadaluarsa" class="form-control"
-                                                        id="tanggal_kadaluarsa" placeholder="dd/mm/yyyy" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
                                                     <label for="gambar">Gambar Produk</label>
                                                     <input type="file" name="gambar" class="form-control"
                                                         id="gambar">
@@ -132,6 +117,7 @@
     </div>
 
     @include('layouts/script')
+
     {{-- Biar ada . pas masukkin harga --}}
     <script>
         function formatRupiah(input) {
@@ -154,41 +140,10 @@
             document.getElementById(input.id.replace('_display', '')).value = originalValue;
         }
     </script>
-    {{-- Buat Tanggal Kadaluarsa Terisi Otomatis --}}
-    <script>
-        function updateKadaluarsa() {
-            const tanggalProduksiInput = document.getElementById('tanggal_produksi');
-            const tanggalKadaluarsaInput = document.getElementById('tanggal_kadaluarsa');
-
-            // Ambil nilai tanggal produksi
-            const tanggalProduksi = new Date(tanggalProduksiInput.value);
-
-            if (!isNaN(tanggalProduksi)) {
-                // Tambahkan 3 bulan
-                tanggalProduksi.setMonth(tanggalProduksi.getMonth() + 3);
-
-                // Format tanggal untuk input
-                const year = tanggalProduksi.getFullYear();
-                const month = String(tanggalProduksi.getMonth() + 1).padStart(2, '0'); // +1 karena bulan dimulai dari 0
-                const day = String(tanggalProduksi.getDate()).padStart(2, '0');
-
-                // Set tanggal kadaluarsa
-                tanggalKadaluarsaInput.value = `${year}-${month}-${day}`;
-            } else {
-                // Jika tidak ada tanggal produksi yang valid, kosongkan tanggal kadaluarsa
-                tanggalKadaluarsaInput.value = '';
-            }
-        }
-    </script>
 
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
-            // $.validator.setDefaults({
-            //     submitHandler: function() {
-            //         alert("Data Produktifitas Berhasil Di Input");
-            //     }
-            // });
             $('#inputProduk').validate({
                 rules: {
                     nama_produk: {
@@ -201,12 +156,6 @@
                         required: true,
                     },
                     harga_produksi: {
-                        required: true,
-                    },
-                    tanggal_produksi: {
-                        required: true,
-                    },
-                    tanggal_kadaluarsa: {
                         required: true,
                     },
                     jumlah_produk: {
@@ -230,31 +179,56 @@
             });
         });
     </script>
-    {{-- <script>
-        $('.delete').click(function() {
-            var id = $(this).attr('data-id');
-            var asal_rw = $(this).attr('data-asal_rw');
-            var detail_kegiatan = $(this).attr('data-detail_kegiatan');
-            Swal.fire({
-                title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                text: "Data Abdimas " + asal_rw + " - " + detail_kegiatan + " Akan Dihapus",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Iya!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Terhapus!',
-                        'Data Telah Terhapus!',
-                        'success',
-                        window.location = "/Admin/Abdimas-Fisik-NonFisik/Hapus-Data/" + id + "",
-                    )
+
+    {{-- script buat otomatisin kode produk --}}
+    <script>
+        document.getElementById('nama_produk').addEventListener('input', function() {
+            const namaProduk = this.value.trim();
+            let kodeProduk = '';
+
+            if (namaProduk) {
+                const words = namaProduk.split(' ');
+
+                if (words.length === 2) {
+                    // Ambil huruf pertama dari dua kata
+                    kodeProduk = words[0][0].toUpperCase() + words[1][0].toUpperCase();
+                } else if (words.length === 1) {
+                    // Ambil huruf pertama dan ketiga dari satu kata
+                    const word = words[0];
+                    if (word.length >= 3) {
+                        kodeProduk = word[0].toUpperCase() + word[2].toUpperCase();
+                    } else {
+                        kodeProduk = word[0]
+                            .toUpperCase(); // Jika panjang kurang dari 3 huruf, ambil hanya huruf pertama
+                    }
                 }
+            }
+
+            document.getElementById('kode_produk').value = kodeProduk;
+        });
+    </script>
+
+    <script>
+        // Event listener untuk form submission
+        document.getElementById('inputProduk').addEventListener('submit', function(e) {
+            // Submit form secara manual
+            this.submit();
+
+            // SweetAlert untuk notifikasi sukses
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Produk berhasil ditambahkan!',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+            }).then(() => {
+                // Redirect ke halaman produk setelah alert
+                window.location = '/produk';
+                this.submit();
             });
         });
-    </script> --}}
+    </script>
+
+
 </body>
 
 </html>
