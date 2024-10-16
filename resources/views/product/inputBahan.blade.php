@@ -30,9 +30,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -192,6 +189,7 @@
             });
         });
     </script>
+<<<<<<< HEAD
 
     {{-- script buat otomatisin kode produk --}}
     <script>
@@ -220,6 +218,8 @@
             document.getElementById('kode_bahan').value = kodeBahan;
         });
     </script>
+=======
+>>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
 </body>
 
 </html>

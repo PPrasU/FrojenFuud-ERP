@@ -85,7 +85,11 @@ class ProdukController extends Controller
 
         // Format nama file PDF dengan waktu saat ini
         $dateTime = date('d-m-Y');
+<<<<<<< HEAD
         $fileName = "Laporan Produk - {$dateTime}.pdf";
+=======
+        $fileName = "{$dateTime}_Laporan_Produk.pdf";
+>>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
 
         // Unduh file PDF
         return $pdf->download($fileName);

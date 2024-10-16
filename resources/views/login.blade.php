@@ -54,22 +54,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <!-- /.col -->
                         <div class="col-12    ">
                             <a href="/" class="btn btn-primary btn-block">Masuk</a>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
-                {{-- <p class="mb-0">
-        <a href="#" class="text-center">Register a new membership</a>
-      </p> --}}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </div>
-    <!-- /.login-box -->
 
     <!-- jQuery -->
     <script src="{{ asset('source/plugins/jquery/jquery.min.js') }}"></script>

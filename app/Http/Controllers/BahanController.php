@@ -53,6 +53,10 @@ class BahanController extends Controller
         }
         // Perbarui kolom lain (kecuali gambar)
         $data->update($request->except('gambar'));
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
         return redirect()->route('Bahan')->with('Success', 'Data Bahan Berhasil Diperbarui');
     }
 
@@ -62,7 +66,11 @@ class BahanController extends Controller
         return redirect()->route('Bahan')->with('Success', 'Data Bahan Berhasil Dihapus');
     }
 
+<<<<<<< HEAD
     public function exportBahan(){
+=======
+    public function exportBahan(Request $request){
+>>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
         // Ambil ID item yang dipilih dari form
         $selectedItems = $request->input('items');
 
@@ -84,7 +92,11 @@ class BahanController extends Controller
                     ->setPaper('a4', 'landscape');
 
         // Format nama file PDF dengan waktu saat ini
+<<<<<<< HEAD
         $dateTime = date('d-m-Y');
+=======
+        $dateTime = date('d-m-Y_H:i:s');
+>>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
         $fileName = "{$dateTime}_Laporan_Bahan.pdf";
 
         // Unduh file PDF
