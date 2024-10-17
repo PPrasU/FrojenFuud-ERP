@@ -87,11 +87,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th><input type="checkbox" id="selectAll"></th>
-<<<<<<< HEAD
                                                                         <th>Pilih Semua Produk</th>
-=======
-                                                                        <th>Pilih Semua</th>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -120,17 +116,10 @@
                                                     <div class="modal-footer">
                                                         <!-- Tombol Print -->
                                                         <button type="button" class="btn btn-primary"
-<<<<<<< HEAD
                                                             onclick="submitForm()">Cetak</button>
                                                         <!-- Tombol Cancel -->
                                                         <button type="button" class="btn btn-secondary"
                                                             onclick="closeModal()">Batal</button>
-=======
-                                                            onclick="submitForm()">Print</button>
-                                                        <!-- Tombol Cancel -->
-                                                        <button type="button" class="btn btn-secondary"
-                                                            onclick="closeModal()">Cancel</button>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,10 +204,6 @@
                                                     }
                                                 }
                                             </script>
-<<<<<<< HEAD
-=======
-
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">

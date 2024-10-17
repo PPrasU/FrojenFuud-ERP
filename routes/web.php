@@ -42,11 +42,7 @@ Route::post('/bahan-baku/post', [BahanController::class, 'postBahan'])->name('po
 Route::get('/bahan-baku/edit/{id}', [BahanController::class, 'editBahan'])->name('editBahan');
 Route::post('/bahan-baku/update/{id}', [BahanController::class, 'updateBahan'])->name('updateBahan');
 Route::get('/bahan-baku/hapus/{id}', [BahanController::class, 'hapusBahan'])->name('hapusBahan');
-<<<<<<< HEAD
 Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name('exportBahan');
-=======
-Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name('bahan.export');
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
 
 // Route::get('/bahan-baku', function () {
 //     return view('product.bahan');

@@ -56,11 +56,7 @@
                                                 <div class="form-group">
                                                     <label for="kode_bahan">Kode Bahan</label>
                                                     <input type="text" name="kode_bahan" class="form-control"
-<<<<<<< HEAD
-                                                        id="kode_bahan" value="{{ $data->nama_bahan }}" readonly>
-=======
-                                                        id="kode_bahan" value="{{ $data->kode_bahan }}">
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
+                                                        id="kode_bahan" value="{{ $data->kode_bahan }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -171,7 +167,6 @@
             });
         });
     </script>
-<<<<<<< HEAD
 
     {{-- script buat otomatisin kode produk --}}
     <script>
@@ -200,8 +195,6 @@
             document.getElementById('kode_bahan').value = kodeBahan;
         });
     </script>
-=======
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
 </body>
 
 </html>

@@ -5,13 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Produk</title>
-<<<<<<< HEAD
-
     <!-- JsBarcode -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
-=======
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
     <style>
         .table-data {
             border-collapse: collapse;
@@ -38,15 +33,12 @@
         .table-data tr:hover {
             background-color: #f5f5f5;
         }
-<<<<<<< HEAD
 
         /* Set ukuran barcode */
         svg {
             width: 150px;
             height: 50px;
         }
-=======
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
     </style>
 </head>
 
@@ -57,25 +49,16 @@
             <tr>
                 <th>No</th>
                 <th>Nama Produk</th>
-<<<<<<< HEAD
                 <th>Kode Produk (Barcode)</th>
-=======
-                <th>Kode Produk</th>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                 <th>Harga</th>
             </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
-            @foreach ($data as $produk)
-=======
             @forelse ($data as $produk)
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $produk->nama_produk }}</td>
                     <td>{{ $produk->kode_produk }}</td>
-<<<<<<< HEAD
                     <td>
                         <svg id="barcode-{{ $produk->id }}"></svg>
                         <script>
@@ -89,15 +72,6 @@
                     <td>Rp. {{ number_format($produk->harga_produk) }}</td>
                 </tr>
             @endforeach
-=======
-                    <td>Rp. {{ number_format($produk->harga_produk) }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" align="center">Tidak ada data</td>
-                </tr>
-            @endforelse
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
         </tbody>
     </table>
 </body>

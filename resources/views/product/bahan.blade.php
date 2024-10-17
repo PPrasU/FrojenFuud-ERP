@@ -158,22 +158,14 @@
                                                         <h2>Export PDF</h2>
                                                     </div>
                                                     <div class="modal-body">
-<<<<<<< HEAD
                                                         <form action="{{ route('exportBahan') }}" method="POST"
-=======
-                                                        <form action="{{ route('bahan.export') }}" method="POST"
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                                             id="exportForm">
                                                             @csrf
                                                             <table>
                                                                 <thead>
                                                                     <tr>
                                                                         <th><input type="checkbox" id="selectAll"></th>
-<<<<<<< HEAD
-                                                                        <th>Pilih Semua</th>
-=======
-                                                                        <th>Nama Bahan</th>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
+                                                                        <th>Pilih Semua Bahan</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -191,41 +183,24 @@
                                                             </table>
                                                         </form>
 
-<<<<<<< HEAD
-
-=======
                                                         <script>
-                                                            // Script untuk Pilih Semua
                                                             document.getElementById('selectAll').addEventListener('change', function() {
                                                                 let checkboxes = document.querySelectorAll('.itemCheckbox');
                                                                 checkboxes.forEach(checkbox => checkbox.checked = this.checked);
                                                             });
                                                         </script>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <!-- Tombol Print -->
                                                         <button type="button" class="btn btn-primary"
-<<<<<<< HEAD
                                                             onclick="submitForm()">Cetak</button>
-                                                        <!-- Tombol Cancel -->
                                                         <button type="button" class="btn btn-secondary"
-                                                            onclick="closeModal()">Batal</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-=======
-                                                            onclick="submitForm()">Print</button>
-                                                        <!-- Tombol Cancel -->
-                                                        <button type="button" class="btn btn-secondary"
-                                                            onclick="closeModal()">Cancel</button>
+                                                            onclick="closeModal()">batal</button>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- CSS untuk Modal -->
                                             <style>
-                                                /* Modal container */
                                                 .modal {
                                                     display: none;
                                                     position: fixed;
@@ -239,7 +214,6 @@
                                                     align-items: center;
                                                 }
 
-                                                /* Modal content */
                                                 .modal-content {
                                                     background-color: #fff;
                                                     padding: 20px;
@@ -248,7 +222,6 @@
                                                     margin: auto;
                                                 }
 
-                                                /* Header */
                                                 .modal-header {
                                                     display: flex;
                                                     justify-content: space-between;
@@ -257,20 +230,17 @@
                                                     padding-bottom: 10px;
                                                 }
 
-                                                /* Close button */
                                                 .close {
                                                     cursor: pointer;
                                                     font-size: 24px;
                                                 }
 
-                                                /* Footer */
                                                 .modal-footer {
                                                     margin-top: 20px;
                                                     display: flex;
                                                     justify-content: flex-end;
                                                 }
 
-                                                /* Button styles */
                                                 .btn-primary {
                                                     background-color: #007bff;
                                                     color: white;
@@ -293,7 +263,6 @@
                                                     opacity: 0.9;
                                                 }
 
-                                                /* Form styling */
                                                 .form-group {
                                                     margin-bottom: 10px;
                                                 }
@@ -337,8 +306,6 @@
                                                     }
                                                 }
                                             </script>
-                                            {{-- ------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">
@@ -369,7 +336,6 @@
                                                     <td>{{ $row->harga_bahan }}</td>
                                                     <td>{{ $row->satuan }}</td>
                                                     <td>{{ $row->jenis_bahan }}</td>
-<<<<<<< HEAD
                                                     <td>
                                                         <svg id="barcode-{{ $row->id }}"></svg>
                                                         <script>
@@ -380,12 +346,8 @@
                                                             });
                                                         </script>
                                                     </td>
-                                                    <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"></td>
-=======
-                                                    <td>{{ $row->kode_bahan }}</td>
                                                     <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"
                                                             style="width: 100px; height: 100px; "></td>
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
                                                     <td style="text-align: center">
                                                         <a href="/bahan-baku/edit/{{ $row->id }}"
                                                             class="btn btn-warning">Edit</a>
@@ -491,48 +453,6 @@
                     }
                 });
             });
-        });
-    </script>
-
-    <!-- JavaScript untuk Modal dan Pilih Semua -->
-    <script>
-        // Fungsi untuk membuka modal
-        function openModal() {
-            document.getElementById("exportModal").style.display = "flex";
-        }
-
-        // Fungsi untuk menutup modal
-        function closeModal() {
-            document.getElementById("exportModal").style.display = "none";
-        }
-
-        // Fungsi untuk submit form
-        function submitForm() {
-            document.getElementById("exportForm").submit();
-        }
-
-        // Fungsi untuk "Pilih Semua"
-        function toggleSelectAll() {
-            var selectAllCheckbox = document.getElementById("selectAll");
-            var itemCheckboxes = document.getElementsByClassName("itemCheckbox");
-
-            for (var i = 0; i < itemCheckboxes.length; i++) {
-                itemCheckboxes[i].checked = selectAllCheckbox.checked;
-            }
-        }
-
-        // Menutup modal ketika user klik di luar modal
-        window.onclick = function(event) {
-            if (event.target == document.getElementById("exportModal")) {
-                closeModal();
-            }
-        }
-    </script>
-    {{-- Script untuk Pilih Semua --}}
-    <script>
-        document.getElementById('selectAll').addEventListener('change', function() {
-            let checkboxes = document.querySelectorAll('.itemCheckbox');
-            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });
     </script>
 </body>

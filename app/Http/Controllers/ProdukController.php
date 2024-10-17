@@ -82,15 +82,9 @@ class ProdukController extends Controller
         // Generate PDF dengan view 'exportProduk'
         $pdf = Pdf::loadView('export.exportProduk', compact('data'))
                     ->setPaper('a4', 'landscape');
-
-        // Format nama file PDF dengan waktu saat ini
-        $dateTime = date('d-m-Y');
-<<<<<<< HEAD
+        $dateTime = date('d-m-Y  H:i:s');
         $fileName = "Laporan Produk - {$dateTime}.pdf";
-=======
-        $fileName = "{$dateTime}_Laporan_Produk.pdf";
->>>>>>> 42218dea6205a6be5b3e0f2997f9177f2ed9c486
-
+        
         // Unduh file PDF
         return $pdf->download($fileName);
     }
