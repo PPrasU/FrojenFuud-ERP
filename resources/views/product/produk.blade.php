@@ -29,6 +29,62 @@
             display: none;
         }
     </style>
+
+    <!-- CSS untuk Modal -->
+    <style>
+        /* Modal container */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            margin: auto;
+        }
+
+        /* Footer */
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -104,112 +160,21 @@
                                                                 </tbody>
                                                             </table>
                                                         </form>
-
-                                                        <script>
-                                                            // Script untuk Pilih Semua
-                                                            document.getElementById('selectAll').addEventListener('change', function() {
-                                                                let checkboxes = document.querySelectorAll('.itemCheckbox');
-                                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                                            });
-                                                        </script>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <!-- Tombol Print -->
                                                         <button type="button" class="btn btn-primary"
                                                             onclick="submitForm()">Cetak</button>
-                                                        <!-- Tombol Cancel -->
                                                         <button type="button" class="btn btn-secondary"
                                                             onclick="closeModal()">Batal</button>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!-- CSS untuk Modal -->
-                                            <style>
-                                                /* Modal container */
-                                                .modal {
-                                                    display: none;
-                                                    position: fixed;
-                                                    z-index: 1;
-                                                    left: 0;
-                                                    top: 0;
-                                                    width: 100%;
-                                                    height: 100%;
-                                                    background-color: rgba(0, 0, 0, 0.4);
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                }
-
-                                                /* Modal content */
-                                                .modal-content {
-                                                    background-color: #fff;
-                                                    padding: 20px;
-                                                    border-radius: 8px;
-                                                    width: 400px;
-                                                    margin: auto;
-                                                }
-
-                                                /* Footer */
-                                                .modal-footer {
-                                                    margin-top: 20px;
-                                                    display: flex;
-                                                    justify-content: flex-end;
-                                                }
-
-                                                /* Button styles */
-                                                .btn-primary {
-                                                    background-color: #007bff;
-                                                    color: white;
-                                                    border: none;
-                                                    padding: 10px 20px;
-                                                    cursor: pointer;
-                                                }
-
-                                                .btn-secondary {
-                                                    background-color: #6c757d;
-                                                    color: white;
-                                                    border: none;
-                                                    padding: 10px 20px;
-                                                    cursor: pointer;
-                                                    margin-left: 10px;
-                                                }
-
-                                                .btn-primary:hover,
-                                                .btn-secondary:hover {
-                                                    opacity: 0.9;
-                                                }
-                                            </style>
-
-                                            <!-- JavaScript untuk Modal -->
-                                            <script>
-                                                // Fungsi untuk membuka modal
-                                                function openModal() {
-                                                    document.getElementById("exportModal").style.display = "flex";
-                                                }
-
-                                                // Fungsi untuk menutup modal
-                                                function closeModal() {
-                                                    document.getElementById("exportModal").style.display = "none";
-                                                }
-
-                                                // Fungsi untuk submit form
-                                                function submitForm() {
-                                                    document.getElementById("exportForm").submit();
-                                                }
-
-                                                // Menutup modal ketika user klik di luar modal
-                                                window.onclick = function(event) {
-                                                    if (event.target == document.getElementById("exportModal")) {
-                                                        closeModal();
-                                                    }
-                                                }
-                                            </script>
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
-                                            <a href="#" id="btnList" class="btn btn-app">
+                                            <a href="#" id="tombol-list-produk" class="btn btn-app">
                                                 <i class="fas fa-list"></i> List / Tabel
                                             </a>
-                                            <a href="#" id="btnKanban" class="btn btn-app">
+                                            <a href="#" id="tombol-kanban-produk" class="btn btn-app">
                                                 <i class="fa fa-columns"></i> Kanban
                                             </a>
                                         </div>
@@ -255,7 +220,7 @@
                                         </tbody>
                                     </table>
                                     {{-- bagian kanban --}}
-                                    <div id="kanbanView" class="row hidden">
+                                    <div id="kanbanView-Produk" class="row hidden">
                                         @foreach ($data as $row)
                                             <div class="col-lg-4 col-6">
                                                 <div class="small-box">
@@ -308,15 +273,15 @@
             });
 
             // Untuk tombol List dan Kanban
-            $('#btnList').click(function() {
-                $('#kanbanView').addClass('hidden');
+            $('#tombol-list-produk').click(function() {
+                $('#kanbanView-Produk').addClass('hidden');
                 $('#tableList_wrapper').removeClass(
                     'hidden'); // DataTable membungkus table dengan '_wrapper'
             });
 
-            $('#btnKanban').click(function() {
+            $('#tombol-kanban-produk').click(function() {
                 $('#tableList_wrapper').addClass('hidden');
-                $('#kanbanView').removeClass('hidden');
+                $('#kanbanView-Produk').removeClass('hidden');
             });
 
             // Konfirmasi hapus dengan SweetAlert
@@ -342,6 +307,72 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <script>
+        // Fungsi untuk menampilkan tampilan produk sesuai preferensi yang tersimpan di localStorage
+        function applyProdukViewPreference() {
+            const produkViewPreference = localStorage.getItem('produkViewPreference'); // Ambil preferensi dari localStorage
+            if (produkViewPreference === 'list') {
+                $('#kanbanView-Produk').addClass('hidden');
+                $('#tableList_wrapper').removeClass('hidden');
+            } else if (produkViewPreference === 'kanban') {
+                $('#tableList_wrapper').addClass('hidden');
+                $('#kanbanView-Produk').removeClass('hidden');
+            }
+        }
+
+        $(document).ready(function() {
+            applyProdukViewPreference(); // Terapkan tampilan produk berdasarkan preferensi yang tersimpan
+
+            // Untuk tombol List/Tabel dan Kanban pada produk
+            $('#tombol-list-produk').click(function() {
+                $('#kanbanView-Produk').addClass('hidden');
+                $('#tableList_wrapper').removeClass('hidden');
+                localStorage.setItem('produkViewPreference',
+                'list'); // Simpan preferensi pengguna untuk produk
+            });
+
+            $('#tombol-kanban-produk').click(function() {
+                $('#tableList_wrapper').addClass('hidden');
+                $('#kanbanView-Produk').removeClass('hidden');
+                localStorage.setItem('produkViewPreference',
+                'kanban'); // Simpan preferensi pengguna untuk produk
+            });
+        });
+    </script>
+
+    <!-- JavaScript untuk Modal -->
+    <script>
+        // Fungsi untuk membuka modal
+        function openModal() {
+            document.getElementById("exportModal").style.display = "flex";
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById("exportModal").style.display = "none";
+        }
+
+        // Fungsi untuk submit form
+        function submitForm() {
+            document.getElementById("exportForm").submit();
+        }
+
+        // Menutup modal ketika user klik di luar modal
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("exportModal")) {
+                closeModal();
+            }
+        }
+    </script>
+
+    {{-- Script pilih semua --}}
+    <script>
+        document.getElementById('selectAll').addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.itemCheckbox');
+            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });
     </script>
 </body>

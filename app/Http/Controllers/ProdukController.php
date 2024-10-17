@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produk;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class ProdukController extends Controller
 {
@@ -63,29 +63,37 @@ class ProdukController extends Controller
     }
 
     public function exportProduk(Request $request){
-        // Ambil ID item yang dipilih dari form
         $selectedItems = $request->input('items');
 
-        // Jika tidak ada data yang dipilih
         if (empty($selectedItems)) {
             return redirect()->back()->with('error', 'Tidak ada produk yang dipilih');
         }
 
-        // Ambil data produk berdasarkan ID yang dipilih
         $data = Produk::whereIn('id', $selectedItems)->get();
 
-        // Jika data kosong
         if ($data->isEmpty()) {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
 
-        // Generate PDF dengan view 'exportProduk'
-        $pdf = Pdf::loadView('export.exportProduk', compact('data'))
-                    ->setPaper('a4', 'landscape');
-        $dateTime = date('d-m-Y  H:i:s');
+        $options = [
+            'margin-top' => 10,
+            'margin-right' => 10,
+            'margin-bottom' => 10,
+            'margin-left' => 10,
+            'javascript-delay' => 500,
+            'no-stop-slow-scripts' => true, 
+            'disable-smart-shrinking' => true,
+        ];
+        
+        $pdf = SnappyPdf::loadView('export.exportProduk', compact('data'))
+                        ->setOptions($options)
+                        ->setPaper('a4', 'landscape');
+        
+
+
+        $dateTime = date('d-m-Y  h:i:s');
         $fileName = "Laporan Produk - {$dateTime}.pdf";
         
-        // Unduh file PDF
         return $pdf->download($fileName);
     }
 }

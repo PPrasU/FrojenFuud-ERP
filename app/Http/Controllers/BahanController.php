@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bahan;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class BahanController extends Controller
 {
@@ -63,31 +63,37 @@ class BahanController extends Controller
     }
 
     public function exportBahan(Request $request){
-        // Ambil ID item yang dipilih dari form
         $selectedItems = $request->input('items');
 
-        // Jika tidak ada data yang dipilih
         if (empty($selectedItems)) {
             return redirect()->back()->with('error', 'Tidak ada bahan yang dipilih');
         }
 
-        // Ambil data bahan berdasarkan ID yang dipilih
         $data = Bahan::whereIn('id', $selectedItems)->get();
 
-        // Jika data kosong
         if ($data->isEmpty()) {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
 
-        // Generate PDF dengan view 'exportBahan'
-        $pdf = Pdf::loadView('export.exportBahan', compact('data'))
-                    ->setPaper('a4', 'landscape');
+        $options = [
+            'margin-top' => 10,
+            'margin-right' => 10,
+            'margin-bottom' => 10,
+            'margin-left' => 10,
+            'javascript-delay' => 500,
+            'no-stop-slow-scripts' => true, 
+            'disable-smart-shrinking' => true,
+        ];
+        
+        $pdf = SnappyPdf::loadView('export.exportBahan', compact('data'))
+                        ->setOptions($options)
+                        ->setPaper('a4', 'landscape');
+        
 
-        // Format nama file PDF dengan waktu saat ini
-        $dateTime = date('d-m-Y  H:i:s');
+
+        $dateTime = date('d-m-Y  h:i:s');
         $fileName = "Laporan Bahan - {$dateTime}.pdf";
-
-        // Unduh file PDF
+        
         return $pdf->download($fileName);
     }
 }

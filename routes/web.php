@@ -48,3 +48,4 @@ Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name
 //     return view('product.bahan');
 // });
 
+//====== BoM ========================================================================================

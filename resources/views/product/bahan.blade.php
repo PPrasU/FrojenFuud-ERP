@@ -107,6 +107,8 @@
             margin: 5px 0;
         }
     </style>
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -143,14 +145,11 @@
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
-                                                <!-- Tombol untuk membuka modal -->
                                                 <button type="button" class="btn btn-app" style="left: -10px;"
                                                     onclick="openModal()">
                                                     <i class="fa fa-file-pdf"></i> Export PDF
                                                 </button>
                                             @endif
-
-                                            <!-- Modal Custom -->
                                             <div id="exportModal" class="modal">
                                                 <div class="modal-content">
                                                     <div style="margin-left: 0;">
@@ -182,13 +181,6 @@
                                                                 </tbody>
                                                             </table>
                                                         </form>
-
-                                                        <script>
-                                                            document.getElementById('selectAll').addEventListener('change', function() {
-                                                                let checkboxes = document.querySelectorAll('.itemCheckbox');
-                                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                                            });
-                                                        </script>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-primary"
@@ -198,114 +190,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!-- CSS untuk Modal -->
-                                            <style>
-                                                .modal {
-                                                    display: none;
-                                                    position: fixed;
-                                                    z-index: 1;
-                                                    left: 0;
-                                                    top: 0;
-                                                    width: 100%;
-                                                    height: 100%;
-                                                    background-color: rgba(0, 0, 0, 0.4);
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                }
-
-                                                .modal-content {
-                                                    background-color: #fff;
-                                                    padding: 20px;
-                                                    border-radius: 8px;
-                                                    width: 400px;
-                                                    margin: auto;
-                                                }
-
-                                                .modal-header {
-                                                    display: flex;
-                                                    justify-content: space-between;
-                                                    align-items: center;
-                                                    border-bottom: 1px solid #ddd;
-                                                    padding-bottom: 10px;
-                                                }
-
-                                                .close {
-                                                    cursor: pointer;
-                                                    font-size: 24px;
-                                                }
-
-                                                .modal-footer {
-                                                    margin-top: 20px;
-                                                    display: flex;
-                                                    justify-content: flex-end;
-                                                }
-
-                                                .btn-primary {
-                                                    background-color: #007bff;
-                                                    color: white;
-                                                    border: none;
-                                                    padding: 10px 20px;
-                                                    cursor: pointer;
-                                                }
-
-                                                .btn-secondary {
-                                                    background-color: #6c757d;
-                                                    color: white;
-                                                    border: none;
-                                                    padding: 10px 20px;
-                                                    cursor: pointer;
-                                                    margin-left: 10px;
-                                                }
-
-                                                .btn-primary:hover,
-                                                .btn-secondary:hover {
-                                                    opacity: 0.9;
-                                                }
-
-                                                .form-group {
-                                                    margin-bottom: 10px;
-                                                }
-
-                                                .checkbox {
-                                                    margin: 5px 0;
-                                                }
-                                            </style>
-
-                                            <!-- JavaScript untuk Modal dan Pilih Semua -->
-                                            <script>
-                                                // Fungsi untuk membuka modal
-                                                function openModal() {
-                                                    document.getElementById("exportModal").style.display = "flex";
-                                                }
-
-                                                // Fungsi untuk menutup modal
-                                                function closeModal() {
-                                                    document.getElementById("exportModal").style.display = "none";
-                                                }
-
-                                                // Fungsi untuk submit form
-                                                function submitForm() {
-                                                    document.getElementById("exportForm").submit();
-                                                }
-
-                                                // Fungsi untuk "Pilih Semua"
-                                                function toggleSelectAll() {
-                                                    var selectAllCheckbox = document.getElementById("selectAll");
-                                                    var itemCheckboxes = document.getElementsByClassName("itemCheckbox");
-
-                                                    for (var i = 0; i < itemCheckboxes.length; i++) {
-                                                        itemCheckboxes[i].checked = selectAllCheckbox.checked;
-                                                    }
-                                                }
-
-                                                // Menutup modal ketika user klik di luar modal
-                                                window.onclick = function(event) {
-                                                    if (event.target == document.getElementById("exportModal")) {
-                                                        closeModal();
-                                                    }
-                                                }
-                                            </script>
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
                                             <a href="#" id="btnList" class="btn btn-app">
@@ -417,18 +301,6 @@
                 "responsive": true,
             });
 
-            // Untuk tombol List dan Kanban
-            $('#btnList').click(function() {
-                $('#kanbanView').addClass('hidden');
-                $('#tableList_wrapper').removeClass(
-                    'hidden'); // DataTable membungkus table dengan '_wrapper'
-            });
-
-            $('#btnKanban').click(function() {
-                $('#tableList_wrapper').addClass('hidden');
-                $('#kanbanView').removeClass('hidden');
-            });
-
             // Konfirmasi hapus dengan SweetAlert
             $('.delete').click(function() {
                 var id = $(this).attr('data-id');
@@ -453,6 +325,81 @@
                     }
                 });
             });
+        });
+    </script>
+
+    {{-- script untuk kanban --}}
+    <script>
+        // Fungsi untuk menampilkan tampilan sesuai preferensi yang tersimpan di localStorage
+        function applyViewPreference() {
+            const viewPreference = localStorage.getItem('viewPreference'); // Ambil preferensi dari localStorage
+            if (viewPreference === 'list') {
+                $('#kanbanView').addClass('hidden');
+                $('#tableList_wrapper').removeClass('hidden');
+            } else if (viewPreference === 'kanban') {
+                $('#tableList_wrapper').addClass('hidden');
+                $('#kanbanView').removeClass('hidden');
+            }
+        }
+
+        $(document).ready(function() {
+            applyViewPreference(); // Terapkan tampilan berdasarkan preferensi yang tersimpan
+
+            // Untuk tombol List dan Kanban
+            $('#btnList').click(function() {
+                $('#kanbanView').addClass('hidden');
+                $('#tableList_wrapper').removeClass('hidden');
+                localStorage.setItem('viewPreference', 'list'); // Simpan preferensi pengguna
+            });
+
+            $('#btnKanban').click(function() {
+                $('#tableList_wrapper').addClass('hidden');
+                $('#kanbanView').removeClass('hidden');
+                localStorage.setItem('viewPreference', 'kanban'); // Simpan preferensi pengguna
+            });
+        });
+    </script>
+
+    <!-- JavaScript untuk Modal dan Pilih Semua -->
+    <script>
+        // Fungsi untuk membuka modal
+        function openModal() {
+            document.getElementById("exportModal").style.display = "flex";
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById("exportModal").style.display = "none";
+        }
+
+        // Fungsi untuk submit form
+        function submitForm() {
+            document.getElementById("exportForm").submit();
+        }
+
+        // Fungsi untuk "Pilih Semua"
+        function toggleSelectAll() {
+            var selectAllCheckbox = document.getElementById("selectAll");
+            var itemCheckboxes = document.getElementsByClassName("itemCheckbox");
+
+            for (var i = 0; i < itemCheckboxes.length; i++) {
+                itemCheckboxes[i].checked = selectAllCheckbox.checked;
+            }
+        }
+
+        // Menutup modal ketika user klik di luar modal
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("exportModal")) {
+                closeModal();
+            }
+        }
+    </script>
+
+    {{-- script untuk pilih semua --}}
+    <script>
+        document.getElementById('selectAll').addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.itemCheckbox');
+            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });
     </script>
 </body>

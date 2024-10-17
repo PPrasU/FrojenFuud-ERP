@@ -33,12 +33,6 @@
         .table-data tr:hover {
             background-color: #f5f5f5;
         }
-
-        /* Set ukuran barcode */
-        svg {
-            width: 150px;
-            height: 50px;
-        }
     </style>
 </head>
 
@@ -49,7 +43,8 @@
             <tr>
                 <th>No</th>
                 <th>Nama Produk</th>
-                <th>Kode Produk (Barcode)</th>
+                <th>Kode Produk</th>
+                <th>Barcode (Berdasarkan Kode Produk)</th>
                 <th>Harga</th>
             </tr>
         </thead>
@@ -60,15 +55,19 @@
                     <td>{{ $produk->nama_produk }}</td>
                     <td>{{ $produk->kode_produk }}</td>
                     <td>
-                        <svg id="barcode-{{ $produk->id }}"></svg>
+                        <svg id="barcode-{{ $produk->id }}" style="width: 200px; height: 100px;"></svg>
+                        <!-- Atur ukuran SVG -->
                         <script>
                             JsBarcode("#barcode-{{ $produk->id }}", "{{ $produk->kode_produk }}", {
                                 format: "CODE128",
                                 displayValue: true,
-                                fontSize: 16
+                                fontSize: 16, // Font lebih besar untuk teks barcode
+                                width: 3, // Lebar garis barcode lebih besar
+                                height: 75 // Tinggi barcode lebih besar
                             });
                         </script>
                     </td>
+
                     <td>Rp. {{ number_format($produk->harga_produk) }}</td>
                 </tr>
             @endforeach
