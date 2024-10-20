@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\BillOfMaterialController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,4 +49,20 @@ Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name
 //     return view('product.bahan');
 // });
 
-//====== BoM ========================================================================================
+//====== BillOfMaterial ========================================================================================
+
+Route::get('/BillOfMaterial', [BillOfMaterialController::class, 'BillOfMaterial'])->name('BillOfMaterial');
+Route::get('/BillOfMaterial/input', [BillOfMaterialController::class, 'inputBillOfMaterial'])->name('inputBillOfMaterial');
+Route::post('/BillOfMaterial/post', [BillOfMaterialController::class, 'postBillOfMaterial'])->name('postBillOfMaterial');
+Route::get('/BillOfMaterial/edit/{id}', [BillOfMaterialController::class, 'editBillOfMaterial'])->name('editBillOfMaterial');
+Route::post('/BillOfMaterial/update/{id}', [BillOfMaterialController::class, 'updateBillOfMaterial'])->name('updateBillOfMaterial');
+Route::get('/BillOfMaterial/hapus/{id}', [BillOfMaterialController::class, 'hapusBillOfMaterial'])->name('hapusBillOfMaterial');
+Route::post('/BillOfMaterial/export', [BillOfMaterialController::class, 'exportBillOfMaterial'])->name('exportBillOfMaterial');
+
+
+
+
+
+
+
+

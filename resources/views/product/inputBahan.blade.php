@@ -74,11 +74,11 @@
                                                     <label>Satuan</label>
                                                     <select class="form-control" name="satuan" id="satuan">
                                                         <option selected disabled>-- Pilih Satuan --</option>
-                                                        <option>gram</option>
-                                                        <option>ml</option>
-                                                        <option>butir</option>
-                                                        <option>siung</option>
-                                                        <option>lembar</option>
+                                                        <option>Kg</option>
+                                                        <option>Liter</option>
+                                                        <option>Butir</option>
+                                                        <option>Siung</option>
+                                                        <option>Lembar</option>
                                                     </select>
                                                 </div>
                                             </div>

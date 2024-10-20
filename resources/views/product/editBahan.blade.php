@@ -81,11 +81,11 @@
                                                         value="{{ $data->satuan }}">
                                                         <option selected>{{ $data->satuan }}</option>
                                                         <option disabled>-- Pilih Satuan --</option>
-                                                        <option>gram</option>
-                                                        <option>ml</option>
-                                                        <option>butir</option>
-                                                        <option>siung</option>
-                                                        <option>lembar</option>
+                                                        <option>Kg</option>
+                                                        <option>Liter</option>
+                                                        <option>Butir</option>
+                                                        <option>Siung</option>
+                                                        <option>Lembar</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -100,7 +100,7 @@
                                                         </div>
                                                         <input type="number" class="form-control"
                                                             id="harga_bahan_display" placeholder="0"
-                                                            value="{{ $data->harga_bahan }}">
+                                                            value="{{ $data->harga_bahan }}" name="harga_bahan">
                                                     </div>
                                                 </div>
                                             </div>

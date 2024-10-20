@@ -5,6 +5,25 @@
               <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
           </li>
       </ul>
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              // Periksa status sidebar dari localStorage saat halaman dimuat
+              if (localStorage.getItem('sidebar') === 'minimized') {
+                  document.body.classList.add('sidebar-collapse');
+              }
+
+              // Event listener untuk ikon fa-bars
+              document.querySelector('[data-widget="pushmenu"]').addEventListener('click', function() {
+                  // Toggle status sidebar di localStorage
+                  if (document.body.classList.contains('sidebar-collapse')) {
+                      localStorage.setItem('sidebar', 'expanded');
+                  } else {
+                      localStorage.setItem('sidebar', 'minimized');
+                  }
+              });
+          });
+      </script>
+
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">

@@ -16,9 +16,9 @@
                 </li>
                 {{-- Manufacturing --}}
                 <li
-                    class="nav-item {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'menu-open' : '' }}">
+                    class="nav-item {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('BillOfMaterial*') || request()->is('ManufacturingOrder*') ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('bom*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('produk*') || request()->is('bahan-baku*') || request()->is('BillOfMaterial*') || request()->is('ManufacturingOrder*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p style="font-size: 14px">
                             Manufacturing
@@ -39,13 +39,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->is('bom*') ? 'active' : '' }}">
+                            <a href="/BillOfMaterial" class="nav-link {{ request()->is('BillOfMaterial*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Daftar Material (BoM)</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->is('mo*') ? 'active' : '' }}">
+                            <a href="/ManufacturingOrder" class="nav-link {{ request()->is('ManufacturingOrder*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Produksi (MO)</p>
                             </a>

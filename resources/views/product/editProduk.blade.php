@@ -64,7 +64,7 @@
                                                         </div>
                                                         <input type="number" class="form-control"
                                                             id="harga_produk_display" placeholder="0"
-                                                            value="{{ $data->harga_produk }}">
+                                                            value="{{ $data->harga_produk }}" name="harga_produk">
                                                     </div>
                                                 </div>
                                             </div>

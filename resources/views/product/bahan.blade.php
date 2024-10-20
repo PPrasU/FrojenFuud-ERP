@@ -141,12 +141,13 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
-                                            <a href="/bahan-baku/input" class="btn btn-app" style="left: -10px;">
+                                            <a href="/bahan-baku/input" class="btn btn-app" style="left: -10px;"
+                                                title="Tambah Data">
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
                                                 <button type="button" class="btn btn-app" style="left: -10px;"
-                                                    onclick="openModal()">
+                                                    onclick="openModal()" title="Export PDF">
                                                     <i class="fa fa-file-pdf"></i> Export PDF
                                                 </button>
                                             @endif
@@ -192,11 +193,16 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
-                                            <a href="#" id="btnList" class="btn btn-app">
+                                            <a href="#" id="btnList" class="btn btn-app" title="List / Tabel">
                                                 <i class="fas fa-list"></i> List / Tabel
                                             </a>
-                                            <a href="#" id="btnKanban" class="btn btn-app">
-                                                <i class="fa fa-columns"></i> Kanban
+                                            <a href="#" id="btnKanban" class="btn btn-app hidden"
+                                                title="Kanban View">
+                                                <i class="fa fa-columns"></i>Kanban
+                                            </a>
+                                            <a href="#" id="btnBarcode" class="btn btn-app"
+                                                title="Generate Barcode">
+                                                <i class="fa fa-barcode"></i> Generate Barcode
                                             </a>
                                         </div>
                                     </div>
@@ -206,9 +212,10 @@
                                             <tr>
                                                 <th style="vertical-align: middle;">Nama Bahan</th>
                                                 <th style="vertical-align: middle;">Harga Bahan</th>
-                                                <th style="vertical-align: middle;">Satuan</th>
                                                 <th style="vertical-align: middle;">Jenis Bahan</th>
-                                                <th style="vertical-align: middle;">Kode Bahan (Barcode)</th>
+                                                <th style="vertical-align: middle;">Kode Bahan</th>
+                                                <th style="vertical-align: middle;" id="barcodeHeader" class="hidden">
+                                                    Barcode</th>
                                                 <th style="vertical-align: middle;">Gambar</th>
                                                 <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
@@ -217,10 +224,10 @@
                                             @foreach ($data as $row)
                                                 <tr>
                                                     <td>{{ $row->nama_bahan }}</td>
-                                                    <td>{{ $row->harga_bahan }}</td>
-                                                    <td>{{ $row->satuan }}</td>
+                                                    <td>{{ $row->harga_bahan }}/{{ $row->satuan }}</td>
                                                     <td>{{ $row->jenis_bahan }}</td>
-                                                    <td>
+                                                    <td>{{ $row->kode_bahan }}</td>
+                                                    <td id="barcodeColumn-{{ $row->id }}" class="hidden">
                                                         <svg id="barcode-{{ $row->id }}"></svg>
                                                         <script>
                                                             JsBarcode("#barcode-{{ $row->id }}", "{{ $row->kode_bahan }}", {
@@ -231,14 +238,19 @@
                                                         </script>
                                                     </td>
                                                     <td><img src="{{ asset('foto-bahan/' . $row->gambar) }}"
-                                                            style="width: 100px; height: 100px; "></td>
+                                                            style="width: 100px; height: 100px;"></td>
                                                     <td style="text-align: center">
                                                         <a href="/bahan-baku/edit/{{ $row->id }}"
-                                                            class="btn btn-warning">Edit</a>
-                                                        <a href="#" class="btn btn-danger delete"
+                                                            class="btn btn-warning edit-btn" title="Ubah">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-danger delete delete-btn"
                                                             data-id="{{ $row->id }}"
-                                                            data-nama_bahan="{{ $row->nama_bahan }}">Hapus</a>
+                                                            data-nama_bahan="{{ $row->nama_bahan }}" title="Hapus">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
                                                     </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -250,8 +262,9 @@
                                             <div class="col-lg-4 col-6">
                                                 <div class="small-box">
                                                     <div class="inner">
-                                                        <h3>{{ $row->nama_bahan }}</h3>
-                                                        <p>Rp. {{ $row->harga_bahan }}</p>
+                                                        <h4>{{ $row->nama_bahan }}</h4>
+                                                        <p>Rp. {{ $row->harga_bahan }}/{{ $row->satuan }}</p>
+                                                        <a>Stok: .... /{{ $row->satuan }}</a>
                                                         <div style="text-align: right;">
                                                             <a class="btn btn-danger delete"
                                                                 data-id="{{ $row->id }}"
@@ -262,7 +275,8 @@
 
                                                     </div>
                                                     <div class="icon">
-                                                        <i class="ion"><img style="width: 120px;"
+                                                        <i class="ion" style="top: 10px"><img
+                                                                style="width: 110px; height: 90px;"
                                                                 src="{{ asset('foto-bahan/' . $row->gambar) }}"
                                                                 style="width: 50px; height: 50px;"></i>
 
@@ -288,6 +302,7 @@
 
     @include('layouts/script')
 
+    {{-- script untuk tabel --}}
     <script>
         $(document).ready(function() {
             // Inisialisasi DataTable untuk #tableList
@@ -301,8 +316,15 @@
                 "responsive": true,
             });
 
-            // Konfirmasi hapus dengan SweetAlert
-            $('.delete').click(function() {
+            // Menggunakan event delegation untuk tombol "edit" dan "delete"
+            $('#tableList').on('click', '.edit', function() {
+                var id = $(this).data('id');
+                // Tambahkan logika untuk tombol edit
+                console.log('Edit ID:', id);
+                window.location.href = '/bahan-baku/edit/' + id;
+            });
+
+            $('#tableList').on('click', '.delete', function() {
                 var id = $(this).attr('data-id');
                 var nama_bahan = $(this).attr('data-nama_bahan');
                 var kode_bahan = $(this).attr('data-kode_bahan');
@@ -328,7 +350,7 @@
         });
     </script>
 
-    {{-- script untuk kanban --}}
+    {{-- Script untuk reference pada button kanban & list tabel --}}
     <script>
         // Fungsi untuk menampilkan tampilan sesuai preferensi yang tersimpan di localStorage
         function applyViewPreference() {
@@ -336,9 +358,15 @@
             if (viewPreference === 'list') {
                 $('#kanbanView').addClass('hidden');
                 $('#tableList_wrapper').removeClass('hidden');
+                $('#btnList').addClass('hidden');
+                $('#btnKanban').removeClass('hidden');
+                $('#btnBarcode').removeClass('hidden'); // Tampilkan tombol Generate Barcode
             } else if (viewPreference === 'kanban') {
                 $('#tableList_wrapper').addClass('hidden');
                 $('#kanbanView').removeClass('hidden');
+                $('#btnList').removeClass('hidden');
+                $('#btnKanban').addClass('hidden');
+                $('#btnBarcode').addClass('hidden'); // Sembunyikan tombol Generate Barcode
             }
         }
 
@@ -350,12 +378,72 @@
                 $('#kanbanView').addClass('hidden');
                 $('#tableList_wrapper').removeClass('hidden');
                 localStorage.setItem('viewPreference', 'list'); // Simpan preferensi pengguna
+                $('#btnList').addClass('hidden');
+                $('#btnKanban').removeClass('hidden');
+                $('#btnBarcode').removeClass('hidden'); // Tampilkan tombol Generate Barcode
             });
 
             $('#btnKanban').click(function() {
                 $('#tableList_wrapper').addClass('hidden');
                 $('#kanbanView').removeClass('hidden');
                 localStorage.setItem('viewPreference', 'kanban'); // Simpan preferensi pengguna
+                $('#btnKanban').addClass('hidden');
+                $('#btnList').removeClass('hidden');
+                $('#btnBarcode').addClass('hidden'); // Sembunyikan tombol Generate Barcode
+            });
+
+            // Logika untuk toggle barcode dengan jeda 5 detik
+            let barcodeVisible = false;
+
+            $('#btnBarcode').click(function() {
+                if (!barcodeVisible) {
+                    // Menampilkan SweetAlert untuk menunggu 5 detik
+                    Swal.fire({
+                        title: 'Generating Barcode...',
+                        text: 'Please wait for 5 seconds',
+                        icon: 'info',
+                        timer: 5000, // 5 detik
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading(); // Tampilkan loading saat SweetAlert terbuka
+                        }
+                    }).then(() => {
+                        // Setelah SweetAlert ditutup, baru tampilkan barcode
+                        $('[id^=barcodeColumn]').removeClass('hidden'); // Menampilkan kolom barcode
+                        $('#barcodeHeader').removeClass('hidden');
+                        $('#btnBarcode').html('<i class="fa fa-barcode"></i> Hide Barcode');
+                        barcodeVisible = true;
+                    });
+                } else {
+                    // Menyembunyikan barcode jika tombol "Hide Barcode" ditekan
+                    $('[id^=barcodeColumn]').addClass('hidden'); // Menyembunyikan kolom barcode
+                    $('#barcodeHeader').addClass('hidden');
+                    $('#btnBarcode').html('<i class="fa fa-barcode"></i> Generate Barcode');
+                    barcodeVisible = false;
+                }
+            });
+        });
+    </script>
+
+    {{-- script untuk button generate barcode --}}
+    <script>
+        $(document).ready(function() {
+            let barcodeVisible = false;
+
+            $('#btnBarcode').click(function() {
+                barcodeVisible = !barcodeVisible;
+
+                // Toggle visibilitas kolom barcode
+                if (barcodeVisible) {
+                    $('[id^=barcodeColumn]').removeClass('hidden'); // Menampilkan kolom barcode
+                    $('#barcodeHeader').removeClass('hidden');
+                    $('#btnBarcode').html('<i class="fa fa-barcode"></i> Hide Barcode');
+                } else {
+                    $('[id^=barcodeColumn]').addClass('hidden'); // Menyembunyikan kolom barcode
+                    $('#barcodeHeader').addClass('hidden');
+                    $('#btnBarcode').html('<i class="fa fa-barcode"></i> Generate Barcode');
+                }
             });
         });
     </script>
