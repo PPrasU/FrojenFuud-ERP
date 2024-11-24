@@ -17,13 +17,13 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h5 class="m-0">Edit Bahan Baku</h5>
+                            <h5 class="m-0">Input Bahan Baku</h5>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Manufacturing</li>
-                                <li class="breadcrumb-item"><a href="/bahan-baku">Bahan Baku</a>
-                                <li class="breadcrumb-item"><a href="/bahan-baku/input">Edit Data</a>
+                                <li class="breadcrumb-item">Purchasing</li>
+                                <li class="breadcrumb-item"><a href="/Vendor-">Vendor</a>
+                                <li class="breadcrumb-item"><a href="/Vendor/input">Edit Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -40,81 +40,68 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
-                                <form action="/bahan-baku/update/{{ $data->id }}" method="POST"
+                                <form action="/Vendor/update/{{ $data->id }}" method="POST"
                                     enctype="multipart/form-data" id="inputBahanBaku">
                                     @csrf
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="nama_bahan">Nama Bahan</label>
-                                                    <input type="text" name="nama_bahan" class="form-control"
-                                                        id="nama_bahan" value="{{ $data->nama_bahan }}" autofocus>
+                                                    <label for="nama">Nama Vendor</label>
+                                                    <input type="text" name="nama" class="form-control"
+                                                        id="nama" value="{{ $data->nama }}" autofocus>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="kode_bahan">Kode Bahan</label>
-                                                    <input type="text" name="kode_bahan" class="form-control"
-                                                        id="kode_bahan" value="{{ $data->kode_bahan }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Jenis Bahan</label>
-                                                    <select class="form-control" name="jenis_bahan" id="jenis_bahan"
-                                                        value="{{ $data->jenis_bahan }}">
-                                                        <option selected>{{ $data->jenis_bahan }}</option>
-                                                        <option disabled>-- Pilih Jenis Bahan --</option>
-                                                        <option>Bahan Utama</option>
-                                                        <option>Bahan Tambahan</option>
-                                                        <option>Bumbu</option>
-                                                        <option>Minyak & Cairan</option>
-                                                        <option>Saus & Dressing</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Satuan</label>
-                                                    <select class="form-control" name="satuan" id="satuan"
-                                                        value="{{ $data->satuan }}">
-                                                        <option selected>{{ $data->satuan }}</option>
-                                                        <option disabled>-- Pilih Satuan --</option>
-                                                        <option>Kg</option>
-                                                        <option>Liter</option>
-                                                        <option>Butir</option>
-                                                        <option>Siung</option>
-                                                        <option>Lembar</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="harga_bahan">Harga Bahan</label>
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">Rp.</span>
-                                                        </div>
-                                                        <input type="number" class="form-control"
-                                                            id="harga_bahan_display" placeholder="0"
-                                                            value="{{ $data->harga_bahan }}" name="harga_bahan">
+                                                    <label for="no_hp">No Hp</label>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">+62</span>
+                                                        <input type="number" name="no_hp" class="form-control"
+                                                            id="no_hp" value="{{ $data->no_hp }}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="gambar">Gambar Produk</label>
-                                                    <input type="file" name="gambar" class="form-control"
-                                                        id="gambar">
+                                                    <label>Kategori</label>
+                                                    <select class="form-control" name="kategori" id="kategori"
+                                                        value="{{ $data->kategori }}">
+                                                        <option selected>{{ $data->kategori }}</option>
+                                                        <option disabled>-- Pilih Kategori --</option>
+                                                        <option>Individual</option>
+                                                        <option>Company</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email</label>
+                                                    <input type="email" name="email" class="form-control"
+                                                        id="email" value="{{ $data->email }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="alamat">Alamat</label>
+                                                    <input type="text" name="alamat_1" class="form-control"
+                                                        id="alamat_1" value="{{ $data->alamat_1 }}">
+                                                    <label></label>
+                                                    <input type="text" name="alamat_2" class="form-control"
+                                                        id="alamat_2" value="{{ $data->alamat_2 }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="npwp">NPWM</label>
+                                                    <input type="npwp" name="npwp" class="form-control"
+                                                        id="npwp" value="{{ $data->npwp }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="/bahan-baku" class="btn btn-default">Batal</a>
+                                        <a href="/Vendor" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Perbarui</button>
                                     </div>
                                 </form>

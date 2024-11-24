@@ -2,10 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Daftar Produk</title>
+    <title>FrojenFuud | Daftar Vendor</title>
     @include('layouts/header')
-
-    {{-- CSS untuk tabel --}}
     <style>
         th {
             font-size: 16px;
@@ -29,19 +27,18 @@
             display: none;
         }
     </style>
-
     <!-- CSS untuk Modal -->
     <style>
         /* Modal container */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1050v;
+            z-index: 1050;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 1);
             justify-content: center;
             align-items: center;
         }
@@ -53,6 +50,21 @@
             border-radius: 8px;
             width: 400px;
             margin: auto;
+        }
+
+        /* Header */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* Close button */
+        .close {
+            cursor: pointer;
+            font-size: 24px;
         }
 
         /* Footer */
@@ -84,6 +96,45 @@
         .btn-secondary:hover {
             opacity: 0.9;
         }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .checkbox {
+            margin: 5px 0;
+        }
+    </style>
+    {{-- CSS Kanban --}}
+    <style>
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .card h5 {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .card h6 {
+            margin-bottom: 1rem;
+            color: gray;
+            font-style: italic;
+        }
+
+        .card p {
+            margin: 0.3rem 0;
+            font-size: 0.95rem;
+        }
+
+        .card .text-end {
+            margin-top: 1rem;
+        }
     </style>
 </head>
 
@@ -97,12 +148,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Produk</h1>
+                            <h1 class="m-0">Vendor</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Manufacturing</li>
-                                <li class="breadcrumb-item"><a href="/produk">Produk</a>
+                                <li class="breadcrumb-item">Purchasing</li>
+                                <li class="breadcrumb-item"><a href="/Vendor-">Vendor</a>
                                 </li>
                             </ol>
                         </div>
@@ -117,34 +168,31 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
-                                            <a href="/produk/input" class="btn btn-app" style="left: -10px;"
+                                            <a href="/Vendor/input" class="btn btn-app" style="left: -10px;"
                                                 title="Tambah Data">
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
-                                                <!-- Tombol untuk membuka modal -->
                                                 <button type="button" class="btn btn-app" style="left: -10px;"
                                                     onclick="openModal()" title="Export PDF">
                                                     <i class="fa fa-file-pdf"></i> Export PDF
                                                 </button>
                                             @endif
-
-                                            <!-- Modal Custom -->
                                             <div id="exportModal" class="modal">
                                                 <div class="modal-content">
                                                     <div style="margin-left: 0;">
-                                                        <h2>Export Produk PDF</h2>
+                                                        {{-- <span class="close" onclick="closeModal()">&times;</span> --}}
+                                                        <h2>Export PDF</h2>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!-- Form untuk memilih produk yang akan diekspor -->
-                                                        <form action="{{ route('exportProduk') }}" method="POST"
+                                                        <form action="{{ route('exportVendor') }}" method="POST"
                                                             id="exportForm">
                                                             @csrf
                                                             <table>
                                                                 <thead>
                                                                     <tr>
                                                                         <th><input type="checkbox" id="selectAll"></th>
-                                                                        <th>Pilih Semua Produk</th>
+                                                                        <th>Pilih Semua Vedor</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -155,7 +203,7 @@
                                                                                     class="itemCheckbox"
                                                                                     value="{{ $item->id }}">
                                                                             </td>
-                                                                            <td>{{ $item->nama_produk }}</td>
+                                                                            <td>{{ $item->nama }}</td>
                                                                         </tr>
                                                                     @endforeach
                                                                 </tbody>
@@ -166,96 +214,93 @@
                                                         <button type="button" class="btn btn-primary"
                                                             onclick="submitForm()">Cetak</button>
                                                         <button type="button" class="btn btn-secondary"
-                                                            onclick="closeModal()">Batal</button>
+                                                            onclick="closeModal()">batal</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
-                                            <a href="#" id="btnList" class="btn btn-app">
+                                            <a href="#" id="btnList" class="btn btn-app" title="List / Tabel">
                                                 <i class="fas fa-list"></i> List / Tabel
                                             </a>
-                                            <a href="#" id="btnKanban" class="btn btn-app hidden">
-                                                <i class="fa fa-columns"></i> Kanban
-                                            </a>
-                                            <a href="#" id="btnBarcode" class="btn btn-app">
-                                                <i class="fa fa-barcode"></i> Generate Barcode
+                                            <a href="#" id="btnKanban" class="btn btn-app hidden"
+                                                title="Kanban View">
+                                                <i class="fa fa-columns"></i>Kanban
                                             </a>
                                         </div>
                                     </div>
-                                    {{-- bagian tabel --}}
+                                    {{-- Untuk bagian list atau tabel --}}
                                     <table id="tableList" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="vertical-align: middle;">Nama Produk</th>
-                                                <th style="vertical-align: middle;">Kode Produk</th>
-                                                <th style="vertical-align: middle;" id="barcodeHeader" class="hidden">
-                                                    Barcode</th>
-                                                <th style="vertical-align: middle;">Harga Produk (Sales Price)</th>
-                                                <th style="vertical-align: middle;">Harga Produksi (Cost)</th>
-                                                <th style="vertical-align: middle;">Gambar</th>
+                                                <th style="vertical-align: middle;">Nama Vendor</th>
+                                                <th style="vertical-align: middle;">No Hp</th>
+                                                <th style="vertical-align: middle;">Kategori</th>
+                                                <th style="vertical-align: middle;">Email</th>
+                                                <th style="vertical-align: middle;">Alamat</th>
+                                                <th style="vertical-align: middle;">NPWP</th>
                                                 <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $row)
                                                 <tr>
-                                                    <td>{{ $row->nama_produk }}</td>
-                                                    <td>{{ $row->kode_produk }}</td>
-                                                    <td id="barcodeColumn-{{ $row->id }}" class="hidden">
-                                                        <svg id="barcode-{{ $row->id }}"></svg>
-                                                        <script>
-                                                            JsBarcode("#barcode-{{ $row->id }}", "{{ $row->kode_produk }}", {
-                                                                format: "CODE128",
-                                                                displayValue: true,
-                                                                fontSize: 16
-                                                            });
-                                                        </script>
-                                                    </td>
-                                                    <td>{{ $row->harga_produk }}</td>
-                                                    <td>{{ $row->harga_produksi }}</td>
-                                                    <td><img src="{{ asset('foto-produk/' . $row->gambar) }}"></td>
+                                                    <td>{{ $row->nama }}</td>
+                                                    <td>{{ $row->no_hp }}</td>
+                                                    <td>{{ $row->kategori }}</td>
+                                                    <td>{{ $row->email }}</td>
+                                                    <td>{{ $row->alamat_1 }}, {{ $row->alamat_2 }}</td>
+                                                    <td>{{ $row->npwp }}</td>
                                                     <td style="text-align: center">
-                                                        <a href="/produk/edit/{{ $row->id }}"
-                                                            class="btn btn-warning" title="Edit">
+                                                        <a href="/Vendor/edit/{{ $row->id }}"
+                                                            class="btn btn-warning edit-btn" title="Ubah">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-danger delete"
+                                                        <a href="#" class="btn btn-danger delete delete-btn"
                                                             data-id="{{ $row->id }}"
-                                                            data-nama_produk="{{ $row->nama_produk }}" title="Hapus">
+                                                            data-nama_bahan="{{ $row->nama_bahan }}" title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{-- bagian kanban --}}
-                                    <div id="kanbanView-Produk" class="row hidden">
+
+                                    {{-- untuk bagian kanbannya --}}
+                                    <div id="kanbanView" class="row hidden">
                                         @foreach ($data as $row)
                                             <div class="col-lg-4 col-6">
                                                 <div class="small-box">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">
+                                                            {{ $row->nama }}
+                                                        </h3>
+                                                        <p>.</p>
+                                                        <p>'</p>
+                                                        <h5 style="font-style: italic; text-align: left">
+                                                            {{ $row->kategori }}</h5>
+                                                    </div>
                                                     <div class="inner">
-                                                        <h4 style="font-weight: bold">{{ $row->nama_produk }}</h4>
-                                                        <p>Harga: Rp. {{ $row->harga_produk }}/Pcs</p>
-                                                        <p>Stok: .... Pcs</p>
+                                                        <p style="text-align: left">Alamat: {{ $row->alamat_1 }},
+                                                            {{ $row->alamat_2 }}</p>
+                                                        <p style="text-align: left">No Hp : {{ $row->no_hp }}</p>
+                                                        <p style="text-align: left">Email : {{ $row->email }}</p>
+                                                        <p style="text-align: left">NPWP : {{ $row->npwp }}</p>
                                                         <div style="text-align: right;">
                                                             <a class="btn btn-danger delete"
                                                                 data-id="{{ $row->id }}"
-                                                                data-nama_produk="{{ $row->nama_produk }}"
-                                                                title="Hapus">
+                                                                data-nama_bahan="{{ $row->nama_bahan }}">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    <div class="icon">
-                                                        <i class="ion"><img style="width: 120px; height: 100px;"
-                                                                src="{{ asset('foto-produk/' . $row->gambar) }}"></i>
-                                                    </div>
-                                                    <a href="/produk/edit/{{ $row->id }}"
-                                                        class="small-box-footer" style="color: black;">More info <i
-                                                            class="fas fa-arrow-circle-right"
-                                                            style="color: black;"></i></a>
+                                                    <a href="/Vendor/edit/{{ $row->id }}"
+                                                        class="small-box-footer" style="color: black;">More info
+                                                        <i class="fas fa-arrow-circle-right" style="color: black;">
+                                                        </i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -272,7 +317,7 @@
 
     @include('layouts/script')
 
-    {{-- untuk button hapus data --}}
+    {{-- script untuk tabel --}}
     <script>
         $(document).ready(function() {
             // Inisialisasi DataTable untuk #tableList
@@ -291,7 +336,7 @@
                 var id = $(this).data('id');
                 // Tambahkan logika untuk tombol edit
                 console.log('Edit ID:', id);
-                window.location.href = '/bahan-baku/edit/' + id;
+                window.location.href = '/Vendor/edit/' + id;
             });
 
             $('#tableList').on('click', '.delete', function() {
@@ -312,7 +357,7 @@
                             'Terhapus!',
                             'Data Telah Terhapus!',
                             'success',
-                            window.location = "/bahan-baku/hapus/" + id + "",
+                            window.location = "/Vendor/hapus/" + id + "",
                         )
                     }
                 });
@@ -320,20 +365,20 @@
         });
     </script>
 
-    {{-- script untuk preferensi button list dan kanban --}}
+    {{-- Script untuk reference pada button kanban & list tabel --}}
     <script>
         // Fungsi untuk menampilkan tampilan sesuai preferensi yang tersimpan di localStorage
         function applyViewPreference() {
             const viewPreference = localStorage.getItem('viewPreference'); // Ambil preferensi dari localStorage
             if (viewPreference === 'list') {
-                $('#kanbanView-Produk').addClass('hidden');
+                $('#kanbanView').addClass('hidden');
                 $('#tableList_wrapper').removeClass('hidden');
                 $('#btnList').addClass('hidden');
                 $('#btnKanban').removeClass('hidden');
                 $('#btnBarcode').removeClass('hidden'); // Tampilkan tombol Generate Barcode
             } else if (viewPreference === 'kanban') {
                 $('#tableList_wrapper').addClass('hidden');
-                $('#kanbanView-Produk').removeClass('hidden');
+                $('#kanbanView').removeClass('hidden');
                 $('#btnList').removeClass('hidden');
                 $('#btnKanban').addClass('hidden');
                 $('#btnBarcode').addClass('hidden'); // Sembunyikan tombol Generate Barcode
@@ -345,7 +390,7 @@
 
             // Untuk tombol List dan Kanban
             $('#btnList').click(function() {
-                $('#kanbanView-Produk').addClass('hidden');
+                $('#kanbanView').addClass('hidden');
                 $('#tableList_wrapper').removeClass('hidden');
                 localStorage.setItem('viewPreference', 'list'); // Simpan preferensi pengguna
                 $('#btnList').addClass('hidden');
@@ -355,43 +400,11 @@
 
             $('#btnKanban').click(function() {
                 $('#tableList_wrapper').addClass('hidden');
-                $('#kanbanView-Produk').removeClass('hidden');
+                $('#kanbanView').removeClass('hidden');
                 localStorage.setItem('viewPreference', 'kanban'); // Simpan preferensi pengguna
                 $('#btnKanban').addClass('hidden');
                 $('#btnList').removeClass('hidden');
                 $('#btnBarcode').addClass('hidden'); // Sembunyikan tombol Generate Barcode
-            });
-
-            // Logika untuk toggle barcode
-            let barcodeVisible = false;
-
-            $('#btnBarcode').click(function() {
-                if (!barcodeVisible) {
-                    // Menampilkan SweetAlert untuk menunggu 5 detik
-                    Swal.fire({
-                        title: 'Generating Barcode...',
-                        text: 'Please wait for 5 seconds',
-                        icon: 'info',
-                        timer: 5000, // 5 detik
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            Swal.showLoading(); // Tampilkan loading saat SweetAlert terbuka
-                        }
-                    }).then(() => {
-                        // Setelah SweetAlert ditutup, baru tampilkan barcode
-                        $('[id^=barcodeColumn]').removeClass('hidden'); // Menampilkan kolom barcode
-                        $('#barcodeHeader').removeClass('hidden');
-                        $('#btnBarcode').html('<i class="fa fa-barcode"></i> Hide Barcode');
-                        barcodeVisible = true;
-                    });
-                } else {
-                    // Menyembunyikan barcode jika tombol "Hide Barcode" ditekan
-                    $('[id^=barcodeColumn]').addClass('hidden'); // Menyembunyikan kolom barcode
-                    $('#barcodeHeader').addClass('hidden');
-                    $('#btnBarcode').html('<i class="fa fa-barcode"></i> Generate Barcode');
-                    barcodeVisible = false;
-                }
             });
         });
     </script>
@@ -418,21 +431,33 @@
         });
     </script>
 
-    <!-- JavaScript untuk Modal -->
+    <!-- JavaScript untuk Modal dan Pilih Semua -->
     <script>
         // Fungsi untuk membuka modal
         function openModal() {
             document.getElementById("exportModal").style.display = "flex";
+            document.body.style.overflow = "hidden";
         }
 
         // Fungsi untuk menutup modal
         function closeModal() {
             document.getElementById("exportModal").style.display = "none";
+            document.body.style.overflow = "auto";
         }
 
         // Fungsi untuk submit form
         function submitForm() {
             document.getElementById("exportForm").submit();
+        }
+
+        // Fungsi untuk "Pilih Semua"
+        function toggleSelectAll() {
+            var selectAllCheckbox = document.getElementById("selectAll");
+            var itemCheckboxes = document.getElementsByClassName("itemCheckbox");
+
+            for (var i = 0; i < itemCheckboxes.length; i++) {
+                itemCheckboxes[i].checked = selectAllCheckbox.checked;
+            }
         }
 
         // Menutup modal ketika user klik di luar modal
@@ -443,7 +468,7 @@
         }
     </script>
 
-    {{-- Script pilih semua --}}
+    {{-- script untuk pilih semua --}}
     <script>
         document.getElementById('selectAll').addEventListener('change', function() {
             let checkboxes = document.querySelectorAll('.itemCheckbox');

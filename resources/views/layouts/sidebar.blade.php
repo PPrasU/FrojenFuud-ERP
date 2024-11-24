@@ -39,13 +39,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/BillOfMaterial" class="nav-link {{ request()->is('BillOfMaterial*') ? 'active' : '' }}">
+                            <a href="/BillOfMaterial"
+                                class="nav-link {{ request()->is('BillOfMaterial*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Daftar Material (BoM)</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/ManufacturingOrder" class="nav-link {{ request()->is('ManufacturingOrder*') ? 'active' : '' }}">
+                            <a href="/ManufacturingOrder"
+                                class="nav-link {{ request()->is('ManufacturingOrder*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Produksi (MO)</p>
                             </a>
@@ -53,8 +55,9 @@
                     </ul>
                 </li>
                 {{-- Purchase --}}
-                <li class="nav-item {{ request()->is('purchase*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('purchase*') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('Vendor-*') || request()->is('rfq*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is('Vendor-*') || request()->is('rfq*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-credit-card"></i>
                         <p style="font-size: 14px">
                             Purchase
@@ -63,7 +66,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/vendor" class="nav-link {{ request()->is('vendor*') ? 'active' : '' }}">
+                            <a href="/Vendor-" class="nav-link {{ request()->is('Vendor-*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Vendor</p>
                             </a>

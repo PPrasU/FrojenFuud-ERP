@@ -23,7 +23,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #007bff;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     < Kembali </a>
@@ -36,7 +36,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <!-- Left Side Of Navbar -->
                             <ul class="navbar-nav me-auto">
-
+                                <!-- Tambahkan item navbar di sini jika diperlukan -->
                             </ul>
 
                             <!-- Right Side Of Navbar -->
@@ -45,13 +45,15 @@
                                 @guest
                                     @if (Route::has('login'))
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            <a class="nav-link" href="{{ route('login') }}"
+                                                style="color: white;">{{ __('Login') }}</a>
                                         </li>
                                     @endif
 
                                     @if (Route::has('register'))
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                            <a class="nav-link" href="{{ route('register') }}"
+                                                style="color: white;">{{ __('Register') }}</a>
                                         </li>
                                     @endif
                                 @else
@@ -65,7 +67,7 @@
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                             document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
                                             </a>
 

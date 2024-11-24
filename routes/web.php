@@ -5,6 +5,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\BahanController;
 use App\Http\Controllers\BillOfMaterialController;
+use App\Http\Controllers\VendorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,9 +61,13 @@ Route::get('/BillOfMaterial/hapus/{id}', [BillOfMaterialController::class, 'hapu
 Route::post('/BillOfMaterial/export', [BillOfMaterialController::class, 'exportBillOfMaterial'])->name('exportBillOfMaterial');
 
 
+//====== Vendor ========================================================================================
 
-
-
-
-
+Route::get('/Vendor-', [VendorController::class, 'Vendor'])->name('Vendor');
+Route::get('/Vendor/input', [VendorController::class, 'inputVendor'])->name('inputVendor');
+Route::post('/Vendor/post', [VendorController::class, 'postVendor'])->name('postVendor');
+Route::get('/Vendor/edit/{id}', [VendorController::class, 'editVendor'])->name('editVendor');
+Route::post('/Vendor/update/{id}', [VendorController::class, 'updateVendor'])->name('updateVendor');
+Route::get('/Vendor/hapus/{id}', [VendorController::class, 'hapusVendor'])->name('hapusVendor');
+Route::post('/Vendor/export', [VendorController::class, 'exportVendor'])->name('exportVendor');
 
