@@ -9,6 +9,7 @@
 <head>
     <title>FrojenFuud | Input Bill Of Material</title>
     @include('layouts/header')
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -16,7 +17,6 @@
         @include('layouts/preloader')
         @include('layouts/navbar')
         @include('layouts/sidebar')
-        <!-- Main Content Wrapper-->
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
@@ -35,9 +35,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -53,10 +50,12 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Produk</label>
-                                                    <select name="produk_id" class="form-control" id="produkSelect">
+                                                    <select class="form-control select2" name="produk_id"
+                                                        id="produk_id" style="width: 100%;">
                                                         <option selected disabled>--Pilih Produk--</option>
                                                         @foreach ($produk as $row)
-                                                            <option value="{{ $row->id }}">
+                                                            <option value="{{ $row->id }}"
+                                                                data-kode-produk="{{ $row->kode_produk }}">
                                                                 [{{ $row->kode_produk }}] {{ $row->nama_produk }}
                                                             </option>
                                                         @endforeach
@@ -151,6 +150,7 @@
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
+            $('.select2').select2()
             $('#inputBillOfMaterial').validate({
                 rules: {
                     produk: {
@@ -192,14 +192,13 @@
 
             newRow.innerHTML = `
                 <td>
-                    <select class="form-control" name="bahan_id[]">
+                    <select class="form-control select2" name="bahan_id[]">
                         <option selected disabled>--Pilih Bahan--</option>
                         @foreach ($bahan as $row)
                             <option value="{{ $row->id }}">
                                 [{{ $row->kode_bahan }}] {{ $row->nama_bahan }}
                             </option>
                         @endforeach
-                        <!-- Tambahkan opsi bahan lainnya sesuai kebutuhan -->
                     </select>
                 </td>
                 <td>
@@ -223,12 +222,27 @@
             // Append the new row before the "addBahanRow" row
             bahanTabelBody.insertBefore(newRow, document.getElementById('addBahanRow'));
 
+            // Inisialisasi Select2 untuk elemen <select> yang baru ditambahkan
+            $(newRow).find('.select2').select2({
+                placeholder: "--Pilih Bahan--",
+                width: '100%' // Atur lebar Select2 agar sesuai
+            });
+
             // Add event listener for the delete button
             newRow.querySelector('.delete').addEventListener('click', function() {
                 newRow.remove();
             });
         });
+
+        // Inisialisasi Select2 untuk elemen yang sudah ada di awal halaman
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "--Pilih Bahan--",
+                width: '100%'
+            });
+        });
     </script>
+
 
     {{-- script untuk memilih produk otomatis --}}
     <script>
@@ -309,6 +323,32 @@
             referenceInput.value = ''; // Kosongkan referensi
         });
     </script>
+
+    {{-- untuk reference otomatis --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const produkSelect = document.getElementById('produk_id');
+            const referenceInput = document.getElementById('referenceInput');
+            let incrementCounter = 1; // Awal angka increment
+
+            produkSelect.addEventListener('change', function() {
+                console.log('Dropdown changed');
+                const selectedOption = produkSelect.options[produkSelect.selectedIndex];
+                const kodeProduk = selectedOption.getAttribute('data-kode-produk');
+                console.log('Kode Produk:', kodeProduk);
+
+                if (kodeProduk) {
+                    const reference = `BoM_${kodeProduk}${incrementCounter}`;
+                    console.log('Generated Reference:', reference);
+                    referenceInput.value = reference;
+
+                    incrementCounter++;
+                }
+            });
+
+        });
+    </script>
+
 </body>
 
 </html>

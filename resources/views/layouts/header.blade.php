@@ -27,23 +27,11 @@
 <link rel="stylesheet" href="{{ asset('source/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('source/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('source/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-
-<!-- Google Font: Source Sans Pro -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('source/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('source/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('source/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- daterange picker -->
-<link rel="stylesheet" href="{{ asset('source/plugins/daterangepicker/daterangepicker.css') }}">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="{{ asset('source/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 <!-- Bootstrap Color Picker -->
 <link rel="stylesheet" href="{{ asset('source/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
-<!-- Tempusdominus Bootstrap 4 -->
-<link rel="stylesheet"
-    href="{{ asset('source/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
 <!-- Select2 -->
 <link rel="stylesheet" href="{{ asset('source/plugins/select2/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('source/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -53,8 +41,6 @@
 <link rel="stylesheet" href="{{ asset('source/plugins/bs-stepper/css/bs-stepper.min.css') }}">
 <!-- dropzonejs -->
 <link rel="stylesheet" href="{{ asset('source/plugins/dropzone/min/dropzone.min.css') }}">
-<!-- overlayScrollbars -->
-<link rel="stylesheet" href="{{ asset('source/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 {{-- Barcode --}}
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
@@ -63,3 +49,43 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
     integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    /* Select2 dropdown */
+    .select2-container .select2-selection--single {
+        height: 38px;
+        /* Sesuaikan tinggi dengan select default */
+        border: 1px solid #ced4da;
+        /* Warna border */
+        border-radius: 4px;
+        /* Border melengkung */
+        padding: 6px 12px;
+        /* Padding agar sama */
+        background-color: #fff;
+        /* Warna latar */
+    }
+
+    /* Teks pada pilihan Select2 */
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        line-height: 26px;
+        /* Tinggi garis teks */
+        font-size: 14px;
+        /* Ukuran font */
+        color: #495057;
+        /* Warna teks */
+    }
+
+    /* Panah dropdown */
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: 100%;
+        /* Panjang panah */
+        top: 0;
+        /* Posisikan panah agar sejajar */
+    }
+
+    /* Dropdown hasil pencarian */
+    .select2-container .select2-dropdown {
+        border-radius: 4px;
+        /* Sesuaikan border */
+    }
+</style>

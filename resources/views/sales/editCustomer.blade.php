@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Edit Vendor</title>
+    <title>FrojenFuud | Edit Bahan Baku</title>
     @include('layouts/header')
 </head>
 
@@ -17,13 +17,13 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h5 class="m-0">Edit Vendor</h5>
+                            <h5 class="m-0">Input Bahan Baku</h5>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Purchasing</li>
-                                <li class="breadcrumb-item"><a href="/Vendor-">Vendor</a>
-                                <li class="breadcrumb-item"><a href="/Vendor/edit">Edit Data</a>
+                                <li class="breadcrumb-item"><a href="/Customer-">Customer</a>
+                                <li class="breadcrumb-item"><a href="/Customer/input">Edit Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -40,14 +40,14 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
-                                <form action="/Vendor/update/{{ $data->id }}" method="POST"
+                                <form action="/Customer/update/{{ $data->id }}" method="POST"
                                     enctype="multipart/form-data" id="inputBahanBaku">
                                     @csrf
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="nama">Nama Vendor</label>
+                                                    <label for="nama">Nama Customer</label>
                                                     <input type="text" name="nama" class="form-control"
                                                         id="nama" value="{{ $data->nama }}" autofocus>
                                                 </div>
@@ -64,14 +64,12 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Kategori</label>
-                                                    <select class="form-control" name="kategori" id="kategori"
-                                                        value="{{ $data->kategori }}">
-                                                        <option selected>{{ $data->kategori }}</option>
-                                                        <option disabled>-- Pilih Kategori --</option>
-                                                        <option>Individual</option>
-                                                        <option>Company</option>
-                                                    </select>
+                                                    <label for="alamat">Alamat</label>
+                                                    <input type="text" name="alamat_1" class="form-control"
+                                                        id="alamat_1" value="{{ $data->alamat_1 }}">
+                                                    <label></label>
+                                                    <input type="text" name="alamat_2" class="form-control"
+                                                        id="alamat_2" value="{{ $data->alamat_2 }}">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -83,25 +81,20 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="alamat">Alamat</label>
-                                                    <input type="text" name="alamat_1" class="form-control"
-                                                        id="alamat_1" value="{{ $data->alamat_1 }}">
-                                                    <label></label>
-                                                    <input type="text" name="alamat_2" class="form-control"
-                                                        id="alamat_2" value="{{ $data->alamat_2 }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="npwp">NPWM</label>
-                                                    <input type="npwp" name="npwp" class="form-control"
-                                                        id="npwp" value="{{ $data->npwp }}">
+                                                    <label>Kategori</label>
+                                                    <select class="form-control" name="kategori" id="kategori"
+                                                        value="{{ $data->kategori }}">
+                                                        <option selected>{{ $data->kategori }}</option>
+                                                        <option disabled>-- Pilih Kategori --</option>
+                                                        <option>Individual</option>
+                                                        <option>Company</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="/Vendor-" class="btn btn-default">Batal</a>
+                                        <a href="/Customer" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Perbarui</button>
                                     </div>
                                 </form>

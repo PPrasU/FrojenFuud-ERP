@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\BahanController;
-use App\Http\Controllers\BillOfMaterialController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\BillOfMaterialController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,14 +62,30 @@ Route::post('/BillOfMaterial/update/{id}', [BillOfMaterialController::class, 'up
 Route::get('/BillOfMaterial/hapus/{id}', [BillOfMaterialController::class, 'hapusBillOfMaterial'])->name('hapusBillOfMaterial');
 Route::post('/BillOfMaterial/export', [BillOfMaterialController::class, 'exportBillOfMaterial'])->name('exportBillOfMaterial');
 
-
 //====== Vendor ========================================================================================
 
-Route::get('/Vendor-', [VendorController::class, 'Vendor'])->name('Vendor');
-Route::get('/Vendor/input', [VendorController::class, 'inputVendor'])->name('inputVendor');
-Route::post('/Vendor/post', [VendorController::class, 'postVendor'])->name('postVendor');
-Route::get('/Vendor/edit/{id}', [VendorController::class, 'editVendor'])->name('editVendor');
-Route::post('/Vendor/update/{id}', [VendorController::class, 'updateVendor'])->name('updateVendor');
-Route::get('/Vendor/hapus/{id}', [VendorController::class, 'hapusVendor'])->name('hapusVendor');
-Route::post('/Vendor/export', [VendorController::class, 'exportVendor'])->name('exportVendor');
+Route::get('/Vendors', [VendorController::class, 'Vendor'])->name('Vendor');
+Route::get('/Vendors/input', [VendorController::class, 'inputVendor'])->name('inputVendor');
+Route::post('/Vendors/post', [VendorController::class, 'postVendor'])->name('postVendor');
+Route::get('/Vendors/edit/{id}', [VendorController::class, 'editVendor'])->name('editVendor');
+Route::post('/Vendors/update/{id}', [VendorController::class, 'updateVendor'])->name('updateVendor');
+Route::get('/Vendors/hapus/{id}', [VendorController::class, 'hapusVendor'])->name('hapusVendor');
+Route::post('/Vendors/export', [VendorController::class, 'exportVendor'])->name('exportVendor');
+
+
+
+
+
+
+
+
+//====== Customer ========================================================================================
+
+Route::get('/Customer', [CustomerController::class, 'Customer'])->name('Customer');
+Route::get('/Customer/input', [CustomerController::class, 'inputCustomer'])->name('inputCustomer');
+Route::post('/Customer/post', [CustomerController::class, 'postCustomer'])->name('postCustomer');
+Route::get('/Customer/edit/{id}', [CustomerController::class, 'editCustomer'])->name('editCustomer');
+Route::post('/Customer/update/{id}', [CustomerController::class, 'updateCustomer'])->name('updateCustomer');
+Route::get('/Customer/hapus/{id}', [CustomerController::class, 'hapusCustomer'])->name('hapusCustomer');
+Route::post('/Customer/export', [CustomerController::class, 'exportCustomer'])->name('exportCustomer');
 

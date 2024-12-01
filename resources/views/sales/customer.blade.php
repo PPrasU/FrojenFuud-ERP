@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Daftar Vendor</title>
+    <title>FrojenFuud | Daftar Pelanggan</title>
     @include('layouts/header')
     <style>
         th {
@@ -148,12 +148,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Vendor</h1>
+                            <h1 class="m-0">Pelanggan</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Purchasing</li>
-                                <li class="breadcrumb-item"><a href="/Vendors">Vendor</a>
+                                <li class="breadcrumb-item">Sales</li>
+                                <li class="breadcrumb-item"><a href="/customer">Pelanggan</a>
                                 </li>
                             </ol>
                         </div>
@@ -168,7 +168,7 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
-                                            <a href="/Vendors/input" class="btn btn-app" style="left: -10px;"
+                                            <a href="/Customer/input" class="btn btn-app" style="left: -10px;"
                                                 title="Tambah Data">
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
@@ -181,11 +181,11 @@
                                             <div id="exportModal" class="modal">
                                                 <div class="modal-content">
                                                     <div style="margin-left: 0;">
-                                                        {{-- <span class="close" onclick="closeModal()">&times;</span> --}}
+                                                        <span class="close" onclick="closeModal()">&times;</span>
                                                         <h2>Export PDF</h2>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('exportVendor') }}" method="POST"
+                                                        <form action="{{ route('exportCustomer') }}" method="POST"
                                                             id="exportForm">
                                                             @csrf
                                                             <table>
@@ -202,7 +202,7 @@
                                                                                 <input type="checkbox" name="items[]"
                                                                                     class="itemCheckbox"
                                                                                     value="{{ $item->id }}">
-                                                                            </td>
+                                                                             </td>
                                                                             <td>{{ $item->nama }}</td>
                                                                         </tr>
                                                                     @endforeach
@@ -233,13 +233,12 @@
                                     <table id="tableList" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="vertical-align: middle;">Nama Vendor</th>
+                                                <th style="vertical-align: middle;">Nama Customer</th>
                                                 <th style="vertical-align: middle;">No Hp</th>
-                                                <th style="vertical-align: middle;">Kategori</th>
-                                                <th style="vertical-align: middle;">Email</th>
                                                 <th style="vertical-align: middle;">Alamat</th>
-                                                <th style="vertical-align: middle;">NPWP</th>
-                                                <th style="vertical-align: middle;">Aksi</th>
+                                                <th style="vertical-align: middle;">Email</th>
+                                                <th style="vertical-align: middle;">Kategori</th>
+                                                <th style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -247,22 +246,21 @@
                                                 <tr>
                                                     <td>{{ $row->nama }}</td>
                                                     <td>+62{{ $row->no_hp }}</td>
-                                                    <td>{{ $row->kategori }}</td>
+                                                    <td>{{ $row->alamat_1 }}</td>
                                                     <td>{{ $row->email }}</td>
-                                                    <td>{{ $row->alamat_1 }}, {{ $row->alamat_2 }}</td>
-                                                    <td>{{ $row->npwp }}</td>
+                                                    <td>{{ $row->kategori }}</td>
+                                                   
                                                     <td style="text-align: center">
-                                                        <a href="/Vendors/edit/{{ $row->id }}"
+                                                        <a href="/Customer/edit/{{ $row->id }}"
                                                             class="btn btn-warning edit-btn" title="Ubah">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a href="#" class="btn btn-danger delete delete-btn"
                                                             data-id="{{ $row->id }}"
-                                                            data-nama_bahan="{{ $row->nama_bahan }}" title="Hapus">
+                                                            data-nama_bahan="{{ $row->nama }}" title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
-
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -285,9 +283,8 @@
                                                     <div class="inner">
                                                         <p style="text-align: left">Alamat: {{ $row->alamat_1 }},
                                                             {{ $row->alamat_2 }}</p>
-                                                        <p style="text-align: left">No Hp : +62{{ $row->no_hp }}</p>
+                                                        <p style="text-align: left">No Hp : {{ $row->no_hp }}</p>
                                                         <p style="text-align: left">Email : {{ $row->email }}</p>
-                                                        <p style="text-align: left">NPWP : {{ $row->npwp }}</p>
                                                         <div style="text-align: right;">
                                                             <a class="btn btn-danger delete"
                                                                 data-id="{{ $row->id }}"
@@ -296,7 +293,7 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    <a href="/Vendors/edit/{{ $row->id }}"
+                                                    <a href="/Customer/edit/{{ $row->id }}"
                                                         class="small-box-footer" style="color: black;">More info
                                                         <i class="fas fa-arrow-circle-right" style="color: black;">
                                                         </i>
@@ -336,16 +333,14 @@
                 var id = $(this).data('id');
                 // Tambahkan logika untuk tombol edit
                 console.log('Edit ID:', id);
-                window.location.href = '/Vendors/edit/' + id;
+                window.location.href = '/Customer/edit/' + id;
             });
 
             $('#tableList').on('click', '.delete', function() {
                 var id = $(this).attr('data-id');
-                var nama_bahan = $(this).attr('data-nama_bahan');
-                var kode_bahan = $(this).attr('data-kode_bahan');
                 Swal.fire({
                     title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                    text: "Data bahan " + nama_bahan + " Akan Dihapus",
+                    text: "Data customer Akan Dihapus",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -357,7 +352,7 @@
                             'Terhapus!',
                             'Data Telah Terhapus!',
                             'success',
-                            window.location = "/Vendors/hapus/" + id + "",
+                            window.location = "/Customer/hapus/" + id + "",
                         )
                     }
                 });

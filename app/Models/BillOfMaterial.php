@@ -14,6 +14,10 @@ class BillOfMaterial extends Model
     public function produk(){
         return $this->BelongsTo('App\Models\Produk');
     }
+    public function bahan(){
+        return $this->BelongsTo('App\Models\Bahan');
+    }
+
     //ini untuk menambahkan data bahan dari bill of material ke tabel bill_of_material_bahan
     public function bahans() {
         return $this->belongsToMany(Bahan::class, 'bill_of_material_bahan')

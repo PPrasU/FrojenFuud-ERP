@@ -55,10 +55,11 @@
                     </ul>
                 </li>
                 {{-- Purchase --}}
-                <li class="nav-item {{ request()->is('Vendor-*') || request()->is('rfq*') ? 'menu-open' : '' }}">
+                <li
+                    class="nav-item {{ request()->is('Vendors*') || request()->is('rfq*') || request()->is('purchase-order*') || request()->is('ManufacturingOrder*') ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ request()->is('Vendor-*') || request()->is('rfq*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-credit-card"></i>
+                        class="nav-link {{ request()->is('Vendors*') || request()->is('rfq*') || request()->is('purchase-order*') || request()->is('ManufacturingOrder*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-bag"></i>
                         <p style="font-size: 14px">
                             Purchase
                             <i class="right fas fa-angle-left"></i>
@@ -66,22 +67,29 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Vendor-" class="nav-link {{ request()->is('Vendor-*') ? 'active' : '' }}">
+                            <a href="/Vendors" class="nav-link {{ request()->is('Vendors*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Vendor</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/rfq" class="nav-link {{ request()->is('rfq*') ? 'active' : '' }}">
+                            <a href="/rfq*" class="nav-link {{ request()->is('rfq*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
-                                <p style="font-size: 14px">Permintaan Penawaran (RfQ)</p>
+                                <p style="font-size: 14px">Bahan Baku</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/purchase-order"
+                                class="nav-link {{ request()->is('purchase-order*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
+                                <p style="font-size: 14px">Penawaran Pembelian (PO)</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 {{-- Sales --}}
-                <li class="nav-item {{ request()->is('sales*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('sales*') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->is('Customer*') || request()->is('Sales-Order*') ? 'menu-open' : '' }}">
+                    <a class="nav-link {{ request()->is('Customer*') || request()->is('Sales-Order*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-eraser"></i>
                         <p style="font-size: 14px">
                             Sales
@@ -90,21 +98,22 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/pelanggan" class="nav-link {{ request()->is('pelanggan*') ? 'active' : '' }}">
+                            <a href="/Customer" class="nav-link {{ request()->is('Customer*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
                                 <p style="font-size: 14px">Pelanggan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/penjualan" class="nav-link {{ request()->is('penjualan*') ? 'active' : '' }}">
+                            <a href="/Sales-Order" class="nav-link {{ request()->is('Sales-Order*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
-                                <p style="font-size: 14px">Penjualan</p>
+                                <p style="font-size: 14px">Penawaran Penjualan (SO)</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 {{-- Accounting --}}
-                <li class="nav-item {{ request()->is('accounting*') ? 'menu-open' : '' }}">
+                
+                {{-- <li class="nav-item {{ request()->is('accounting*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('accounting*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-percent"></i>
                         <p style="font-size: 14px">
@@ -128,9 +137,11 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
+
                 {{-- Employees --}}
-                <li class="nav-item {{ request()->is('employees*') ? 'menu-open' : '' }}">
+
+                {{-- <li class="nav-item {{ request()->is('employees*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('employees*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p style="font-size: 14px">
@@ -161,56 +172,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                {{-- Inventory --}}
-                <li class="nav-item {{ request()->is('inventory*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('inventory*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-cubes"></i>
-                        <p style="font-size: 14px">
-                            Inventory
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/inventory/overview"
-                                class="nav-link {{ request()->is('inventory/overview*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon" style="font-size: 14px"></i>
-                                <p style="font-size: 14px">Overview</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/inventory/transfer"
-                                class="nav-link {{ request()->is('inventory/transfer*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p style="font-size: 14px">Transfer<i class="right fas fa-angle-left"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/inventory/kuitansi"
-                                        class="nav-link {{ request()->is('inventory/kuitansi*') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-circle"></i>
-                                        <p style="font-size: 14px">Kuitansi</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/inventory/pengiriman"
-                                        class="nav-link {{ request()->is('inventory/pengiriman*') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-circle"></i>
-                                        <p style="font-size: 14px">Pengiriman</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/inventory/manufaktur"
-                                        class="nav-link {{ request()->is('inventory/manufaktur*') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-circle"></i>
-                                        <p style="font-size: 14px">Manufaktur</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                </li> --}}
             </ul>
         </nav>
     </div>

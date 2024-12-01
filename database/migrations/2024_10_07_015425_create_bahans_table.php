@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('jenis_bahan');
             $table->string('kode_bahan');
             $table->string('gambar');
+
+            $table->string('stok_bahan');
             $table->timestamps();
         });
     }

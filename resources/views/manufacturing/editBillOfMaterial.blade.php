@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Edit Bill Of Material</title>
+    <title>FrojenFuud | Detail Bill Of Material</title>
     @include('layouts/header')
 </head>
 
@@ -17,13 +17,13 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h5 class="m-0">Edit Bill Of Material</h5>
+                            <h5 class="m-0">Detail Bill Of Material</h5>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Manufacturing</li>
                                 <li class="breadcrumb-item"><a href="/BillOfMaterial">Bill Of Material</a>
-                                <li class="breadcrumb-item"><a href="/BillOfMaterial/edit">Edit Data</a>
+                                <li class="breadcrumb-item"><a href="/BillOfMaterial/edit">Detail Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -49,7 +49,7 @@
                                                 <div class="form-group">
                                                     <label>Produk</label>
                                                     <select class="form-control" name="produk_id" id="produkSelect"
-                                                        value="{{ $data->produk->nama_produk }}">
+                                                        value="{{ $data->produk->nama_produk }}" @readonly(true)>
                                                         <option selected>[{{ $data->produk->kode_produk }}]
                                                             {{ $data->produk->nama_produk }}</option>
                                                         <option disabled>-- Pilih Produk --</option>
@@ -65,7 +65,7 @@
                                                 <div class="form-group">
                                                     <label>Reference</label>
                                                     <input type="text" name="reference" class="form-control"
-                                                        id="referenceInput" value="{{ $data->reference }}">
+                                                        id="referenceInput" value="{{ $data->reference }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -73,13 +73,14 @@
                                                     <label for="kuantitas_produk">Kuantitas Produk Yang
                                                         Dihasilkan</label>
                                                     <input type="number" name="kuantitas_produk" class="form-control"
-                                                        id="kuantitas_produk" value="{{ $data->kuantitas_produk }}">
+                                                        id="kuantitas_produk" value="{{ $data->kuantitas_produk }}"
+                                                        readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Variasi BOM</label>
-                                                    <select class="form-control" name="variasi"
+                                                    <select class="form-control" name="variasi" @readonly(true)
                                                         value="{{ $data->variasi }}">
                                                         <option selected>{{ $data->variasi }}</option>
                                                         <option disabled>-- Pilih --</option>
@@ -119,27 +120,45 @@
                                                 <tr>
                                                     <th>Bahan</th>
                                                     <th>Kuantitas</th>
-                                                    <th>Satuan</th>
                                                     <th>BoM Cost</th>
                                                     <th>Product Cost</th>
-                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="bahanTabelBody">
-                                                <tr id="addBahanRow">
-                                                    <td colspan="4"><button type="button" id="addBahanButton"
-                                                            class="btn btn-default">+ Tambah Bahan</button></td>
-                                                </tr>
+                                            <tbody>
+                                                @php
+                                                    $totalBoMCost = 0;
+                                                    $totalProductCost = 0;
+                                                @endphp
+
+                                                @foreach ($bom->bahans as $bahan)
+                                                    @php
+                                                        $bomCost = $bahan->harga_bahan * $bahan->pivot->kuantitas;
+                                                        $productCost = $bomCost; // Sesuaikan dengan logika biaya produk yang sebenarnya
+                                                        $totalBoMCost += $bomCost;
+                                                        $totalProductCost += $productCost;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>[{{ $bahan->kode_bahan }}] {{ $bahan->nama_bahan }}</td>
+                                                        <td>{{ $bahan->pivot->kuantitas }} {{ $bahan->pivot->satuan }}
+                                                        </td>
+                                                        <td>Rp. {{ number_format($bomCost, 0, ',', '.') }}</td>
+                                                        <td>Rp. {{ number_format($productCost, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
-                                        <div id="bahanForm" style="display: none;">
-                                            <button type="button" class="btn btn-primary">Tambahkan Bahan</button>
-                                        </div>
+
+                                        <p style="text-align: right">=====================================</p>
+                                        <h5 style="text-align: right; font-weight: bold;">Total BoM Cost: Rp
+                                            {{ number_format($totalBoMCost, 0, ',', '.') }}</h5>
+                                        <h5 style="text-align: right; font-weight: bold;">Total Product Cost: Rp
+                                            {{ number_format($totalProductCost, 0, ',', '.') }}</h5>
+
                                     </div>
-                                    <div class="card-footer">
+                                    {{-- <div class="card-footer">
                                         <a href="/BillOfMaterial" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Perbarui</button>
-                                    </div>
+                                    </div> --}}
                                 </form>
                             </div>
                         </div>
@@ -191,41 +210,6 @@
         document.getElementById('addBahanButton').addEventListener('click', function() {
             const bahanTabelBody = document.getElementById('bahanTabelBody');
             const newRow = document.createElement('tr');
-
-            newRow.innerHTML = `
-            @foreach ($bahan as $row)
-                <td>
-                    <select class="form-control" name="bahan_id[]" value="{{ $row->id }}">
-                        <option selected>[{{ $row->kode_bahan }}] {{ $row->nama_bahan }}</option>
-                        <option disabled>--Pilih Bahan--</option>
-                        @foreach ($bahan as $row)
-                            <option value="{{ $row->id }}">
-                                [{{ $row->kode_bahan }}] {{ $row->nama_bahan }}
-                            </option>
-                        @endforeach
-                        <!-- Tambahkan opsi bahan lainnya sesuai kebutuhan -->
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="form-control" placeholder="Kuantitas" name="kuantitas[]">
-                </td>
-                <td>
-                    <select class="form-control" name="satuan[]">
-                        <option selected disabled>--Pilih Satuan--</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Liter">Liter</option>
-                        <option value="Pcs">Pcs</option>
-                    </select>
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                    <a class="btn btn-danger delete" style="cursor:pointer;">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </td>
-                @endforeach
-            `;
 
             // Append the new row before the "addBahanRow" row
             bahanTabelBody.insertBefore(newRow, document.getElementById('addBahanRow'));

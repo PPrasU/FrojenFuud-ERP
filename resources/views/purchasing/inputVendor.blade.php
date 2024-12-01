@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="/produk" class="btn btn-default">Batal</a>
+                                        <a href="/Vendor-" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Tambahkan</button>
                                     </div>
                                 </form>

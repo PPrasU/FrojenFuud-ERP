@@ -50,9 +50,18 @@ class BillOfMaterialController extends Controller
     public function editBillOfMaterial($id){
         $produk = Produk::all();
         $bahan = Bahan::all();
-        $bill_of_material_bahan = 
+        $bom = BillOfMaterial::with('bahans')->find($id);
+
+        $totalBoMCost = 0;
+        $totalProductCost = 0;
+
+        foreach ($bom->bahans as $bahan) {
+            $totalBoMCost += $bahan->harga_bahan * $bahan->pivot->kuantitas;
+            $totalProductCost += $bahan->harga_bahan * $bahan->pivot->kuantitas;
+        }
+        
         $data = BillOfMaterial::find($id);
-        return view('manufacturing.editBillOfMaterial', compact('data', 'produk', 'bahan'));
+        return view('manufacturing.editBillOfMaterial', compact('bom', 'produk', 'bahan', 'data'));
     }
 
     public function updateBillOfMaterial(Request $request, $id ){
@@ -101,5 +110,4 @@ class BillOfMaterialController extends Controller
         
         return $pdf->download($fileName);
     }
-
 }

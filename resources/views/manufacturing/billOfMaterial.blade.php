@@ -117,7 +117,6 @@
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
-
                                                 </tr>
                                             @endforeach
                                         </tbody>

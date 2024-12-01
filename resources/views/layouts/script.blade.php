@@ -31,6 +31,9 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('source/dist/js/pages/dashboard.js') }}"></script>
 
+<!-- Select2 -->
+<script src="{{ asset('source/plugins/select2/js/select2.full.min.js') }}"></script>
+
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('source/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('source/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
