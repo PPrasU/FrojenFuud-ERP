@@ -166,12 +166,12 @@
                                     <div class="card-footer">
                                         <a href="/Quotation" class="btn btn-secondary">Kembali</a>
                                         <!-- Tombol Konfirmasi Perubahan hanya tampil jika status bukan 'Sent' -->
-                                        @if ($data->status != 'Sent' && $data->status != 'Cancelled')
+                                        @if ($data->status != 'Sent' && $data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
                                             <button type="submit" class="btn btn-default">Konfirmasi Perubahan</button>
                                         @endif
 
                                         <!-- Tombol Send By Email hanya tampil jika status bukan 'Sent' -->
-                                        @if ($data->status != 'Sent' && $data->status != 'Cancelled')
+                                        @if ($data->status != 'Sent' && $data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
                                             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#emailModal">
                                                 Send By Email
                                             </button>
@@ -181,7 +181,7 @@
                                                 Konfirmasi Quotation
                                             </button>
                                         @endif
-                                        @if ($data->status != 'Cancelled')
+                                        @if ($data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
                                             <button type="submit" class="btn btn-danger" name="batalkan_quotation">
                                                 Batalkan Quotation
                                             </button>
