@@ -6,6 +6,7 @@ use App\Http\Controllers\BahanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\BillOfMaterialController;
 
 
@@ -73,12 +74,6 @@ Route::get('/Vendors/hapus/{id}', [VendorController::class, 'hapusVendor'])->nam
 Route::post('/Vendors/export', [VendorController::class, 'exportVendor'])->name('exportVendor');
 
 
-
-
-
-
-
-
 //====== Customer ========================================================================================
 
 Route::get('/Customer', [CustomerController::class, 'Customer'])->name('Customer');
@@ -88,4 +83,25 @@ Route::get('/Customer/edit/{id}', [CustomerController::class, 'editCustomer'])->
 Route::post('/Customer/update/{id}', [CustomerController::class, 'updateCustomer'])->name('updateCustomer');
 Route::get('/Customer/hapus/{id}', [CustomerController::class, 'hapusCustomer'])->name('hapusCustomer');
 Route::post('/Customer/export', [CustomerController::class, 'exportCustomer'])->name('exportCustomer');
+
+
+//====== Quotation (Sales) ========================================================================================
+
+Route::get('/Quotation', [QuotationController::class, 'Quotation'])->name('Quotation');
+Route::get('/Quotation/input', [QuotationController::class, 'inputQuotation'])->name('inputQuotation');
+Route::post('/Quotation/post', [QuotationController::class, 'postQuotation'])->name('postQuotation');
+Route::get('/Quotation/edit/{id}', [QuotationController::class, 'editQuotation'])->name('editQuotation');
+Route::post('/Quotation/update/{id}', [QuotationController::class, 'updateQuotation'])->name('updateQuotation');
+Route::get('/Quotation/hapus/{id}', [QuotationController::class, 'hapusQuotation'])->name('hapusQuotation');
+Route::post('/Quotation/export', [QuotationController::class, 'exportQuotation'])->name('exportQuotation');
+Route::post('/Quotation/send-email/{id}', [QuotationController::class, 'sendEmail'])->name('Quotation.sendEmail');
+
+
+
+
+
+
+
+
+
 

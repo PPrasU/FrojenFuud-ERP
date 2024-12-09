@@ -214,7 +214,9 @@
                                                     </td>
                                                     <td>{{ $row->harga_produk }}</td>
                                                     <td>{{ $row->harga_produksi }}</td>
-                                                    <td><img src="{{ asset('foto-produk/' . $row->gambar) }}"></td>
+                                                    <td class="d-flex justify-content-center align-items-center p-2 m-3">
+                                                        <img src="{{ asset('foto-produk/' . $row->gambar) }}">
+                                                    </td>
                                                     <td style="text-align: center">
                                                         <a href="/produk/edit/{{ $row->id }}"
                                                             class="btn btn-warning" title="Edit">

@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('nama'); 
-            $table->bigInteger('no_hp');
+            $table->string('no_hp');
             $table->string('alamat_1');
             $table->string('alamat_2');
             $table->string('email');
-            $table->string('kategori'); 
+            $table->string('kategori');
+            $table->bigInteger('pesanan');
+            $table->bigInteger('pembelian');
             $table->timestamps();
         });
     }

@@ -66,7 +66,7 @@
                                                 <div class="form-group">
                                                     <label>Reference</label>
                                                     <input type="text" name="reference" class="form-control"
-                                                        id="referenceInput">
+                                                        id="reference">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -80,7 +80,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Variasi BOM</label>
-                                                    <select class="form-control" name="variasi">
+                                                    <select class="form-control" name="variasi" id="variasi"> 
                                                         <option selected disabled>-- Pilih --</option>
                                                         <option>Manufacture This Product</option>
                                                         <option>Kit</option>
@@ -147,25 +147,23 @@
         @include('layouts/footer')
     </div>
     @include('layouts/script')
+
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
             $('.select2').select2()
             $('#inputBillOfMaterial').validate({
                 rules: {
-                    produk: {
+                    produk_id: {
                         required: true,
                     },
-                    referensi: {
+                    reference: {
                         required: true,
                     },
-                    variasi_produk: {
+                    kuantitas_produk: {
                         required: true,
                     },
-                    kuantitas: {
-                        required: true,
-                    },
-                    satuan: {
+                    variasi: {
                         required: true,
                     },
                 },
