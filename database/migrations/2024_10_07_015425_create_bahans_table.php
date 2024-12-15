@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('kode_bahan');
             $table->string('gambar');
 
-            $table->string('stok_bahan');
+            $table->bigInteger('kuantitas_bahan');
             $table->timestamps();
         });
     }

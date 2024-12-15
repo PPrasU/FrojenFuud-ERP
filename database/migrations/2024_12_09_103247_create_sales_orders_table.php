@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('quotation_id')->constrained('quotations')->onDelete('cascade'); 
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade'); 
+            $table->foreignId('pembayaran_id')->constrained('pembayarans')->onDelete('cascade'); 
+            
+            $table->enum('status', ['To Invoiced', 'Fully Invoiced', 'Cancelled'])->default('To Invoiced'); 
+            $table->enum('pengiriman', ['Belum', 'Tervalidasi', 'Tidak Memenuhi', 'Selesai'])->default('Belum'); 
+            $table->enum('penagihan', ['Belum', 'Sudah Dibuat'])->default('Belum');
             $table->timestamps();
         });
     }

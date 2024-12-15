@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Daftar Quotation</title>
+    <title>FrojenFuud | Daftar Sales Order</title>
     @include('layouts/header')
 
     {{-- CSS untuk tabel --}}
@@ -97,12 +97,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Quotation</h1>
+                            <h1 class="m-0">Orders</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Sales</li>
-                                <li class="breadcrumb-item"><a href="/Quotation">Quotation</a>
+                                <li class="breadcrumb-item"><a href="{{ route('SalesOrder') }}">Orders</a>
                                 </li>
                             </ol>
                         </div>
@@ -117,10 +117,7 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
-                                            <a href="/Quotation/input" class="btn btn-app" style="left: -10px;"
-                                                title="Tambah Data">
-                                                <i class="fas fa-plus"></i> Tambah Data
-                                            </a>
+                                            
                                             @if (count($data) > 0)
                                                 <!-- Tombol untuk membuka modal -->
                                                 <button type="button" class="btn btn-app" style="left: -10px;"
@@ -133,18 +130,17 @@
                                             <div id="exportModal" class="modal">
                                                 <div class="modal-content">
                                                     <div style="margin-left: 0;">
-                                                        <h2>Export Quotation PDF</h2>
+                                                        <h2>Export Sales Order PDF</h2>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!-- Form untuk memilih Quotation yang akan diekspor -->
-                                                        <form action="{{ route('exportQuotation') }}" method="POST"
-                                                            id="exportForm">
+                                                        <!-- Form untuk memilih Sales Order yang akan diekspor -->
+                                                        <form action="{{ route('exportSalesOrder') }}" method="POST" id="exportForm">
                                                             @csrf
                                                             <table>
                                                                 <thead>
                                                                     <tr>
                                                                         <th><input type="checkbox" id="selectAll"></th>
-                                                                        <th>Pilih Semua Quotation</th>
+                                                                        <th>Nomor Sales Order</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -153,12 +149,13 @@
                                                                             <td>
                                                                                 <input type="checkbox" name="items[]" class="itemCheckbox" id="item-{{ $item->id }}" value="{{ $item->id }}">
                                                                             </td>
-                                                                            <td><label for="item-{{ $item->id }}">{{ $item->nomor_quotation }}</label></td>
+                                                                            <td>
+                                                                                <label for="item-{{ $item->id }}">{{ $item->quotation->nomor_quotation }}</label>
+                                                                            </td>
                                                                         </tr>
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
-                                                            
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
@@ -183,64 +180,51 @@
                                     <table id="tableList" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="vertical-align: middle;">Nomor</th>
+                                                <th style="vertical-align: middle;">Nomor Sales Order</th>
                                                 <th style="vertical-align: middle;">Customer</th>
-                                                <th style="vertical-align: middle;">Tanggal Dibuat</th>
-                                                {{-- <th style="vertical-align: middle;">Masa Berlaku</th> --}}
+                                                <th style="vertical-align: middle;">Tanggal Sales Order</th>
                                                 <th style="vertical-align: middle;">Produk</th>
-                                                {{-- <th style="vertical-align: middle;">Jenis Pembayaran</th> --}}
                                                 <th style="vertical-align: middle;">Total</th>
                                                 <th style="vertical-align: middle;">Status </th>
                                                 <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $row)
+                                            @foreach ($data as $salesOrder)
                                                 <tr>
-                                                    <td>{{ $row->nomor_quotation }}</td>
-                                                    <td>{{ $row->customer->nama }}</td>
-                                                    <td>{{ $row->tanggal_quotation }}</td>
-                                                    {{-- <td>{{ $row->berlaku_hingga }}</td> --}}
+                                                    <td>{{ $salesOrder->quotation->nomor_quotation }}</td>
+                                                    <td>{{ $salesOrder->customer->nama }}</td>
+                                                    <td>{{ $salesOrder->quotation->tanggal_quotation }}</td>
                                                     <td>
                                                         <ul>
-                                                            @foreach ($row->produks as $produk)
+                                                            @foreach ($salesOrder->quotation->produks as $produk)
                                                                 <li>
                                                                     {{ $produk->nama_produk }},  
                                                                     {{ $produk->pivot->kuantitas }} Pcs 
                                                                 </li>
                                                             @endforeach
-                                                            {{-- @foreach ($row->produks as $produk)
-                                                                <li>
-                                                                    {{ $produk->nama_produk }},  
-                                                                    {{ $produk->pivot->kuantitas }} Pcs --->  
-                                                                    Rp{{ number_format($produk->pivot->subtotal, 0, ',', '.') }}
-                                                                </li>
-                                                            @endforeach --}}
                                                         </ul>
                                                     </td>
-                                                    {{-- <td>{{ $row->pembayaran->jenis_pembayaran }}</td> --}}
-                                                    <td>Rp{{ number_format($row->total_keseluruhan, 0, ',', '.') }}</td>
+                                                    <td>Rp{{ number_format($salesOrder->quotation->total_keseluruhan, 0, ',', '.') }}</td>
                                                     <td class="badge 
-                                                        @if ($row->status == 'Draft')
+                                                        @if ($salesOrder->status == 'To Invoiced')
                                                             bg-secondary
-                                                        @elseif ($row->status == 'Sent')
-                                                            bg-info
-                                                        @elseif ($row->status == 'Confirmed to Sales Order')
+                                                        @elseif ($salesOrder->status == 'Fully Invoiced')
                                                             bg-success
-                                                        @elseif ($row->status == 'Cancelled')
+                                                        @elseif ($salesOrder->status == 'Cancelled')
                                                             bg-danger
                                                         @endif
                                                         d-flex justify-content-center align-items-center p-2 m-3">
-                                                        {{ $row->status }}
+                                                        {{ $salesOrder->status }}
                                                     </td>
                                                     <td style="text-align: center">
-                                                        <a href="/Quotation/edit/{{ $row->id }}"
+                                                        <a href="/SalesOrder/edit/{{ $salesOrder->id }}"
                                                             class="btn btn-warning" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a href="#" class="btn btn-danger delete"
-                                                            data-id="{{ $row->id }}"
-                                                            data-nomor_quotation="{{ $row->nomor_quotation }}" title="Hapus">
+                                                            data-id="{{ $salesOrder->id }}"
+                                                            title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
@@ -255,11 +239,9 @@
                                                 <div class="small-box">
                                                     <div class="ribbon-wrapper ribbon-xl">
                                                         <div class="ribbon 
-                                                            @if ($row->status == 'Draft')
+                                                            @if ($row->status == 'To Invoiced')
                                                                 bg-secondary
-                                                            @elseif ($row->status == 'Sent')
-                                                                bg-info
-                                                            @elseif ($row->status == 'Confirmed to Sales Order')
+                                                            @elseif ($row->status == 'Fully Invoiced')
                                                                 bg-success
                                                             @elseif ($row->status == 'Cancelled')
                                                                 bg-danger
@@ -268,21 +250,22 @@
                                                             {{ $row->status }}
                                                         </div>
                                                     </div>
-                                                    <h4 style="font-weight: bold; padding: 6px; margin-left: 6px; margin-top: 6px">{{ $row->nomor_quotation }}</h4>
+                                                    <h4 style="font-weight: bold; padding: 6px; margin-left: 6px; margin-top: 6px">{{ $row->quotation->nomor_quotation }}</h4>
                                                     <div class="inner">
                                                         <div class="inner d-flex justify-content-between align-items-center">
                                                             <p style="font-weight: bold; margin: 0; text-align: right;">
-                                                                {{ \Carbon\Carbon::parse($row->tanggal_quotation)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($row->berlaku_hingga)->format('d-m-Y') }}
+                                                                {{ \Carbon\Carbon::parse($row->quotation->tanggal_quotation)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($row->berlaku_hingga)->format('d-m-Y') }}
                                                             </p>
                                                         </div>
                                                         <br>
                                                         <p>Customer: {{ $row->customer->nama }}</p>
-                                                        <p>Rp{{ number_format($row->total_keseluruhan, 0, ',', '.') }}</p>
+                                                        <p>Rp{{ number_format($row->quotation->total_keseluruhan, 0, ',', '.') }}</p>
+
                                                         <div style="text-align: right;">
-                                                            <a href="/Quotation/edit/{{ $row->id }}" class="btn btn-warning" title="Edit">
+                                                            <a href="/SaslesOrder/edit/{{ $row->id }}" class="btn btn-warning" title="Edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            <a class="btn btn-danger delete" data-id="{{ $row->id }}" data-nomor_quotation="{{ $row->nomor_quotation }}" title="Hapus">
+                                                            <a class="btn btn-danger delete" data-id="{{ $row->id }}" data-nomor_sales_order="{{ $row->nomor_sales_order }}" title="Hapus">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
                                                         </div>
@@ -322,15 +305,14 @@
                 var id = $(this).data('id');
                 // Tambahkan logika untuk tombol edit
                 console.log('Edit ID:', id);
-                window.location.href = '/Quotation/edit/' + id;
+                window.location.href = '/SalesOrder/edit/' + id;
             });
 
             $('#tableList').on('click', '.delete', function() {
                 var id = $(this).attr('data-id');
-                var nomor_quotation = $(this).attr('data-nomor_quotation');
                 Swal.fire({
                     title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                    text: "Data quotation " + nomor_quotation + " Akan Dihapus",
+                    text: "Data Sales Order Akan Dihapus",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -342,7 +324,7 @@
                             'Terhapus!',
                             'Data Telah Terhapus!',
                             'success',
-                            window.location = "/Quotation/hapus/" + id + "",
+                            window.location = "/SalesOrder/hapus/" + id + "",
                         )
                     }
                 });

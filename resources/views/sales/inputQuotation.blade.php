@@ -367,7 +367,7 @@
     
                 // Hitung total
                 const pajakRate = parseInt(pajakSelect.val()) || 0; // Persentase pajak
-                const total = kuantitas * (hargaProduk || 0) * (1 + pajakRate / 100);
+                const total = kuantitas * (hargaProduk || 0);
                 row.find(".total-input").val(total); // Total dengan format Rp.
             });
     
@@ -381,7 +381,7 @@
                 const kuantitas = parseInt(row.find(".kuantitas-input").val()) || 1;
                 const pajakRate = parseInt($(this).val()) || 0;
     
-                const total = kuantitas * hargaProduk * (1 + pajakRate / 100);
+                const total = kuantitas * hargaProduk;
                 row.find(".total-input").val(total);
             });
 
@@ -397,7 +397,7 @@
 
                 // Update Harga Satuan dan Subtotal di baris
                 row.find(".harga-input").val(formatRupiah(hargaProduk));
-                row.find(".total-input").val(subtotal + pajak);
+                row.find(".total-input").val(subtotal);
 
                 // Update Total Keseluruhan
                 updateTotals();
@@ -434,7 +434,7 @@
                     const total = subtotal + pajak; // Total dengan pajak
 
                     row.find(".harga-input").val(harga);
-                    row.find(".total-input").val(total);
+                    row.find(".total-input").val(subtotal);
 
                     totalSebelumPajak += subtotal;
                     totalPajak += pajak;

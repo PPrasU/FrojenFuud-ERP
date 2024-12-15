@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SalesOrder extends Model
+class SalesInvoice extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
     public function quotation(){
         return $this->belongsTo('App\Models\Quotation');
+    }
+    public function salesOrder(){
+        return $this->belongsTo('App\Models\SalesOrder');
     }
     public function customer(){
         return $this->belongsTo('App\Models\Customer');
@@ -20,8 +23,6 @@ class SalesOrder extends Model
         return $this->belongsTo('App\Models\Pembayaran');
     }
     public function produk(){
-        return $this->belongsToMany(Produk::class, 'sales_order_items')
-                    ->withPivot('kuantitas', 'harga', 'tax', 'subtotal')
-                    ->withTimestamps();
+        return $this->belongsTo('App\Models\Produk');
     }
 }

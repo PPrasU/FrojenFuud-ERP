@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Models\Customer;
 use App\Models\Quotation;
-use App\Models\QuotationItem;
 use App\Models\Pembayaran;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Barryvdh\Snappy\Facades\SnappyPdf;
+use App\Models\SalesOrder;
 use App\Mail\QuotationMail;
+use Illuminate\Http\Request;
+use App\Models\QuotationItem;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 
 class QuotationController extends Controller
@@ -103,12 +104,21 @@ class QuotationController extends Controller
             $quotation->update(['status' => 'Sent']);
             return redirect()->route('Quotation')->with('Success', 'Status Quotation Menjadi Sent');
         } elseif ($request->has('confirm_quotation')) {
+            $salesOrder = SalesOrder::create([
+                'customer_id' => $quotation->customer_id,
+                'quotation_id' => $quotation->id,
+                'pembayaran_id' => $quotation->pembayaran_id,
+            ]);
             $quotation->update(['status' => 'Confirmed to Sales Order']);
             return redirect()->route('Quotation')->with('Success', 'Status Quotation Sudah Dikonfirmasi Ke Sales Order');
         } elseif ($request->has('batalkan_quotation')) {
             $quotation->update(['status' => 'Cancelled']);
             return redirect()->route('Quotation')->with('Success', 'Status Quotation Dibatalkan');
-        }
+        } elseif ($request->has('confirm_changes')) {
+            $quotation->update(['status' => 'Draft']);
+            return redirect()->route('editQuotation', ['id' => $quotation->id])
+                ->with('Success', 'Berhasil Dilakukan Perubahan');
+        }        
     }
 
     public function hapusQuotation($id){
@@ -130,10 +140,6 @@ class QuotationController extends Controller
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
 
-        $nomorQuotation = $data->first()->nomor_quotation;
-        $tanggal = date('d-m-Y');
-        $fileName = "Quotation-{$nomorQuotation} ({$tanggal}).pdf";
-
         $options = [
             'margin-top' => 10,
             'margin-right' => 10,
@@ -148,11 +154,11 @@ class QuotationController extends Controller
             ->setOptions($options)
             ->setPaper('a4', 'portrait');
 
-        $filePath = public_path('uploads/' . $fileName);
+        $nomorQuotation = $data->first()->nomor_quotation;
+        $tanggal = date('d-m-Y');
+        $fileName = "Quotation-{$nomorQuotation} ({$tanggal}).pdf";
 
-        $pdf->save($filePath);
-
-        return redirect()->route('Quotation')->with('Success', 'Quotation berhasil diexport ke PDF')->with('filePath', asset('uploads/' . $fileName));
+        return $pdf->download($fileName);
     }
     
     // public function sendEmail(Request $request, $id) {

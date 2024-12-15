@@ -42,4 +42,8 @@ class Quotation extends Model{
                     ->withPivot('kuantitas', 'harga', 'tax', 'subtotal')
                     ->withTimestamps();
     }
+
+    public function salesOrder(){
+        return $this->hasOne('App\Models\SalesOrder');
+    }
 }

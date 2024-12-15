@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('tanggal_quotation'); 
             $table->date('berlaku_hingga')->nullable(); 
             $table->enum('status', ['Draft', 'Sent', 'Confirmed to Sales Order', 'Cancelled'])->default('Draft'); 
-            $table->foreignId('pembayaran_id')->constrained('pembayarans')->onDelete('cascade'); 
+            $table->foreignId('pembayaran_id')->constrained('pembayarans')->onDelete('cascade');
             $table->decimal('total_sebelum_pajak', 15, 4)->default(0);
             $table->decimal('total_pajak', 15, 4)->default(0);
             $table->decimal('total_keseluruhan', 15, 4)->default(0);

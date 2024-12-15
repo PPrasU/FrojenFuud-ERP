@@ -7,6 +7,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\BillOfMaterialController;
 
 
@@ -40,7 +42,6 @@ Route::post('/produk/export', [ProdukController::class, 'exportProduk'])->name('
 // });
 
 //====== Bahan Baku ========================================================================================
-
 Route::get('/bahan-baku', [BahanController::class, 'Bahan'])->name('Bahan');
 Route::get('/bahan-baku/input', [BahanController::class, 'inputBahan'])->name('inputBahan');
 Route::post('/bahan-baku/post', [BahanController::class, 'postBahan'])->name('postBahan');
@@ -54,7 +55,6 @@ Route::post('/bahan-baku/export', [BahanController::class, 'exportBahan'])->name
 // });
 
 //====== BillOfMaterial ========================================================================================
-
 Route::get('/BillOfMaterial', [BillOfMaterialController::class, 'BillOfMaterial'])->name('BillOfMaterial');
 Route::get('/BillOfMaterial/input', [BillOfMaterialController::class, 'inputBillOfMaterial'])->name('inputBillOfMaterial');
 Route::post('/BillOfMaterial/post', [BillOfMaterialController::class, 'postBillOfMaterial'])->name('postBillOfMaterial');
@@ -64,7 +64,6 @@ Route::get('/BillOfMaterial/hapus/{id}', [BillOfMaterialController::class, 'hapu
 Route::post('/BillOfMaterial/export', [BillOfMaterialController::class, 'exportBillOfMaterial'])->name('exportBillOfMaterial');
 
 //====== Vendor ========================================================================================
-
 Route::get('/Vendors', [VendorController::class, 'Vendor'])->name('Vendor');
 Route::get('/Vendors/input', [VendorController::class, 'inputVendor'])->name('inputVendor');
 Route::post('/Vendors/post', [VendorController::class, 'postVendor'])->name('postVendor');
@@ -75,7 +74,6 @@ Route::post('/Vendors/export', [VendorController::class, 'exportVendor'])->name(
 
 
 //====== Customer ========================================================================================
-
 Route::get('/Customer', [CustomerController::class, 'Customer'])->name('Customer');
 Route::get('/Customer/input', [CustomerController::class, 'inputCustomer'])->name('inputCustomer');
 Route::post('/Customer/post', [CustomerController::class, 'postCustomer'])->name('postCustomer');
@@ -86,7 +84,6 @@ Route::post('/Customer/export', [CustomerController::class, 'exportCustomer'])->
 
 
 //====== Quotation (Sales) ========================================================================================
-
 Route::get('/Quotation', [QuotationController::class, 'Quotation'])->name('Quotation');
 Route::get('/Quotation/input', [QuotationController::class, 'inputQuotation'])->name('inputQuotation');
 Route::post('/Quotation/post', [QuotationController::class, 'postQuotation'])->name('postQuotation');
@@ -96,12 +93,17 @@ Route::get('/Quotation/hapus/{id}', [QuotationController::class, 'hapusQuotation
 Route::post('/Quotation/export', [QuotationController::class, 'exportQuotation'])->name('exportQuotation');
 Route::post('/Quotation/send-email/{id}', [QuotationController::class, 'sendEmail'])->name('Quotation.sendEmail');
 
+//======= Sales Order ===============================================================================================
+Route::get('/SalesOrder', [SalesOrderController::class, 'SalesOrder'])->name('SalesOrder');
+Route::get('/SalesOrder/edit/{id}', [SalesOrderController::class, 'editSalesOrder'])->name('editSalesOrder');
+Route::post('/SalesOrder/update/{id}', [SalesOrderController::class, 'updateSalesOrder'])->name('updateSalesOrder');
+Route::get('/SalesOrder/hapus/{id}', [SalesOrderController::class, 'hapusSalesOrder'])->name('hapusSalesOrder');
+Route::post('/SalesOrder/export', [SalesOrderController::class, 'exportSalesOrder'])->name('exportSalesOrder');
+Route::get('/a', [SalesOrderController::class, 'a'])->name('a');
 
-
-
-
-
-
-
-
-
+//======= Sales Invoice ===============================================================================================
+Route::get('/SalesInvoice', [SalesInvoiceController::class, 'SalesInvoice'])->name('SalesInvoice');
+Route::get('/SalesInvoice/edit/{id}', [SalesInvoiceController::class, 'editSalesInvoice'])->name('editSalesInvoice');
+Route::post('/SalesInvoice/update/{id}', [SalesInvoiceController::class, 'updateSalesInvoice'])->name('updateSalesInvoice');
+Route::get('/SalesInvoice/hapus/{id}', [SalesInvoiceController::class, 'hapusSalesInvoice'])->name('hapusSalesInvoice');
+Route::post('/SalesInvoice/export', [SalesInvoiceController::class, 'exportSalesInvoice'])->name('exportSalesInvoice');

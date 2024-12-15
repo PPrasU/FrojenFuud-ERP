@@ -25,7 +25,7 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Sales</li>
                                 <li class="breadcrumb-item"><a href="/Quotation">Quotation</a>
-                                <li class="breadcrumb-item"><a href="/Quotation/edit">Edit Quotation</a>
+                                <li class="breadcrumb-item"><a href="/Quotation/edit/{{ $data->id }}">Edit Quotation</a>
                                 </li>
                             </ol>
                         </div>
@@ -42,6 +42,20 @@
                                 <form action="/Quotation/update/{{ $data->id }}" method="POST" enctype="multipart/form-data"
                                     id="editQuotation">
                                     @csrf
+                                    @if ($data->status == 'Confirmed to Sales Order')
+                                        <div class="ribbon-wrapper ribbon-xl">
+                                            <div class="ribbon bg-success p-2 mt-1">
+                                                {{ $data->status }}
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if ($data->status == 'Cancelled')
+                                        <div class="ribbon-wrapper ribbon-xl">
+                                            <div class="ribbon bg-danger p-2 mt-1">
+                                                {{ $data->status }}
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -107,7 +121,9 @@
                                                     <th>Harga Satuan</th>
                                                     <th>Pajak (%)</th>
                                                     <th>subtotal</th>
-                                                    <th>Aksi</th>
+                                                    @if ($data->status != 'Sent' && $data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
+                                                        <th>Aksi</th>
+                                                    @endif
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -127,7 +143,7 @@
                                                                 @endforeach
                                                             </select>                                                            
                                                         </td>
-                                                        <td><input type="number" class="form-control" name="kuantitas[]" value="{{ $produk->pivot->kuantitas }}"></td>
+                                                        <td><input type="number" class="form-control" name="kuantitas[]" value="{{ $produk->pivot->kuantitas }}" min="0"></td>
                                                         <td><input type="text" class="form-control" name="harga[]" readonly value="{{ number_format($produk->pivot->harga, 0, ',', '') }}"></td>
                                                         <td>
                                                             <select class="form-control pajak-select" name="tax[]">
@@ -141,14 +157,21 @@
                                                             <input type="hidden" class="form-control" name="tax_hidden[]" value="{{ $produk->pivot->tax }}">
                                                         </td>                                                                                                                                                                     
                                                         <td><input type="text" class="form-control" name="subtotal[]" readonly value="{{ number_format($produk->pivot->subtotal, 0, ',', '') }}"></td>
-                                                        <td><a class="btn btn-danger delete" style="cursor:pointer;"><i class="fas fa-trash" style="color: white"></i></a></td>
+                                                        @if ($data->status != 'Sent' && $data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
+                                                            <td><a class="btn btn-danger delete" style="cursor:pointer;"><i class="fas fa-trash" style="color: white"></i></a></td>
+                                                        @endif
+                                                        {{-- <input class="form-check-input" type="checkbox"> --}}
                                                     </tr>
                                                 @endforeach
-                                                <tr id="addProdukRow">
-                                                    <td colspan="5"><button type="button" id="addProdukButton"
-                                                            class="btn btn-primary">+ Tambah Produk</button>
-                                                    </td>
-                                                </tr>
+                                                @if ($data->status == 'Sent' || $data->status == 'Cancelled' || $data->status == 'Confirmed to Sales Order')
+                                                    <!-- Tidak menampilkan tombol jika status adalah Sent, Cancelled, atau Confirmed to Sales Order -->
+                                                @else
+                                                    @if ($data->status == 'Draft')
+                                                        <tr id="addProdukRow">
+                                                            <td colspan="5"><button type="button" id="addProdukButton" class="btn btn-primary">+ Tambah Produk</button></td>
+                                                        </tr>
+                                                    @endif
+                                                @endif
                                             </tbody>
                                         </table>
                                         <p style="text-align: right">=====================================</p>
@@ -167,7 +190,9 @@
                                         <a href="/Quotation" class="btn btn-secondary">Kembali</a>
                                         <!-- Tombol Konfirmasi Perubahan hanya tampil jika status bukan 'Sent' -->
                                         @if ($data->status != 'Sent' && $data->status != 'Cancelled' && $data->status != 'Confirmed to Sales Order')
-                                            <button type="submit" class="btn btn-default">Konfirmasi Perubahan</button>
+                                            <button type="submit" class="btn btn-default" name="confirm_changes">
+                                                Konfirmasi Perubahan
+                                            </button>
                                         @endif
 
                                         <!-- Tombol Send By Email hanya tampil jika status bukan 'Sent' -->
@@ -176,6 +201,7 @@
                                                 Send By Email
                                             </button>
                                         @endif
+                                        
                                         @if ($data->status != 'Confirmed to Sales Order' && $data->status != 'Cancelled')
                                             <button type="submit" class="btn btn-success" name="confirm_quotation">
                                                 Konfirmasi Quotation
@@ -220,6 +246,13 @@
                         <div class="form-group">
                             <label for="emailBody">Message:</label>
                             <textarea id="emailBody" name="emailBody" class="form-control" style="height: 200px;" placeholder="Type your message here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn btn-default btn-file">
+                                <i class="fas fa-paperclip"></i> Attachment
+                                <input type="file" name="attachment">
+                            </div>
+                            <p class="help-block">Max. 32MB</p>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">
@@ -386,69 +419,6 @@
 
    </script>
 
-   {{-- menghitung subtotal, pajak, total tanpa pajak, dan total keseluruhan --}}
-   {{-- <script>
-    $(document).ready(function () {
-        // Fungsi untuk menghitung subtotal, total sebelum pajak, total pajak, dan total keseluruhan
-        function calculateTotals() {
-            let totalSebelumPajak = 0;
-            let totalPajak = 0;
-
-            console.log("=== Menghitung Total ===");
-            $("#produkTabel tbody tr").each(function () {
-                const kuantitas = parseFloat($(this).find("input[name='kuantitas[]']").val()) || 0;
-                const harga = parseFloat($(this).find("input[name='harga[]']").val().replace(/,/g, '')) || 0;
-                const tax = parseFloat($(this).find("select[name='tax[]']").val()) || 0;
-
-                console.log(`Kuantitas: ${kuantitas}, Harga: ${harga}, Pajak: ${tax}`);
-
-                const subtotal = kuantitas * harga;
-                const pajakSubtotal = subtotal * (tax / 100);
-
-                console.log(`Subtotal: ${subtotal}, Pajak Subtotal: ${pajakSubtotal}`);
-
-                // Perbarui kolom subtotal
-                $(this).find("input[name='subtotal[]']").val((subtotal + pajakSubtotal).toFixed(2));
-
-                totalSebelumPajak += subtotal;
-                totalPajak += pajakSubtotal;
-            });
-
-            const totalKeseluruhan = totalSebelumPajak + totalPajak;
-
-            console.log(`Total Sebelum Pajak: ${totalSebelumPajak}, Total Pajak: ${totalPajak}, Total Keseluruhan: ${totalKeseluruhan}`);
-
-            // Perbarui elemen HTML
-            $("#totalSebelumPajak").text(`Rp. ${totalSebelumPajak.toLocaleString()}`);
-            $("#totalPajak").text(`Rp. ${totalPajak.toLocaleString()}`);
-            $("#totalKeseluruhan").text(`Rp. ${totalKeseluruhan.toLocaleString()}`);
-
-            // Perbarui input tersembunyi
-            $("#totalSebelumPajak_inputdisplay").val(totalSebelumPajak.toFixed(2));
-            $("#totalPajak_inputdisplay").val(totalPajak.toFixed(2));
-            $("#totalKeseluruhan_inputdisplay").val(totalKeseluruhan.toFixed(2));
-        }
-        // Event ketika kuantitas, harga, atau pajak berubah
-        $(document).on("input change", "input[name='kuantitas[]'], input[name='harga[]'], select[name='tax[]']", function () {
-            calculateTotals();
-        });
-
-        // Event tombol delete
-        $(document).on("click", ".delete", function () {
-            $(this).closest("tr").remove(); // Hapus baris tabel
-            calculateTotals(); // Hitung ulang total setelah baris dihapus
-        });
-
-        // Hitung ulang total ketika halaman selesai dimuat
-        $(document).ready(function () {
-            calculateTotals();
-        });
-
-        calculateTotals();
-        console.log("Script berhasil dimuat");
-    });
-   </script> --}}
-
    {{-- script menghitung subtotal, total tanpa pajak, total pajak, dan total keseluruhan --}}
    <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -464,7 +434,7 @@
                     const subtotalInput = row.querySelector('input[name="subtotal[]"]');
 
                     const subtotal = kuantitas * harga;
-                    subtotalInput.value = subtotal.toLocaleString('id-ID');
+                    subtotalInput.value = subtotal;
 
                     const pajak = (subtotal * tax) / 100;
                     totalSebelumPajak += subtotal;

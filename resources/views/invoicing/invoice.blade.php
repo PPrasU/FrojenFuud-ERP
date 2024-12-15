@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>FrojenFuud | Daftar Quotation</title>
+    <title>FrojenFuud | Daftar Sales Invoice</title>
     @include('layouts/header')
 
     {{-- CSS untuk tabel --}}
@@ -97,12 +97,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Quotation</h1>
+                            <h1 class="m-0">Sales Invoice</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Sales</li>
-                                <li class="breadcrumb-item"><a href="/Quotation">Quotation</a>
+                                <li class="breadcrumb-item">Invoice</li>
+                                <li class="breadcrumb-item"><a href="{{ route('SalesInvoice') }}">Sales Invoice</a>
                                 </li>
                             </ol>
                         </div>
@@ -117,10 +117,6 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-sm-6">
-                                            <a href="/Quotation/input" class="btn btn-app" style="left: -10px;"
-                                                title="Tambah Data">
-                                                <i class="fas fa-plus"></i> Tambah Data
-                                            </a>
                                             @if (count($data) > 0)
                                                 <!-- Tombol untuk membuka modal -->
                                                 <button type="button" class="btn btn-app" style="left: -10px;"
@@ -133,18 +129,17 @@
                                             <div id="exportModal" class="modal">
                                                 <div class="modal-content">
                                                     <div style="margin-left: 0;">
-                                                        <h2>Export Quotation PDF</h2>
+                                                        <h2>Export Sales Invoice PDF</h2>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!-- Form untuk memilih Quotation yang akan diekspor -->
-                                                        <form action="{{ route('exportQuotation') }}" method="POST"
-                                                            id="exportForm">
+                                                        <!-- Form untuk memilih Sales Invoice yang akan diekspor -->
+                                                        <form action="{{ route('exportSalesInvoice') }}" method="POST" id="exportForm">
                                                             @csrf
                                                             <table>
                                                                 <thead>
                                                                     <tr>
                                                                         <th><input type="checkbox" id="selectAll"></th>
-                                                                        <th>Pilih Semua Quotation</th>
+                                                                        <th>Pilih Semua</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -153,12 +148,13 @@
                                                                             <td>
                                                                                 <input type="checkbox" name="items[]" class="itemCheckbox" id="item-{{ $item->id }}" value="{{ $item->id }}">
                                                                             </td>
-                                                                            <td><label for="item-{{ $item->id }}">{{ $item->nomor_quotation }}</label></td>
+                                                                            <td>
+                                                                                <label for="item-{{ $item->id }}">{{ $item->nomor_invoice }}</label>
+                                                                            </td>
                                                                         </tr>
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
-                                                            
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
@@ -183,64 +179,55 @@
                                     <table id="tableList" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="vertical-align: middle;">Nomor</th>
+                                                <th style="vertical-align: middle;">Nomor Invoice</th>
                                                 <th style="vertical-align: middle;">Customer</th>
-                                                <th style="vertical-align: middle;">Tanggal Dibuat</th>
-                                                {{-- <th style="vertical-align: middle;">Masa Berlaku</th> --}}
+                                                <th style="vertical-align: middle;">Tanggal Invoice</th>
+                                                <th style="vertical-align: middle;">Tanggal Pembayaran</th>
                                                 <th style="vertical-align: middle;">Produk</th>
-                                                {{-- <th style="vertical-align: middle;">Jenis Pembayaran</th> --}}
                                                 <th style="vertical-align: middle;">Total</th>
                                                 <th style="vertical-align: middle;">Status </th>
                                                 <th style="vertical-align: middle;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $row)
+                                            @foreach ($data as $salesInvoice)
                                                 <tr>
-                                                    <td>{{ $row->nomor_quotation }}</td>
-                                                    <td>{{ $row->customer->nama }}</td>
-                                                    <td>{{ $row->tanggal_quotation }}</td>
-                                                    {{-- <td>{{ $row->berlaku_hingga }}</td> --}}
+                                                    <td>{{ $salesInvoice->nomor_invoice }}</td>
+                                                    <td>{{ $salesInvoice->customer->nama }}</td>
+                                                    <td>{{ $salesInvoice->tanggal_invoice }}</td>
+                                                    <td>{{ $salesInvoice->tanggal_pembayaran_invoice }}</td>
                                                     <td>
                                                         <ul>
-                                                            @foreach ($row->produks as $produk)
+                                                            @foreach ($salesInvoice->quotation->produks as $produk)
                                                                 <li>
                                                                     {{ $produk->nama_produk }},  
                                                                     {{ $produk->pivot->kuantitas }} Pcs 
                                                                 </li>
                                                             @endforeach
-                                                            {{-- @foreach ($row->produks as $produk)
-                                                                <li>
-                                                                    {{ $produk->nama_produk }},  
-                                                                    {{ $produk->pivot->kuantitas }} Pcs --->  
-                                                                    Rp{{ number_format($produk->pivot->subtotal, 0, ',', '.') }}
-                                                                </li>
-                                                            @endforeach --}}
                                                         </ul>
                                                     </td>
-                                                    {{-- <td>{{ $row->pembayaran->jenis_pembayaran }}</td> --}}
-                                                    <td>Rp{{ number_format($row->total_keseluruhan, 0, ',', '.') }}</td>
+                                                    <td>Rp{{ number_format($salesInvoice->quotation->total_keseluruhan, 0, ',', '.') }}</td>
                                                     <td class="badge 
-                                                        @if ($row->status == 'Draft')
+                                                        @if ($salesInvoice->status == 'Draft')
                                                             bg-secondary
-                                                        @elseif ($row->status == 'Sent')
-                                                            bg-info
-                                                        @elseif ($row->status == 'Confirmed to Sales Order')
+                                                        @elseif ($salesInvoice->status == 'Not Paid')
+                                                            bg-danger
+                                                        @elseif ($salesInvoice->status == 'Paid')
                                                             bg-success
-                                                        @elseif ($row->status == 'Cancelled')
+                                                        @elseif ($salesInvoice->status == 'Cancelled')
                                                             bg-danger
                                                         @endif
                                                         d-flex justify-content-center align-items-center p-2 m-3">
-                                                        {{ $row->status }}
+                                                        {{ $salesInvoice->status }}
                                                     </td>
                                                     <td style="text-align: center">
-                                                        <a href="/Quotation/edit/{{ $row->id }}"
+                                                        <a href="/SalesInvoice/edit/{{ $salesInvoice->id }}"
                                                             class="btn btn-warning" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a href="#" class="btn btn-danger delete"
-                                                            data-id="{{ $row->id }}"
-                                                            data-nomor_quotation="{{ $row->nomor_quotation }}" title="Hapus">
+                                                            data-id="{{ $salesInvoice->id }}"
+                                                            data-nomor_invoice="{{ $salesInvoice->nomor_invoice }}" title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
@@ -256,10 +243,10 @@
                                                     <div class="ribbon-wrapper ribbon-xl">
                                                         <div class="ribbon 
                                                             @if ($row->status == 'Draft')
-                                                                bg-secondary
-                                                            @elseif ($row->status == 'Sent')
-                                                                bg-info
-                                                            @elseif ($row->status == 'Confirmed to Sales Order')
+                                                                bg-danger
+                                                            @elseif ($row->status == 'Not Paid')
+                                                                bg-danger
+                                                            @elseif ($row->status == 'Paid')
                                                                 bg-success
                                                             @elseif ($row->status == 'Cancelled')
                                                                 bg-danger
@@ -268,21 +255,21 @@
                                                             {{ $row->status }}
                                                         </div>
                                                     </div>
-                                                    <h4 style="font-weight: bold; padding: 6px; margin-left: 6px; margin-top: 6px">{{ $row->nomor_quotation }}</h4>
+                                                    <h4 style="font-weight: bold; padding: 6px; margin-left: 6px; margin-top: 6px">{{ $row->nomor_invoice }}</h4>
                                                     <div class="inner">
                                                         <div class="inner d-flex justify-content-between align-items-center">
                                                             <p style="font-weight: bold; margin: 0; text-align: right;">
-                                                                {{ \Carbon\Carbon::parse($row->tanggal_quotation)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($row->berlaku_hingga)->format('d-m-Y') }}
+                                                                {{ \Carbon\Carbon::parse($row->quotation->tanggal_quotation)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($row->berlaku_hingga)->format('d-m-Y') }}
                                                             </p>
                                                         </div>
                                                         <br>
                                                         <p>Customer: {{ $row->customer->nama }}</p>
-                                                        <p>Rp{{ number_format($row->total_keseluruhan, 0, ',', '.') }}</p>
+                                                        <p>Rp{{ number_format($row->quotation->total_keseluruhan, 0, ',', '.') }}</p>
                                                         <div style="text-align: right;">
-                                                            <a href="/Quotation/edit/{{ $row->id }}" class="btn btn-warning" title="Edit">
+                                                            <a href="/SaslesOrder/edit/{{ $row->id }}" class="btn btn-warning" title="Edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            <a class="btn btn-danger delete" data-id="{{ $row->id }}" data-nomor_quotation="{{ $row->nomor_quotation }}" title="Hapus">
+                                                            <a class="btn btn-danger delete" data-id="{{ $row->id }}" data-nomor_invoice="{{ $row->nomor_invoice }}" title="Hapus">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
                                                         </div>
@@ -322,15 +309,38 @@
                 var id = $(this).data('id');
                 // Tambahkan logika untuk tombol edit
                 console.log('Edit ID:', id);
-                window.location.href = '/Quotation/edit/' + id;
+                window.location.href = '/SalesInvoice/edit/' + id;
             });
+
+            // $('#tableList').on('click', '.delete', function() {
+            //     var id = $(this).data('id'); // Menggunakan data() untuk data-id
+            //     var nomor_invoice = $(this).data('nomor_invoice'); // Menggunakan data() untuk data-nomor_invoice
+            //     Swal.fire({
+            //         title: 'Apakah Kamu Ingin Menghapus Data Ini?',
+            //         text: "Data Order Dengan Nomor " + nomor_invoice + " Akan Dihapus", // nomor_invoice akan tampil dengan benar
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         cancelButtonColor: '#d33',
+            //         confirmButtonText: 'Iya!'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             Swal.fire(
+            //                 'Terhapus!',
+            //                 'Data Telah Terhapus!',
+            //                 'success',
+            //                 window.location = "/SalesInvoice/hapus/" + id;
+            //             )
+            //         }
+            //     });
+            // });
 
             $('#tableList').on('click', '.delete', function() {
                 var id = $(this).attr('data-id');
-                var nomor_quotation = $(this).attr('data-nomor_quotation');
+                var nomor_invoice = $(this).data('nomor_invoice');
                 Swal.fire({
                     title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                    text: "Data quotation " + nomor_quotation + " Akan Dihapus",
+                    text: "Data Order Dengan Nomor " + nomor_invoice + " Akan Dihapus",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -342,7 +352,7 @@
                             'Terhapus!',
                             'Data Telah Terhapus!',
                             'success',
-                            window.location = "/Quotation/hapus/" + id + "",
+                            window.location = "/SalesInvoice/hapus/" + id + "",
                         )
                     }
                 });

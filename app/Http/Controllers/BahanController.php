@@ -88,8 +88,6 @@ class BahanController extends Controller
         $pdf = SnappyPdf::loadView('export.exportBahan', compact('data'))
                         ->setOptions($options)
                         ->setPaper('a4', 'landscape');
-        
-
 
         $dateTime = date('d-m-Y  h:i:s');
         $fileName = "Laporan Bahan - {$dateTime}.pdf";
