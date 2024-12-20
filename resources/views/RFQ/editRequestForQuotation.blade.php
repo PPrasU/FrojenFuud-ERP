@@ -141,25 +141,36 @@
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <td><input type="number" class="form-control" name="kuantitas[]" value="{{ $bahan->pivot->kuantitas }}"></td>
+                                                    <td>
+                                                        <input type="number" class="form-control kuantitas" name="kuantitas[]" value="{{ $bahan->pivot->kuantitas }}" oninput="updateTotal()">
+                                                    </td>
                                                     <td><input type="text" class="form-control" name="satuan[]" readonly value="{{ $bahan->satuan }}"></td>
                                                     <td><input type="text" class="form-control" name="tax[]" readonly value="{{ $bahan->pivot->tax }}"></td>
-                                                    <td><input type="text" class="form-control" name="subtotal[]" readonly value="{{ $bahan->pivot->subtotal }}"></td>
+                                                    <td>
+                                                        <input type="text" class="form-control subtotal" name="subtotal[]" readonly 
+                                                               value="{{ $bahan->pivot->subtotal }}" 
+                                                               data-harga="{{ $bahan->pivot->harga }}">
+                                                    </td>
                                                     <td><a class="btn btn-danger delete" style="cursor:pointer;">Hapus</a></td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        <div class="form-group">
+                                            <label>Total Harga Bahan</label>
+                                            <input type="number" name="total" class="form-control" id="total" readonly value="{{ $data->total }}">
+                                        </div>
                                     </div>
                                     <div class="card-footer">
                                             <a href="{{ route('RequestForQuotation') }}" class="btn btn-default">Batal</a>
                                             
                                             @if ($data->status === 'RFQ')
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailModal">Send by Email</button>
+                                                <button type="submit" class="btn btn-caution" name="confirm_changes">Simpan Perubahan</button>
                                             @elseif ($data->status === 'RFQ Sent')
                                                 <button type="submit" class="btn btn-success" name="ubah_ke_po" value="1">Konfirmasi PO</button>
-                                            @else
-                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                            {{-- @else --}}
+                                                
                                             @endif
                                     </div>
                                 </form>
@@ -215,6 +226,41 @@ Admin Frojen Fuud
         @include('layouts/footer')
     </div>
     @include('layouts/script')
+    <script>
+        function updateTotal() {
+            // Ambil semua elemen kuantitas dan subtotal
+            const kuantitasElements = document.querySelectorAll('.kuantitas');
+            const subtotalElements = document.querySelectorAll('.subtotal');
+            let total = 0;
+    
+            // Loop melalui setiap baris untuk menghitung subtotal
+            kuantitasElements.forEach((element, index) => {
+                const kuantitas = parseFloat(element.value) || 0; // Nilai kuantitas
+                const subtotalInput = subtotalElements[index];
+                
+                // Validasi elemen subtotal
+                if (!subtotalInput) {
+                    console.warn('Elemen subtotal tidak ditemukan untuk indeks:', index);
+                    return;
+                }
+    
+                const harga = parseFloat(subtotalInput.dataset.harga) || 0; // Ambil harga dari data-harga
+    
+                // Debugging untuk memeriksa nilai harga dan kuantitas
+                console.log(`Kuantitas: ${kuantitas}, Harga: ${harga}`);
+    
+                // Hitung subtotal dan tampilkan
+                const subtotal = kuantitas * harga;
+                subtotalInput.value = subtotal.toFixed(2); // Tetap gunakan angka mentah untuk value
+    
+                // Tambahkan subtotal ke total
+                total += subtotal;
+            });
+    
+            // Tampilkan total di input "total"
+            document.getElementById('total').value = total.toFixed(2);
+        }
+    </script>
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
@@ -303,6 +349,29 @@ Admin Frojen Fuud
                 // Hitung ulang subtotal saat kuantitas berubah
                 const subtotal = harga_bahan * kuantitas;
                 subtotalInput.value = subtotal.toFixed(2);
+                function updateTotal() {
+                    // Ambil semua elemen kuantitas dan subtotal
+                    const kuantitasElements = document.querySelectorAll('.kuantitas');
+                    const subtotalElements = document.querySelectorAll('.subtotal');
+                    let total = 0;
+
+                    // Loop melalui setiap baris untuk menghitung subtotal
+                    kuantitasElements.forEach((element, index) => {
+                        const kuantitas = parseFloat(element.value) || 0; // Nilai kuantitas
+                        const subtotalInput = subtotalElements[index];
+                        const harga = parseFloat(subtotalInput.dataset.harga) || 0; // Ambil harga dari data-harga
+
+                        // Hitung subtotal dan tampilkan
+                        const subtotal = kuantitas * harga;
+                        subtotalInput.value = subtotal.toFixed(2); // Set nilai subtotal (format 2 desimal)
+
+                        // Tambahkan subtotal ke total
+                        total += subtotal;
+                    });
+
+                    // Tampilkan total di input "total"
+                    document.getElementById('total').value = total.toFixed(2);
+                }
             });
         });
     </script>

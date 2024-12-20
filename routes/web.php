@@ -170,6 +170,7 @@ Route::post('/rfq/{id}/confirm-bill', [RequestForQuotationController::class, 'co
 Route::post('/rfq/{id}/pay-bill', [RequestForQuotationController::class, 'payBill'])->name('rfq.payBill');
 
 Route::get('/VendorBill', [RequestForQuotationController::class, 'vendorBillPage'])->name('vendorBill');
+Route::post('/VendorBill/export', [RequestForQuotationController::class, 'exportVendorBill'])->name('exportVendorBill');
 
 
 //====== PurchaseOrder ========================================================================================

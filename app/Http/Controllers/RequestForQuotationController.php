@@ -93,54 +93,54 @@ class RequestForQuotationController extends Controller
         return view('RFQ.editRequestForQuotation', compact('data', 'vendor', 'produk', 'bahan', 'bahanOptions'));
     }
 
-    public function updateRequestForQuotation(Request $request, $id){
+    public function updateRequestForQuotation(Request $request, $id) {
         $data = RequestForQuotation::findOrFail($id);
-
+    
         // Debug input untuk memastikan data dikirimkan
         logger()->info('Request Data:', $request->all());
-
+    
         // Periksa apakah "ubah_ke_po" bernilai "1"
         if ($request->input('ubah_ke_po') === '1') {
-            $data->status = 'PO';
-            $data->save();
-
-            // Debug untuk memastikan status diubah
+            $data->update(['status' => 'PO']);
             logger()->info('Status RFQ berhasil diubah menjadi PO:', $data->toArray());
-
             return redirect()->route('RequestForQuotation')->with('Success', 'Status RFQ berhasil diubah menjadi PO.');
         }
-
-        // Lanjutkan ke logika pembaruan lainnya
-        $request->validate([
-            'reference' => 'required|string|max:255',
-            'vendor_id' => 'required|exists:vendors,id',
-            'tanggal' => 'required|date',
-            'company' => 'nullable|string|max:255',
-            'bahan_id.*' => 'nullable|exists:bahans,id',
-            'kuantitas.*' => 'nullable|integer|min:1|max:99999',
-            'satuan.*' => 'nullable|string|max:50',
-        ]);
-
+    
+        // Update data utama RFQ
         $data->update([
             'reference' => $request->reference,
             'vendor_id' => $request->vendor_id,
             'tanggal' => $request->tanggal,
             'company' => $request->company,
+            'total' => $request->total,
+            
         ]);
-
-        // Perbarui bahan jika ada
-        if ($request->bahan_id) {
-            $data->bahans()->detach();
-            foreach ($request->bahan_id as $index => $bahanId) {
-                $data->bahans()->attach($bahanId, [
-                    'kuantitas' => $request->kuantitas[$index],
-                    'satuan' => $request->satuan[$index],
-                ]);
-            }
+    
+        // Hapus data lama di tabel pivot
+        $data->bahans()->detach();
+    
+        // Ambil data bahan untuk tabel pivot
+        $bahanIds = $request->input('bahan_id');
+        $kuantitas = $request->input('kuantitas');
+        $satuan = $request->input('satuan');
+    
+        // Tambahkan data baru ke tabel pivot
+        for ($i = 0; $i < count($bahanIds); $i++) {
+            $data->bahans()->attach($bahanIds[$i], [
+                'kuantitas' => $kuantitas[$i],
+                'satuan' => $satuan[$i],
+            ]);
         }
-
+    
+        // Debug untuk memverifikasi data bahan
+        logger()->info('Bahan berhasil diperbarui:', $data->bahans->toArray());
+        if($request->has('confirm_changes')){
+            return redirect()->route('editRequestForQuotation', ['id' => $data->id])
+                ->with('Success', 'Berhasil Dilakukan Perubahan');
+        }
+    
         return redirect()->route('RequestForQuotation')->with('Success', 'Data RFQ berhasil diperbarui.');
-    }
+    }    
 
     public function hapusRequestForQuotation($id){
         $rfq = RequestForQuotation::findOrFail($id);
@@ -533,16 +533,36 @@ class RequestForQuotationController extends Controller
         return view('invoice.vendorBill', compact('vendorBills'));
     }
 
-    // public function vendorBillPagejijijijijij()
-    // {
-    //     // Ambil data sesuai kondisi
-    //     $vendorBills = RequestForQuotation::with('vendor')
-    //         ->where(function ($query) {
-    //             $query->where('status_po', 'Waiting to bill')
-    //                   ->orWhere('status_bill', 'Draft');
-    //         })
-    //         ->get();
-    
-    //     return view('invoice.vendorBill', compact('vendorBills'));
-    // }
+    public function exportVendorBill(Request $request){
+        $selectedItems = $request->input('items');
+
+        if (empty($selectedItems)) {
+            return redirect()->back()->with('error', 'Tidak ada Vendor Bill yang dipilih');
+        }
+
+        $data = RequestForQuotation::whereIn('id', $selectedItems)->get();
+
+        if ($data->isEmpty()) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        $options = [
+            'margin-top' => 10,
+            'margin-right' => 10,
+            'margin-bottom' => 10,
+            'margin-left' => 10,
+            'javascript-delay' => 500,
+            'no-stop-slow-scripts' => true,
+            'disable-smart-shrinking' => true,
+        ];
+
+        $dateTime = date('d-m-Y  h:i:s');
+        $fileName = "Vendor Bill ($dateTime).pdf";
+
+        $pdf = SnappyPdf::loadView('export.exportVendorBill', compact('data'))
+            ->setOptions($options)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download($fileName);
+    }
 }
