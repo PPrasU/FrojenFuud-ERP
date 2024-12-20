@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('harga_produksi');
             $table->string('gambar');
             
-            $table->bigInteger('kuantitas_produk');
+            $table->double('kuantitas_produk')->default(0);
             $table->timestamps();
         });
     }

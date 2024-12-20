@@ -27,8 +27,20 @@ class QuotationController extends Controller
         $customer = Customer::all();
         $pembayaran = Pembayaran::all();
         $produk = Produk::all();
-        return view('sales.inputQuotation', compact('customer', 'pembayaran', 'produk'));
-    }
+    
+        // Cari nomor quotation terakhir
+        $lastQuotation = Quotation::orderBy('id', 'desc')->first();
+        if ($lastQuotation) {
+            // Ambil angka dari nomor terakhir dan tambahkan 1
+            $lastNumber = (int) substr($lastQuotation->nomor_quotation, 1);
+            $newNumber = 'S' . str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
+        } else {
+            // Jika belum ada quotation, mulai dari S00001
+            $newNumber = 'S00001';
+        }
+    
+        return view('sales.inputQuotation', compact('customer', 'pembayaran', 'produk', 'newNumber'));
+    }    
 
     public function postQuotation(Request $request){
         $quotation = Quotation::create([
@@ -160,21 +172,6 @@ class QuotationController extends Controller
 
         return $pdf->download($fileName);
     }
-    
-    // public function sendEmail(Request $request, $id) {
-    //     $quotation = Quotation::findOrFail($id);
-    
-    //     // Update status menjadi Sent
-    //     $quotation->update(['status' => 'Sent']);
-    
-    //     // Kirim email
-    //     \Mail::to($request->emailTo)->send(new \App\Mail\QuotationMail(
-    //         $request->emailSubject,
-    //         $request->emailBody
-    //     ));
-    
-    //     return redirect()->route('Quotation')->with('Success', 'Quotation berhasil dikirim dan status diperbarui.');
-    // }
     
     public function sendEmail(Request $request, $id){
         $validated = $request->validate([

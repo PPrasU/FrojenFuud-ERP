@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('kode_bahan');
             $table->string('gambar');
 
-            $table->bigInteger('kuantitas_bahan');
+            $table->double('kuantitas_bahan')->default(0);
             $table->timestamps();
         });
     }

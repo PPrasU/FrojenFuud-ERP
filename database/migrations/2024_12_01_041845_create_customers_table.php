@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('alamat_2');
             $table->string('email');
             $table->string('kategori');
-            $table->bigInteger('pesanan');
-            $table->bigInteger('pembelian');
+            $table->bigInteger('pesanan')->default(0);
+            $table->bigInteger('pembelian')->default(0);
             $table->timestamps();
         });
     }

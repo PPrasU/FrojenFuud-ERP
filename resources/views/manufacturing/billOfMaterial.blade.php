@@ -63,10 +63,18 @@
                                                 <i class="fas fa-plus"></i> Tambah Data
                                             </a>
                                             @if (count($data) > 0)
-                                                <a href="/BillOfMaterial/export/{{ $data[0]->id }}" class="btn btn-app"
-                                                    style="left: -10px;">
-                                                    <i class="fa fa-file-pdf"></i> Export PDF
-                                                </a>
+                                            <form id="export-form" action="{{ route('exportBillOfMaterial') }}"
+                                                method="POST" style="display:none;">
+                                                @csrf
+                                                @foreach ($data as $item)
+                                                <input type="hidden" name="items[]" value="{{ $item->id }}">
+                                                @endforeach
+                                            </form>
+                                            <button type="button" class="btn btn-app" style="left: -10px;"
+                                                onclick="document.getElementById('export-form').submit();"
+                                                title="Export PDF">
+                                                <i class="fa fa-file-pdf"></i> Export PDF
+                                            </button>
                                             @endif
                                         </div>
                                         <div class="col-sm-6" style="text-align: right">
@@ -84,7 +92,6 @@
                                             <tr>
                                                 <th style="vertical-align: middle;">Produk</th>
                                                 <th style="vertical-align: middle;">Referensi</th>
-                                                <th style="vertical-align: middle;">Kuantitas</th>
                                                 <th style="vertical-align: middle;">Variasi BoM</th>
                                                 <th style="vertical-align: middle;">Bahan</th>
                                                 <th style="vertical-align: middle;">Aksi</th>
@@ -92,32 +99,31 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $row)
-                                                <tr>
-                                                    <td>{{ $row->produk->nama_produk }}</td>
-                                                    <td>{{ $row->reference }}</td>
-                                                    <td>{{ $row->kuantitas_produk }}</td>
-                                                    <td>{{ $row->variasi }}</td>
-                                                    <td>
-                                                        <ul>
-                                                            @foreach ($row->bahans as $bahan)
-                                                                <li>{{ $bahan->nama_bahan }} -
-                                                                    {{ $bahan->pivot->kuantitas }}
-                                                                    {{ $bahan->pivot->satuan }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        <a href="/BillOfMaterial/edit/{{ $row->id }}"
-                                                            class="btn btn-warning">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-danger delete"
-                                                            data-id="{{ $row->id }}"
-                                                            data-produk="{{ $row->produk->nama_produk }}">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>{{ $row->produk->nama_produk }}</td>
+                                                <td>{{ $row->reference }}</td>
+                                                <td>{{ $row->variasi }}</td>
+                                                <td>
+                                                    <ul>
+                                                        @foreach ($row->bahans as $bahan)
+                                                        <li>{{ $bahan->nama_bahan }} -
+                                                            {{ $bahan->pivot->kuantitas }}
+                                                            {{ $bahan->pivot->satuan }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    <a href="/BillOfMaterial/edit/{{ $row->id }}"
+                                                        class="btn btn-warning">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
+                                                        data-produk="{{ $row->produk->nama_produk }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -125,23 +131,22 @@
                                     {{-- untuk bagian kanbannya --}}
                                     <div id="kanbanView-BoM" class="row hidden">
                                         @foreach ($data as $row)
-                                            <div class="col-lg-4 col-6">
-                                                <div class="small-box">
-                                                    <div class="inner">
-                                                        <h3>{{ $row->produk->nama_produk }}</h3>
-                                                        <p>Ref : {{ $row->reference }}</p>
-                                                        <p>Production for {{ $row->kuantitas_produk }} unit</p>
-                                                    </div>
-                                                    <div class="icon">
-                                                        <i class="ion"><img style="width: 120px; height: 100px;"
-                                                                src="{{ asset('foto-produk/' . $row->produk->gambar) }}"></i>
-                                                    </div>
-                                                    <a href="/BillOfMaterial/edit/{{ $row->id }}"
-                                                        class="small-box-footer" style="color: black;">More info <i
-                                                            class="fas fa-arrow-circle-right"
-                                                            style="color: black;"></i></a>
+                                        <div class="col-lg-4 col-6">
+                                            <div class="small-box">
+                                                <div class="inner">
+                                                    <h3>{{ $row->produk->nama_produk }}</h3>
+                                                    <p>Ref : {{ $row->reference }}</p>
+                                                    <p>Production for {{ $row->kuantitas_produk }} unit</p>
                                                 </div>
+                                                <div class="icon">
+                                                    <i class="ion"><img style="width: 120px; height: 100px;"
+                                                            src="{{ asset('foto-produk/' . $row->produk->gambar) }}"></i>
+                                                </div>
+                                                <a href="/BillOfMaterial/edit/{{ $row->id }}" class="small-box-footer"
+                                                    style="color: black;">More info <i class="fas fa-arrow-circle-right"
+                                                        style="color: black;"></i></a>
                                             </div>
+                                        </div>
                                         @endforeach
                                     </div>
                                 </div>

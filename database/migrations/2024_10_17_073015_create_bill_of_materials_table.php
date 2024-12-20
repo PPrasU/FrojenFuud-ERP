@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('produk_id');
             $table->string('reference');
-            $table->integer('kuantitas_produk');
+            // $table->double('kuantitas');
             $table->string('variasi');
+            $table->string('nama_produk');
             $table->timestamps();
             
             $table->foreign('produk_id')->references('id')->on('produks')->onDelete('cascade');

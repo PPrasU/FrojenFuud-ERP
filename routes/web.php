@@ -10,6 +10,8 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\BillOfMaterialController;
+use App\Http\Controllers\ManufacturingOrderController;
+use App\Http\Controllers\RequestForQuotationController;
 
 
 Route::get('/', function () {
@@ -107,3 +109,75 @@ Route::get('/SalesInvoice/edit/{id}', [SalesInvoiceController::class, 'editSales
 Route::post('/SalesInvoice/update/{id}', [SalesInvoiceController::class, 'updateSalesInvoice'])->name('updateSalesInvoice');
 Route::get('/SalesInvoice/hapus/{id}', [SalesInvoiceController::class, 'hapusSalesInvoice'])->name('hapusSalesInvoice');
 Route::post('/SalesInvoice/export', [SalesInvoiceController::class, 'exportSalesInvoice'])->name('exportSalesInvoice');
+
+//====== MO (Manufacturing Order) ========================================================================================
+Route::get('/ManufacturingOrder', action: [ManufacturingOrderController::class, 'ManufacturingOrder'])->name('ManufacturingOrder');
+Route::get('/ManufacturingOrder/hapus/{id}', [ManufacturingOrderController::class, 'hapusMO'])->name('hapusMO');
+Route::post('/ManufacturingOrder/export', [ManufacturingOrderController::class, 'exportMO'])->name('exportMO');
+
+// MO Get Data
+Route::get('/get-bill-of-materials/{id}', [ManufacturingOrderController::class, 'getBillOfMaterials']);
+Route::get('/get-bahan/{bill_of_material_id}', [ManufacturingOrderController::class, 'getBahanByBillOfMaterial']);
+Route::get('/get-reference/{produk_id}', [ManufacturingOrderController::class, 'getReference']);
+Route::get('/getBahanByProduk/{id}', [ManufacturingOrderController::class, 'getBahanByProduk']);
+
+// MO Draft
+Route::get('/ManufacturingOrder/openMO', [ManufacturingOrderController::class, 'draftManufacturingOrder'])->name('draftManufacturingOrder');
+Route::post('/ManufacturingOrder/post', [ManufacturingOrderController::class, 'postdraftManufacturingOrder'])->name('postdraftManufacturingOrder');
+
+// MO Confirmed
+Route::get('/ManufacturingOrder/confirmed/{id}', [ManufacturingOrderController::class, 'confirmedMO'])->name('confirmedMO');
+Route::get('/ManufacturingOrder/showConfirmedForm/{id}', [ManufacturingOrderController::class, 'showConfirmedForm'])->name('showConfirmedForm');
+Route::post('/ManufacturingOrder/confirmed/{id}', [ManufacturingOrderController::class, 'postConfirmedForm'])->name('postConfirmedForm');
+
+// MO CA
+Route::get('/ManufacturingOrder/checkAvailability/{id}', [ManufacturingOrderController::class, 'checkAvailability'])->name('checkAvailability');
+Route::get('/ManufacturingOrder/showcheckAvailabilityForm/{id}', [ManufacturingOrderController::class, 'showcheckAvailabilityForm'])->name('showcheckAvailabilityForm');
+Route::post('/ManufacturingOrder/checkAvailability/{id}', [ManufacturingOrderController::class, 'postcheckAvailabilityForm'])->name('postcheckAvailabilityForm');
+
+// Progress
+Route::get('/ManufacturingOrder/progress/{id}', [ManufacturingOrderController::class, 'progress'])->name('progress');
+Route::get('/ManufacturingOrder/showprogressForm/{id}', [ManufacturingOrderController::class, 'showprogressForm'])->name('showprogressForm');
+Route::post('/ManufacturingOrder/progress/{id}', [ManufacturingOrderController::class, 'postprogressForm'])->name('postprogressForm');
+
+// Done
+Route::get('/ManufacturingOrder/done/{id}', [ManufacturingOrderController::class, 'done'])->name('done');
+Route::get('/ManufacturingOrder/showdoneForm/{id}', [ManufacturingOrderController::class, 'showdoneForm'])->name('showdoneForm');
+Route::post('/ManufacturingOrder/done/{id}', [ManufacturingOrderController::class, 'postdoneForm'])->name('postdoneForm');
+
+
+
+//====== RequestForQuotation ========================================================================================
+
+Route::get('/RequestForQuotation', [RequestForQuotationController::class, 'RequestForQuotation'])->name('RequestForQuotation');
+Route::get('/RequestForQuotation/input', [RequestForQuotationController::class, 'inputRequestForQuotation'])->name('inputRequestForQuotation');
+Route::post('/RequestForQuotation/post', [RequestForQuotationController::class, 'postRequestForQuotation'])->name('postRequestForQuotation');
+Route::get('/RequestForQuotation/edit/{id}', [RequestForQuotationController::class, 'editRequestForQuotation'])->name('editRequestForQuotation');
+Route::put('/RequestForQuotation/update/{id}', [RequestForQuotationController::class, 'updateRequestForQuotation'])->name('updateRequestForQuotation');
+Route::delete('/RequestForQuotation/hapus/{id}', [RequestForQuotationController::class, 'hapus'])->name('RequestForQuotation.hapus');
+Route::post('/RequestForQuotation/export', [RequestForQuotationController::class, 'exportRequestForQuotation'])->name('exportRequestForQuotation');
+Route::post('/RequestForQuotation/{id}/done', [RequestForQuotationController::class, 'markAsDone'])->name('markAsDone');
+Route::get('/RequestForQuotation/{id}/change-to-po', [RequestForQuotationController::class, 'changeStatusToPO'])->name('changeToPO');
+Route::put('/RequestForQuotation/status/{id}', [RequestForQuotationController::class, 'updateStatus'])->name('updateStatus');
+Route::put('/RequestForQuotation/updateStatus/{id}', [RequestForQuotationController::class, 'updateStatus'])->name('updateStatus');
+Route::post('/RequestForQuotation/sendEmail/{id}', [RequestForQuotationController::class, 'sendEmail'])->name('sendEmailRFQ');
+
+
+Route::post('/rfq/{id}/create-bill', [RequestForQuotationController::class, 'createBill'])->name('rfq.createBill');
+Route::get('/rfq/draft-bills', [RequestForQuotationController::class, 'draftBills'])->name('rfq.draftBills');
+Route::get('/rfq/{id}/bill-detail', [RequestForQuotationController::class, 'showBillDetail'])->name('rfq.showBillDetail');
+Route::post('/rfq/{id}/confirm-bill', [RequestForQuotationController::class, 'confirmBill'])->name('rfq.confirmBill');
+Route::post('/rfq/{id}/pay-bill', [RequestForQuotationController::class, 'payBill'])->name('rfq.payBill');
+
+Route::get('/VendorBill', [RequestForQuotationController::class, 'vendorBillPage'])->name('vendorBill');
+
+
+//====== PurchaseOrder ========================================================================================
+Route::prefix('PurchaseOrder')->group(function () {
+    Route::get('/', [RequestForQuotationController::class, 'PurchaseOrder'])->name('PurchaseOrder');
+    Route::get('/input', [RequestForQuotationController::class, 'inputPurchaseOrder'])->name('inputPurchaseOrder');
+    Route::post('/post', [RequestForQuotationController::class, 'postPurchaseOrder'])->name('postPurchaseOrder');
+    Route::get('/detail/{id}', [RequestForQuotationController::class, 'detail'])->name('purchase_orders.detail');
+    Route::post('/{id}/receive', [RequestForQuotationController::class, 'receiveProduct'])->name('purchase_orders.receive');
+    Route::post('/{id}/create-bill', [RequestForQuotationController::class, 'createBill'])->name('purchase_orders.create_bill');
+});

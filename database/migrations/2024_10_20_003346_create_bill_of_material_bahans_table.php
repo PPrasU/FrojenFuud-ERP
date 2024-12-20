@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('bahan_id');
             $table->decimal('kuantitas', 8, 2);
             $table->string('satuan');
+            $table->string('harga_satuan');
+            $table->string('nama_bahan');
             $table->timestamps();        
         
             // Add foreign keys

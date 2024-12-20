@@ -266,7 +266,7 @@
                                                     <div class="inner">
                                                         <h4>{{ $row->nama_bahan }}</h4>
                                                         <p>Rp. {{ $row->harga_bahan }}/{{ $row->satuan }}</p>
-                                                        <a>Stok: .... /{{ $row->satuan }}</a>
+                                                        <a>Stok: {{ $row->kuantitas_bahan }} /{{ $row->satuan }}</a>
                                                         <div style="text-align: right;">
                                                             <a class="btn btn-danger delete"
                                                                 data-id="{{ $row->id }}"

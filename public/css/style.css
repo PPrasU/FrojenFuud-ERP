@@ -1,0 +1,37 @@
+.arrow-steps .step {
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    width: 140px;
+    padding: 10px;
+    background-color: lightgray;
+    color: #333;
+    position: relative;
+    margin-right: 0px;
+    margin-left: -10px;
+    border-radius: 0px;
+    text-align: center;
+}
+
+.wrapper-arrow {
+    display: flex;
+    justify-content: right;
+}
+
+.step {
+    padding: 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+}
+
+.step.current {
+    background-color: #007bff;
+    /* Warna untuk langkah saat ini */
+    color: #fff;
+}
+
+.step.done {
+    background-color: #28a745;
+    /* Warna untuk langkah yang sudah selesai */
+    color: #fff;
+}

@@ -9,7 +9,6 @@
 <head>
     <title>FrojenFuud | Input Bill Of Material</title>
     @include('layouts/header')
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -17,6 +16,7 @@
         @include('layouts/preloader')
         @include('layouts/navbar')
         @include('layouts/sidebar')
+        <!-- Main Content Wrapper-->
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
@@ -35,6 +35,9 @@
                     </div>
                 </div>
             </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -42,45 +45,49 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
+                                @if(session('Success'))
+                                    <div class="alert alert-success">
+                                        {{ session('Success') }}
+                                    </div>
+                                @endif
                                 <form action="/BillOfMaterial/post" method="POST" enctype="multipart/form-data"
                                     id="inputBillOfMaterial">
                                     @csrf
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm">
                                                 <div class="form-group">
                                                     <label>Produk</label>
-                                                    <select class="form-control select2" name="produk_id"
-                                                        id="produk_id" style="width: 100%;">
+                                                    <select name="produk_id" class="form-control" id="produkSelect">
                                                         <option selected disabled>--Pilih Produk--</option>
                                                         @foreach ($produk as $row)
-                                                            <option value="{{ $row->id }}"
-                                                                data-kode-produk="{{ $row->kode_produk }}">
+                                                            <option value="{{ $row->id }}">
                                                                 [{{ $row->kode_produk }}] {{ $row->nama_produk }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
                                                 <div class="form-group">
                                                     <label>Reference</label>
-                                                    <input type="text" name="reference" class="form-control"
-                                                        id="reference">
+                                                    <input type="text" name="reference" class="form-control" id="referenceInput" readonly>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="kuantitas_produk">Kuantitas Produk Yang
-                                                        Dihasilkan</label>
-                                                    <input type="number" name="kuantitas_produk" class="form-control"
-                                                        id="kuantitas_produk">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
                                                 <div class="form-group">
                                                     <label>Variasi BOM</label>
-                                                    <select class="form-control" name="variasi" id="variasi"> 
+                                                    <select class="form-control" name="variasi">
                                                         <option selected disabled>-- Pilih --</option>
                                                         <option>Manufacture This Product</option>
                                                         <option>Kit</option>
@@ -147,23 +154,24 @@
         @include('layouts/footer')
     </div>
     @include('layouts/script')
-
     {{-- Untuk Validasi Saat Isi Form Biar Ndak Kosongan --}}
     <script>
         $(function() {
-            $('.select2').select2()
             $('#inputBillOfMaterial').validate({
                 rules: {
-                    produk_id: {
+                    produk: {
                         required: true,
                     },
-                    reference: {
+                    referensi: {
                         required: true,
                     },
-                    kuantitas_produk: {
+                    variasi_produk: {
                         required: true,
                     },
-                    variasi: {
+                    kuantitas: {
+                        required: true,
+                    },
+                    satuan: {
                         required: true,
                     },
                 },
@@ -182,7 +190,7 @@
         });
     </script>
 
-    {{-- buat tamabh bahan untuk produksi produk --}}
+    {{-- buat tambah bahan untuk produksi produk --}}
     <script>
         document.getElementById('addBahanButton').addEventListener('click', function() {
             const bahanTabelBody = document.getElementById('bahanTabelBody');
@@ -190,10 +198,10 @@
 
             newRow.innerHTML = `
                 <td>
-                    <select class="form-control select2" name="bahan_id[]">
+                    <select class="form-control bahan-select" name="bahan_id[]">
                         <option selected disabled>--Pilih Bahan--</option>
                         @foreach ($bahan as $row)
-                            <option value="{{ $row->id }}">
+                            <option value="{{ $row->id }}" data-satuan="{{ $row->satuan }}">
                                 [{{ $row->kode_bahan }}] {{ $row->nama_bahan }}
                             </option>
                         @endforeach
@@ -203,12 +211,7 @@
                     <input type="number" class="form-control" placeholder="Kuantitas" name="kuantitas[]">
                 </td>
                 <td>
-                    <select class="form-control" name="satuan[]">
-                        <option selected disabled>--Pilih Satuan--</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Liter">Liter</option>
-                        <option value="Pcs">Pcs</option>
-                    </select>
+                    <input type="text" class="form-control satuan-input" placeholder="Satuan" name="satuan[]" readonly>
                 </td>
                 <td>
                     <a class="btn btn-danger delete" style="cursor:pointer;">
@@ -217,30 +220,35 @@
                 </td>
             `;
 
-            // Append the new row before the "addBahanRow" row
+            // Append the new row
             bahanTabelBody.insertBefore(newRow, document.getElementById('addBahanRow'));
 
-            // Inisialisasi Select2 untuk elemen <select> yang baru ditambahkan
-            $(newRow).find('.select2').select2({
-                placeholder: "--Pilih Bahan--",
-                width: '100%' // Atur lebar Select2 agar sesuai
+            // Add event listener for the bahan-select dropdown
+            newRow.querySelector('.bahan-select').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const satuanInput = newRow.querySelector('.satuan-input');
+
+                // Ambil satuan dari atribut data-satuan
+                const satuan = selectedOption.getAttribute('data-satuan');
+
+                // Isi input satuan dengan nilai satuan yang diambil
+                satuanInput.value = satuan; // Set input dengan satuan yang sesuai
             });
 
             // Add event listener for the delete button
             newRow.querySelector('.delete').addEventListener('click', function() {
                 newRow.remove();
             });
-        });
 
-        // Inisialisasi Select2 untuk elemen yang sudah ada di awal halaman
-        $(document).ready(function() {
-            $('.select2').select2({
-                placeholder: "--Pilih Bahan--",
-                width: '100%'
+            // Append the new row before the "addBahanRow" row
+            bahanTabelBody.insertBefore(newRow, document.getElementById('addBahanRow'));
+
+            // Add event listener for the delete button
+            newRow.querySelector('.delete').addEventListener('click', function() {
+                newRow.remove();
             });
         });
     </script>
-
 
     {{-- script untuk memilih produk otomatis --}}
     <script>
@@ -322,31 +330,24 @@
         });
     </script>
 
-    {{-- untuk reference otomatis --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const produkSelect = document.getElementById('produk_id');
+        document.getElementById('produkSelect').addEventListener('change', function() {
+            // Dapatkan elemen input untuk reference
             const referenceInput = document.getElementById('referenceInput');
-            let incrementCounter = 1; // Awal angka increment
-
-            produkSelect.addEventListener('change', function() {
-                console.log('Dropdown changed');
-                const selectedOption = produkSelect.options[produkSelect.selectedIndex];
-                const kodeProduk = selectedOption.getAttribute('data-kode-produk');
-                console.log('Kode Produk:', kodeProduk);
-
-                if (kodeProduk) {
-                    const reference = `BoM_${kodeProduk}${incrementCounter}`;
-                    console.log('Generated Reference:', reference);
-                    referenceInput.value = reference;
-
-                    incrementCounter++;
-                }
-            });
-
+            
+            // Ambil value dari produk yang dipilih
+            const selectedProduk = this.options[this.selectedIndex].text;
+            
+            // Split untuk mengambil kode produk (misal, [LA] Nama Produk)
+            const kodeProduk = selectedProduk.match(/\[(.*?)\]/)[1];
+            
+            // Format reference dengan 'BoM_' diikuti kode produk dan angka increment (misal, BoM_LA)
+            const reference = `BoM_${kodeProduk}`;
+            
+            // Masukkan hasil reference ke input field
+            referenceInput.value = reference;
         });
     </script>
-
 </body>
 
 </html>

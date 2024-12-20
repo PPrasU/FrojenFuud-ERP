@@ -22,8 +22,8 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Purchasing</li>
-                                <li class="breadcrumb-item"><a href="/Vendor-">Vendor</a>
-                                <li class="breadcrumb-item"><a href="/Vendor/edit">Edit Data</a>
+                                <li class="breadcrumb-item"><a href="/Vendors">Vendor</a>
+                                <li class="breadcrumb-item"><a href="/Vendors/edit/{{ $data->id }}">Edit Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
-                                <form action="/Vendor/update/{{ $data->id }}" method="POST"
+                                <form action="/Vendors/update/{{ $data->id }}" method="POST"
                                     enctype="multipart/form-data" id="inputBahanBaku">
                                     @csrf
                                     <div class="card-body">
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="/Vendor-" class="btn btn-default">Batal</a>
+                                        <a href="/Vendors" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Perbarui</button>
                                     </div>
                                 </form>

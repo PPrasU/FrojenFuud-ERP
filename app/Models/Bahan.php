@@ -15,6 +15,13 @@ class Bahan extends Model
                     ->withPivot('kuantitas', 'satuan')
                     ->withTimestamps();
     }
+    public function manufacturingOrderBahans()
+    {
+        return $this->hasMany(ManufacturingOrderBahan::class, 'bahan_id');
+    }
 
-
+    public function quotation_bahans()
+    {
+        return $this->hasMany(RequestForQuotationBahan::class, 'bahan_id');
+    }
 }

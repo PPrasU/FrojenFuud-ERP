@@ -124,7 +124,6 @@ class SalesInvoiceController extends Controller
             'disable-smart-shrinking' => true,
         ];
 
-        // Access nomor_quotation from the related quotation of the first sales order
         $dateTime = date('d-m-Y');
         $nomorSalesInvoice = $data->first()->nomor_invoice ?? 'SalesInvoice';
         $fileName = "Sales Order-{$nomorSalesInvoice} ($dateTime).pdf";
