@@ -293,16 +293,16 @@
                 var id = $(this).data('id');
                 // Tambahkan logika untuk tombol edit
                 console.log('Edit ID:', id);
-                window.location.href = '/bahan-baku/edit/' + id;
+                window.location.href = '/produk/edit/' + id;
             });
 
             $('#tableList').on('click', '.delete', function() {
                 var id = $(this).attr('data-id');
-                var nama_bahan = $(this).attr('data-nama_bahan');
-                var kode_bahan = $(this).attr('data-kode_bahan');
+                var nama_produk = $(this).attr('data-nama_produk');
+                var kode_produk = $(this).attr('data-kode_produk');
                 Swal.fire({
                     title: 'Apakah Kamu Ingin Menghapus Data Ini?',
-                    text: "Data bahan " + nama_bahan + " Akan Dihapus",
+                    text: "Data bahan " + nama_produk + " Akan Dihapus",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -314,7 +314,7 @@
                             'Terhapus!',
                             'Data Telah Terhapus!',
                             'success',
-                            window.location = "/bahan-baku/hapus/" + id + "",
+                            window.location = "/produk/hapus/" + id + "",
                         )
                     }
                 });

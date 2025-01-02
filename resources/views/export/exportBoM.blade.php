@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+x   <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -82,16 +82,16 @@
                         <td>{{ $detail->satuan }}</td>
                         <td>{{ $detail->lead_time ?? '-' }}</td>
                         <td>{{ $detail->route ?? '-' }}</td>
-                        <td>Rp {{ number_format($detail->bom_cost, 2) }}</td> <!-- Ambil dari harga_satuan -->
-                        <td>Rp {{ number_format($detail->product_cost, 2) }}</td> <!-- Sama dengan bom_cost -->
+                        <td>Rp {{ number_format($detail->bom_cost, 4) }}</td> <!-- Ambil dari harga_satuan -->
+                        <td>Rp {{ number_format($detail->product_cost, 4) }}</td> <!-- Sama dengan bom_cost -->
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
         <div class="footer">
-            Total BoM Cost: Rp {{ number_format($produk->total_bom_cost, 2) }}<br>
-            Total Product Cost: Rp {{ number_format($produk->total_product_cost, 2) }}
+            Total BoM Cost: Rp {{ number_format($produk->total_bom_cost, 4) }}<br>
+            Total Product Cost: Rp {{ number_format($produk->total_product_cost, 4) }}
         </div>
     @endforeach
 </body>

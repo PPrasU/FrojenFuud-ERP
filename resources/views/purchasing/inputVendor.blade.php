@@ -21,8 +21,8 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">Purchasing</li>
-                                <li class="breadcrumb-item"><a href="/Vendor-">Vendor</a>
-                                <li class="breadcrumb-item"><a href="/Vendor/input">Input Data</a>
+                                <li class="breadcrumb-item"><a href="/Vendors">Vendor</a>
+                                <li class="breadcrumb-item"><a href="/Vendors/input">Input Data</a>
                                 </li>
                             </ol>
                         </div>
@@ -36,7 +36,7 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
-                                <form action="/Vendor/post" method="POST" enctype="multipart/form-data"
+                                <form action="/Vendors/post" method="POST" enctype="multipart/form-data"
                                     id="inputVendor">
                                     @csrf
                                     <div class="card-body">
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="/Vendor-" class="btn btn-default">Batal</a>
+                                        <a href="/Vendors" class="btn btn-default">Batal</a>
                                         <button type="submit" class="btn btn-primary">Tambahkan</button>
                                     </div>
                                 </form>
