@@ -39,7 +39,7 @@
                             <div class="card card-primary">
                                 <div class="card-header" style="height: 1px;">
                                 </div>
-                                <form action="/Quotation/post" method="POST" enctype="multipart/form-data"
+                                <form action="/iQuotaton/post" method="POST" enctype="multipart/form-data"
                                     id="inputQuotation">
                                     @csrf
                                     <div class="card-body">
